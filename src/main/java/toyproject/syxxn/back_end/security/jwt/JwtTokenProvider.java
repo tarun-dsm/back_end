@@ -1,0 +1,90 @@
+package toyproject.syxxn.back_end.security.jwt;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+import toyproject.syxxn.back_end.exception.InvalidTokenException;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+
+@RequiredArgsConstructor
+@Component
+public class JwtTokenProvider {
+
+    @Value("${auth.jwt.secret}")
+    private String secretKey;
+
+    @Value("${auth.jwt.exp.access}")
+    private Long accessTokenExpiration;
+
+    @Value("${auth.jwt.exp.refresh}")
+    private Long refreshTokenExpiration;
+
+    private static final String HEADER = "Authorization";
+
+    private static final String PREFIX = "Bearer";
+
+    private final AuthDetailsService authDetailsService;
+
+    public String generateAccessToken(String email) {
+        return Jwts.builder()
+                .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiration * 1000))
+                .setIssuedAt(new Date())
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .setSubject(email)
+                .claim("type", "access_token")
+                .compact();
+    }
+
+    public String generateRefreshToken(String email) {
+        return Jwts.builder()
+                .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpiration * 1000))
+                .setIssuedAt(new Date())
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .setSubject(email)
+                .claim("type", "refresh_token")
+                .compact();
+    }
+
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(HEADER);
+        if (bearerToken != null && bearerToken.startsWith(PREFIX)) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(secretKey)
+                    .parseClaimsJws(token).getBody().getSubject();
+            return true;
+        } catch (Exception e) {
+            throw new InvalidTokenException();
+        }
+    }
+
+    public boolean isRefreshToken(String token) {
+        return Jwts.parser().setSigningKey(secretKey)
+                .parseClaimsJws(token).getBody().get("type").equals("refresh_token");
+    }
+
+    public String getId(String id) {
+        try {
+            return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(id).getBody().getSubject();
+        } catch (Exception e) {
+            throw new InvalidTokenException();
+        }
+    }
+
+    public Authentication getAuthentication(String token) {
+        AuthDetails authDetails = authDetailsService.loadUserByUsername(getId(token));
+        return new UsernamePasswordAuthenticationToken(authDetails, "", authDetails.getAuthorities());
+    }
+
+}
