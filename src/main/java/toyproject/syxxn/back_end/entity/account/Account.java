@@ -27,6 +27,9 @@ public class Account {
     private String nickname;
 
     @Column(nullable = false)
+    private Integer age;
+
+    @Column(nullable = false)
     private Sex sex;
 
     @Column(nullable = false)
@@ -34,6 +37,9 @@ public class Account {
 
     @Column(columnDefinition = "varchar(100)", nullable = false)
     private String experience;
+
+    @Column(nullable = false)
+    private String address;
 
     @Column(nullable = false)
     private Boolean isLocationConfirm;

@@ -31,22 +31,22 @@ public class JwtTokenProvider {
 
     private final AuthDetailsService authDetailsService;
 
-    public String generateAccessToken(String email) {
+    public String generateAccessToken(Integer id) {
         return Jwts.builder()
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiration * 1000))
                 .setIssuedAt(new Date())
                 .signWith(SignatureAlgorithm.HS256, secretKey)
-                .setSubject(email)
+                .setSubject(id.toString())
                 .claim("type", "access_token")
                 .compact();
     }
 
-    public String generateRefreshToken(String email) {
+    public String generateRefreshToken(Integer id) {
         return Jwts.builder()
                 .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpiration * 1000))
                 .setIssuedAt(new Date())
                 .signWith(SignatureAlgorithm.HS256, secretKey)
-                .setSubject(email)
+                .setSubject(id.toString())
                 .claim("type", "refresh_token")
                 .compact();
     }
