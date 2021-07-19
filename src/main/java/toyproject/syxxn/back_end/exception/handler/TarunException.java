@@ -1,4 +1,4 @@
-package toyproject.syxxn.back_end.exception;
+package toyproject.syxxn.back_end.exception.handler;
 
 import lombok.Getter;
 
