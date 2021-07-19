@@ -1,13 +1,16 @@
 package toyproject.syxxn.back_end.service.account;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import toyproject.syxxn.back_end.dto.request.SignUpRequest;
 import toyproject.syxxn.back_end.dto.response.TokenResponse;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
-import toyproject.syxxn.back_end.entity.account.Sex;
+import toyproject.syxxn.back_end.entity.Sex;
+import toyproject.syxxn.back_end.entity.refreshtoken.RefreshToken;
+import toyproject.syxxn.back_end.entity.refreshtoken.RefreshTokenRepository;
 import toyproject.syxxn.back_end.exception.UserEmailAlreadyExistsException;
 import toyproject.syxxn.back_end.exception.UserNicknameAlreadyExistsException;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
@@ -17,9 +20,13 @@ import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 public class AccountServiceImpl implements AccountService{
 
     private final AccountRepository accountRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     private final PasswordEncoder encoder;
     private final JwtTokenProvider jwtTokenProvider;
+
+    @Value("${auth.jwt.exp.refresh}")
+    private Long refreshExp;
 
     @Override
     public TokenResponse signUp(SignUpRequest request) {
@@ -37,9 +44,17 @@ public class AccountServiceImpl implements AccountService{
                         .build()
         );
 
+        RefreshToken refreshToken = refreshTokenRepository.save(
+                RefreshToken.builder()
+                        .accountId(account.getId())
+                        .refreshExp(refreshExp)
+                        .refreshToken(jwtTokenProvider.generateRefreshToken(account.getId()))
+                        .build()
+        );
+
         return TokenResponse.builder()
                 .accessToken(jwtTokenProvider.generateAccessToken(account.getId()))
-                .refreshToken(jwtTokenProvider.generateRefreshToken(account.getId()))
+                .refreshToken(refreshToken.getRefreshToken())
                 .build();
     }
 
