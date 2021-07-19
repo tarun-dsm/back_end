@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import toyproject.syxxn.back_end.entity.post.Post;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Builder
@@ -19,7 +20,7 @@ public class PetImage {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @NotNull
     private String path;
 
     @ManyToOne

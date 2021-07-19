@@ -9,6 +9,7 @@ import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.post.Post;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Builder
@@ -20,13 +21,15 @@ public class PetInfo {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "varchar(30)", nullable = false)
+    @NotNull
+    @Column(columnDefinition = "varchar(30)")
     private String petName;
 
-    @Column(columnDefinition = "varchar(30)", nullable = false)
+    @NotNull
+    @Column(columnDefinition = "varchar(30)")
     private String petSpecies;
 
-    @Column(nullable = false)
+    @NotNull
     private Sex petSex;
 
     @OneToOne

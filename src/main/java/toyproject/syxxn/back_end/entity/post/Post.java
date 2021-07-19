@@ -13,6 +13,7 @@ import toyproject.syxxn.back_end.entity.pet.PetImage;
 import toyproject.syxxn.back_end.entity.pet.PetInfo;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,29 +28,31 @@ public class Post {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @NotNull
     private Boolean isWithinADay;
 
-    @Column(nullable = false)
+    @NotNull
     private LocalDate tripStartDate;
 
-    @Column(nullable = false)
+    @NotNull
     private LocalDate tripEndDate;
 
-    @Column(nullable = false)
+    @NotNull
     private LocalDate applicationEndDate;
 
-    @Column(nullable = false)
+    @NotNull
     private String description;
 
-    @Column(columnDefinition = "varchar(100)", nullable = false)
+    @NotNull
+    @Column(columnDefinition = "varchar(100)")
     private String contactInfo;
 
+    @NotNull
     @CreatedDate
     @DateTimeFormat(pattern = "yyyy-MM-dd`T`hh:mm:SS")
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
+    @NotNull
     private Boolean isUpdated;
 
     @ManyToOne

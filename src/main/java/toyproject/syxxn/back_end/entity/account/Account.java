@@ -7,6 +7,7 @@ import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.review.Review;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -22,32 +23,36 @@ public class Account {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "varchar(45)", nullable = false)
+    @NotNull
+    @Column(columnDefinition = "varchar(45)")
     private String email;
 
-    @Column(columnDefinition = "char(60)", nullable = false)
+    @NotNull
+    @Column(columnDefinition = "char(60)")
     private String password;
 
-    @Column(columnDefinition = "varchar(10)", nullable = false)
+    @NotNull
+    @Column(columnDefinition = "varchar(10)")
     private String nickname;
 
-    @Column(nullable = false)
+    @NotNull
     private Integer age;
 
-    @Column(nullable = false)
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Sex sex;
 
-    @Column(nullable = false)
+    @NotNull
     private Boolean isExperienceRasingPet;
 
-    @Column(columnDefinition = "varchar(100)", nullable = false)
+    @NotNull
+    @Column(columnDefinition = "varchar(100)")
     private String experience;
 
-    @Column(nullable = false)
+    @NotNull
     private String address;
 
-    @Column(nullable = false)
+    @NotNull
     private Boolean isLocationConfirm;
 
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)

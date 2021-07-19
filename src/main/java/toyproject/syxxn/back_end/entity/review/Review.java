@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import toyproject.syxxn.back_end.entity.account.Account;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Getter
@@ -20,12 +21,13 @@ public class Review {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "bigdecimal(1,1)", nullable = false)
+    @NotNull
+    @Column(columnDefinition = "bigdecimal(1,1)")
     private BigDecimal ratingScore;
 
     private String comment;
 
-    @Column(nullable = false)
+    @NotNull
     private Long writerId;
 
     @ManyToOne
