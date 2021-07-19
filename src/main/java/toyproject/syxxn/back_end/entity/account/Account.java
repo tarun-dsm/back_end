@@ -1,8 +1,13 @@
 package toyproject.syxxn.back_end.entity.account;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+import toyproject.syxxn.back_end.entity.Sex;
+import toyproject.syxxn.back_end.entity.post.Post;
+import toyproject.syxxn.back_end.entity.review.Review;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Builder
@@ -30,6 +35,7 @@ public class Account {
     private Integer age;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Sex sex;
 
     @Column(nullable = false)
@@ -43,5 +49,13 @@ public class Account {
 
     @Column(nullable = false)
     private Boolean isLocationConfirm;
+
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Review> reviews;
+
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Post> posts;
 
 }
