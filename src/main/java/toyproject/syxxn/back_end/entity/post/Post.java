@@ -55,7 +55,7 @@ public class Post {
     @NotNull
     private Boolean isUpdated;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "account_id")
     private Account account;
@@ -64,7 +64,7 @@ public class Post {
     @JsonManagedReference
     private PetInfo petInfo;
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post")
     @JsonManagedReference
     private List<PetImage> petImages;
 

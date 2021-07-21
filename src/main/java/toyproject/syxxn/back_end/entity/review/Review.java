@@ -31,15 +31,15 @@ public class Review {
     @NotNull
     private String comment;
 
-    @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "writer_id")
-    private Account writer;
-
     @NotNull
     @CreatedDate
     @DateTimeFormat(pattern = "yyyy-MM-dd`T`hh:mm:SS")
     private LocalDateTime createdAt;
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "writer_id")
+    private Account writer;
 
     @ManyToOne
     @JsonBackReference
