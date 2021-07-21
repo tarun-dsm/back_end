@@ -11,6 +11,7 @@ import toyproject.syxxn.back_end.dto.request.EmailRequest;
 import toyproject.syxxn.back_end.dto.request.VerifyRequest;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumber;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumberRepository;
+import toyproject.syxxn.back_end.exception.EmailSendException;
 import toyproject.syxxn.back_end.exception.VerifyNumberNotMatchException;
 
 import java.util.Random;
@@ -43,6 +44,7 @@ public class EmailServiceImpl implements EmailService {
                     new VerifyNumber(email, authNumber, false)
             );
         } catch (Exception e) {
+            throw new EmailSendException();
         }
     }
 
