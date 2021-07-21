@@ -58,6 +58,7 @@ public class AuthServiceImpl implements AuthService {
         RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(receivedToken)
                 .map(refreshToken1 -> refreshToken1.update(refreshExp))
                 .orElseThrow(UserNotFoundException::new);
+        refreshTokenRepository.save(refreshToken);
 
         return new AccessTokenResponse(jwtTokenProvider.generateAccessToken(refreshToken.getAccountId()));
     }

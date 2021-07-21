@@ -1,4 +1,4 @@
-package toyproject.syxxn.back_end.security.jwt;
+package toyproject.syxxn.back_end.security.auth;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
