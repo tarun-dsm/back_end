@@ -9,7 +9,7 @@ import org.springframework.data.redis.core.RedisHash;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@RedisHash(timeToLive = 60*3)
+@RedisHash(timeToLive = 60*4)
 public class VerifyNumber {
 
     @Id
