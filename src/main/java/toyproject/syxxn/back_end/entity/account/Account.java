@@ -15,9 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"email","nickname"})
-})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"email","nickname"})})
 public class Account {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
