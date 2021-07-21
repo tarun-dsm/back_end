@@ -13,8 +13,6 @@ import toyproject.syxxn.back_end.exception.ReviewNotFoundException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
 import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
 
-import javax.transaction.Transactional;
-
 @RequiredArgsConstructor
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -26,9 +24,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 
     @Override
-    @Transactional
     public void writeReview(ReviewRequest request) {
-        isLogin();
         Account writer = accountRepository.findById(authenticationFacade.getUserId())
                 .orElseThrow(UserNotFoundException::new);
         Account target = accountRepository.findById(request.getTargetId())
@@ -46,8 +42,6 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void deleteReview(Long id) {
-        isLogin();
-
         Review review = reviewRepository.findById(id)
                 .orElseThrow(ReviewNotFoundException::new);
         if (review.getWriter().getId().equals(authenticationFacade.getUserId())) {
@@ -58,10 +52,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    @Transactional
     public void updateReview(Long id, UpdateReviewRequest request) {
-        isLogin();
-
         Review review = reviewRepository.findById(id)
                 .orElseThrow(ReviewNotFoundException::new);
         if (review.getWriter().getId().equals(authenticationFacade.getUserId())) {
@@ -70,12 +61,6 @@ public class ReviewServiceImpl implements ReviewService {
 
         review.update(review.getComment(), review.getRatingScore());
         reviewRepository.save(review);
-    }
-
-    private void isLogin() {
-        if (authenticationFacade.getUserId() == null) {
-            throw new UserNotAccessibleException();
-        }
     }
 
 }
