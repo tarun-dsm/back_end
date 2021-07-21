@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.5.2'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'jacoco'
 }
 
 group = 'toy-project.syxxn'
@@ -11,6 +12,17 @@ sourceCompatibility = '11'
 repositories {
 	mavenCentral()
 }
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	all {
+		exclude group: 'org.slf4j', module: 'slf4j-simple'
+		exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+	}
+}
+
 
 dependencies {
 	//spring starter
@@ -45,4 +57,11 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+		html.enabled true
+	}
 }

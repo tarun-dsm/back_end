@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test
+    username: test
+    password: 1234
+  jpa:
+    database: h2
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+  redis:
+    host: localhost
+    port: 6379
+
+auth:
+  jwt:
+    secret: asdf1234
+    exp:
+      access: 2021
+      refresh: 20210629
