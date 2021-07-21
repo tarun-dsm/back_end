@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import toyproject.syxxn.back_end.exception.InvalidTokenException;
 import toyproject.syxxn.back_end.security.auth.AuthDetails;
@@ -54,23 +55,6 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(HEADER);
-        if (bearerToken != null && bearerToken.startsWith(PREFIX)) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
-
-    public boolean validateToken(String token) {
-        try {
-            getBody(token).getSubject();
-            return true;
-        } catch (Exception e) {
-            throw new InvalidTokenException();
-        }
-    }
-
     public boolean isRefreshToken(String token) {
         try {
             return getBody(token).get("type").equals("refresh_token");
@@ -79,7 +63,33 @@ public class JwtTokenProvider {
         }
     }
 
-    public Authentication getAuthentication(String token) {
+    public void tokenFilter(HttpServletRequest request) {
+        String token = resolveToken(request);
+
+        if (token != null && validateToken(token)) {
+            Authentication auth = getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        }
+    }
+
+    private String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(HEADER);
+        if (bearerToken != null && bearerToken.startsWith(PREFIX)) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+
+    private boolean validateToken(String token) {
+        try {
+            getBody(token).getSubject();
+            return true;
+        } catch (Exception e) {
+            throw new InvalidTokenException();
+        }
+    }
+
+    private Authentication getAuthentication(String token) {
         AuthDetails authDetails = authDetailsService.loadUserByUsername(getId(token));
         return new UsernamePasswordAuthenticationToken(authDetails, "", authDetails.getAuthorities());
     }
