@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@RedisHash(value = "refresh_token")
+@RedisHash
 public class RefreshToken implements Serializable {
 
     @Id

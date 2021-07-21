@@ -1,5 +1,6 @@
 package toyproject.syxxn.back_end.security.jwt;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
@@ -63,8 +64,7 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(secretKey)
-                    .parseClaimsJws(token).getBody().getSubject();
+            getBody(token).getSubject();
             return true;
         } catch (Exception e) {
             throw new InvalidTokenException();
@@ -72,13 +72,8 @@ public class JwtTokenProvider {
     }
 
     public boolean isRefreshToken(String token) {
-        return Jwts.parser().setSigningKey(secretKey)
-                .parseClaimsJws(token).getBody().get("type").equals("refresh_token");
-    }
-
-    public String getId(String id) {
         try {
-            return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(id).getBody().getSubject();
+            return getBody(token).get("type").equals("refresh_token");
         } catch (Exception e) {
             throw new InvalidTokenException();
         }
@@ -87,6 +82,19 @@ public class JwtTokenProvider {
     public Authentication getAuthentication(String token) {
         AuthDetails authDetails = authDetailsService.loadUserByUsername(getId(token));
         return new UsernamePasswordAuthenticationToken(authDetails, "", authDetails.getAuthorities());
+    }
+
+    private String getId(String token) {
+        try {
+            return getBody(token).getSubject();
+        } catch (Exception e) {
+            throw new InvalidTokenException();
+        }
+    }
+
+    private Claims getBody(String token) {
+        return Jwts.parser().setSigningKey(secretKey)
+                .parseClaimsJws(token).getBody();
     }
 
 }
