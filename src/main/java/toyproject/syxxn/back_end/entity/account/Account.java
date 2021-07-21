@@ -53,7 +53,11 @@ public class Account {
     @NotNull
     private Boolean isLocationConfirm;
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "writer", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Review> writtenReviews;
+
+    @OneToMany(mappedBy = "target", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Review> reviews;
 

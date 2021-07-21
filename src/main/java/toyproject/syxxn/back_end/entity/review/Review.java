@@ -27,12 +27,14 @@ public class Review {
 
     private String comment;
 
-    @NotNull
-    private Long writerId;
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "writer_id")
+    private Account writer;
 
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "account_id")
-    private Account account;
+    @JoinColumn(name = "target_id")
+    private Account target;
 
 }
