@@ -18,8 +18,6 @@ import toyproject.syxxn.back_end.exception.UserNicknameAlreadyExistsException;
 import toyproject.syxxn.back_end.exception.UserNotUnauthenticatedException;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 @RequiredArgsConstructor
 @Service
 public class AccountServiceImpl implements AccountService{
