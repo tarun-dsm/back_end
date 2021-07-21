@@ -19,12 +19,9 @@ public class VerifyNumber {
 
     private boolean isVerified;
 
-    public boolean verifyNumber(String verifyNumber) {
-        return this.verifyNumber.equals(verifyNumber);
-    }
-
-    public void isVerifiedTrue() {
+    public VerifyNumber isVerifiedTrue() {
         this.isVerified = true;
+        return this;
     }
 
 }
