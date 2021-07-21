@@ -31,7 +31,7 @@ public class EmbeddedRedisConfig {
     }
 
     @PreDestroy
-    public void stopRedis() {미쳤지난 이거밖에 없어 노트북 업다고,,하하하하하ㅏ하하하하하하하하하하하하ㅏ핳하하핳하하하핳하하하하하하하하하하하핳하핳핳
+    public void stopRedis() {
         if (redisServer != null) {
             redisServer.stop();
         }
