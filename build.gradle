@@ -13,6 +13,17 @@ repositories {
 	mavenCentral()
 }
 
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	all {
+		exclude group: 'org.slf4j', module: 'slf4j-simple'
+		exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+	}
+}
+
+
 dependencies {
 	//spring starter
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
