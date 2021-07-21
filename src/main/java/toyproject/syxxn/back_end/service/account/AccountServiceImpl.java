@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import toyproject.syxxn.back_end.dto.request.SignUpRequest;
 import toyproject.syxxn.back_end.dto.response.TokenResponse;
 import toyproject.syxxn.back_end.entity.account.Account;
@@ -11,11 +12,13 @@ import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshToken;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshTokenRepository;
+import toyproject.syxxn.back_end.entity.verify.VerifyNumberRepository;
 import toyproject.syxxn.back_end.exception.UserEmailAlreadyExistsException;
 import toyproject.syxxn.back_end.exception.UserNicknameAlreadyExistsException;
+import toyproject.syxxn.back_end.exception.UserNotUnauthenticatedException;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 
-import javax.transaction.Transactional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @RequiredArgsConstructor
 @Service
@@ -23,6 +26,7 @@ public class AccountServiceImpl implements AccountService{
 
     private final AccountRepository accountRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final VerifyNumberRepository verifyNumberRepository;
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -31,9 +35,12 @@ public class AccountServiceImpl implements AccountService{
     @Value("${auth.jwt.exp.refresh}")
     private Long refreshExp;
 
-    @Override
     @Transactional
+    @Override
     public TokenResponse signUp(SignUpRequest request) {
+        verifyNumberRepository.findById(request.getEmail())
+                .orElseThrow(UserNotUnauthenticatedException::new);
+
         Account account = accountRepository.save(
                 Account.builder()
                         .email(request.getEmail())
