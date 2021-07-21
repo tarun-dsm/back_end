@@ -22,11 +22,11 @@ public class PetInfo {
     private Long id;
 
     @NotNull
-    @Column(columnDefinition = "varchar(30)")
+    @Column(length = 30)
     private String petName;
 
     @NotNull
-    @Column(columnDefinition = "varchar(30)")
+    @Column(length = 30)
     private String petSpecies;
 
     @NotNull

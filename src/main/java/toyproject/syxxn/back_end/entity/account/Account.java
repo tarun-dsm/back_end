@@ -24,7 +24,7 @@ public class Account {
     private Long id;
 
     @NotNull
-    @Column(columnDefinition = "varchar(45)")
+    @Column(length = 45)
     private String email;
 
     @NotNull
@@ -32,7 +32,7 @@ public class Account {
     private String password;
 
     @NotNull
-    @Column(columnDefinition = "varchar(10)")
+    @Column(length = 10)
     private String nickname;
 
     @NotNull
@@ -46,7 +46,7 @@ public class Account {
     private Boolean isExperienceRasingPet;
 
     @NotNull
-    @Column(columnDefinition = "varchar(100)")
+    @Column(length = 100)
     private String experience;
 
     @NotNull

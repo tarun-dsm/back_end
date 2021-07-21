@@ -44,7 +44,7 @@ public class Post {
     private String description;
 
     @NotNull
-    @Column(columnDefinition = "varchar(100)")
+    @Column(length = 100)
     private String contactInfo;
 
     @NotNull
