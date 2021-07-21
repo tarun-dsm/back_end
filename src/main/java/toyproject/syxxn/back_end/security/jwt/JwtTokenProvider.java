@@ -8,6 +8,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import toyproject.syxxn.back_end.exception.InvalidTokenException;
+import toyproject.syxxn.back_end.security.auth.AuthDetails;
+import toyproject.syxxn.back_end.security.auth.AuthDetailsService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package toyproject.syxxn.back_end.security.jwt;
+package toyproject.syxxn.back_end.security.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;

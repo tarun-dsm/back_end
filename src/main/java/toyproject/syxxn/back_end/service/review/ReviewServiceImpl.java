@@ -11,7 +11,7 @@ import toyproject.syxxn.back_end.entity.review.ReviewRepository;
 import toyproject.syxxn.back_end.exception.UserNotAccessibleException;
 import toyproject.syxxn.back_end.exception.ReviewNotFoundException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
-import toyproject.syxxn.back_end.security.jwt.AuthenticationFacade;
+import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
 
 import javax.transaction.Transactional;
 
