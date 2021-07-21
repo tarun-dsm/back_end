@@ -19,9 +19,3 @@ auth:
     exp:
       access: 2021
       refresh: 20210629
-
-idea:
-  spring:
-    boot:
-      filter:
-        autoconfig: false
