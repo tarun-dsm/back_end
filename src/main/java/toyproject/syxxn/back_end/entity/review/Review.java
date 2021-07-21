@@ -37,4 +37,9 @@ public class Review {
     @JoinColumn(name = "target_id")
     private Account target;
 
+    public void update(String comment, BigDecimal ratingScore) {
+        this.comment = comment;
+        this.ratingScore = ratingScore;
+    }
+
 }

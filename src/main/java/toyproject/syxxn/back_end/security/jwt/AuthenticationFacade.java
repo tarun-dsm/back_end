@@ -11,8 +11,8 @@ public class AuthenticationFacade {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
-    public String getUserId() {
-        return this.getAuthentication().getName();
+    public Long getUserId() {
+        return Long.getLong(this.getAuthentication().getName());
     }
 
 }
