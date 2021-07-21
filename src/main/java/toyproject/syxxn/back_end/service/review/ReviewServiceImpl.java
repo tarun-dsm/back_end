@@ -59,7 +59,7 @@ public class ReviewServiceImpl implements ReviewService {
             throw new UserNotAccessibleException();
         }
 
-        review.update(review.getComment(), review.getRatingScore());
+        review.update(request.getComment(), request.getRatingScore());
         reviewRepository.save(review);
     }
 
