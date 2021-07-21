@@ -15,6 +15,8 @@ import toyproject.syxxn.back_end.exception.UserEmailAlreadyExistsException;
 import toyproject.syxxn.back_end.exception.UserNicknameAlreadyExistsException;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 
+import javax.transaction.Transactional;
+
 @RequiredArgsConstructor
 @Service
 public class AccountServiceImpl implements AccountService{
@@ -22,13 +24,15 @@ public class AccountServiceImpl implements AccountService{
     private final AccountRepository accountRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    private final PasswordEncoder encoder;
     private final JwtTokenProvider jwtTokenProvider;
+
+    private final PasswordEncoder encoder;
 
     @Value("${auth.jwt.exp.refresh}")
     private Long refreshExp;
 
     @Override
+    @Transactional
     public TokenResponse signUp(SignUpRequest request) {
         Account account = accountRepository.save(
                 Account.builder()
