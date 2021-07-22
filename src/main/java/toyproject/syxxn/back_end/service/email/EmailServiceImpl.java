@@ -28,6 +28,8 @@ public class EmailServiceImpl implements EmailService {
     @Transactional
     @Override
     public void sendVerifyNumberEmail(String email) {
+        verifyNumberRepository.findById(email)
+                .ifPresent(verifyNumberRepository::delete);
         String authNumber = generateVerifyNumber();
 
         try {
