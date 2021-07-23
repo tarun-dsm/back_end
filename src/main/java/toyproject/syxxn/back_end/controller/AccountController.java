@@ -9,6 +9,7 @@ import toyproject.syxxn.back_end.dto.request.SignUpRequest;
 import toyproject.syxxn.back_end.dto.response.TokenResponse;
 import toyproject.syxxn.back_end.service.account.AccountService;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 
 @RestController
@@ -21,7 +22,7 @@ public class AccountController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TokenResponse signUp(@RequestBody SignUpRequest request) {
+    public TokenResponse signUp(@RequestBody @Valid SignUpRequest request) {
         return accountService.signUp(request);
     }
 
