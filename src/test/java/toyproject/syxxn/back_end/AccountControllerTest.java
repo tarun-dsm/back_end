@@ -64,10 +64,9 @@ public class AccountControllerTest {
                 .build()
         );
 
-        verifyNumberRepository.save(
+        /*verifyNumberRepository.save(
                 new VerifyNumber("2000ls@gmail.com", "123456", true)
-        );
-
+        );*/
     }
 
     @AfterEach
@@ -139,7 +138,7 @@ public class AccountControllerTest {
     public void sign_up() throws Exception {
         SignUpRequest request = SignUpRequest.builder()
                 .email("2000ls@gmail.com")
-                .password(encoder.encode("passpa123@"))
+                .password("passpa123@")
                 .nickname("닉네임야호")
                 .age(120)
                 .sex("FEMALE")
