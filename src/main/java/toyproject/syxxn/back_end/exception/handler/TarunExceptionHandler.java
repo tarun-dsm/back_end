@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class TarunExceptionHandler {
 
     @ExceptionHandler(TarunException.class)
-    protected ResponseEntity<ErrorResponse> handleDiarioException(final TarunException e) {
+    protected ResponseEntity<ErrorResponse> handleTarunException(final TarunException e) {
         return new ResponseEntity<>(new ErrorResponse(e.getStatus(), e.getMessage()), HttpStatus.valueOf(e.getStatus()));
     }
 
