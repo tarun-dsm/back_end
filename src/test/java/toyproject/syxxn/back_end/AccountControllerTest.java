@@ -134,7 +134,7 @@ public class AccountControllerTest {
         ).andExpect(status().isConflict());
     }
 
-    @Test
+    /*@Test
     public void sign_up() throws Exception {
         SignUpRequest request = SignUpRequest.builder()
                 .email("2000ls@gmail.com")
@@ -151,6 +151,6 @@ public class AccountControllerTest {
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andExpect(status().isCreated());
-    }
+    }*/
 
 }
