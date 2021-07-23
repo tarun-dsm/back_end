@@ -64,9 +64,9 @@ public class AccountControllerTest {
                 .build()
         );
 
-        /*verifyNumberRepository.save(
+        verifyNumberRepository.save(
                 new VerifyNumber("2000ls@gmail.com", "123456", true)
-        );*/
+        );
     }
 
     @AfterEach
@@ -134,7 +134,7 @@ public class AccountControllerTest {
         ).andExpect(status().isConflict());
     }
 
-    /*@Test
+    @Test
     public void sign_up() throws Exception {
         SignUpRequest request = SignUpRequest.builder()
                 .email("2000ls@gmail.com")
@@ -151,6 +151,44 @@ public class AccountControllerTest {
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andExpect(status().isCreated());
-    }*/
+    }
+
+    @Test
+    public void sign_up_400_1() throws Exception {
+        SignUpRequest request = SignUpRequest.builder()
+                .email("2000ls")
+                .password("passpa123@")
+                .nickname("닉네임야호")
+                .age(120)
+                .sex("FEMALE")
+                .isExperienceRasingPet(true)
+                .experience("야호")
+                .address("경상북도 수원시 죽전동")
+                .build();
+
+        mvc.perform(post("/account")
+                .content(new ObjectMapper().writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void sign_up_401() throws Exception {
+        SignUpRequest request = SignUpRequest.builder()
+                .email("2000ls@naver.com")
+                .password("passpa123@")
+                .nickname("닉네임이다 이거야")
+                .age(120)
+                .sex("FEMALE")
+                .isExperienceRasingPet(true)
+                .experience("야호")
+                .address("경상북도 수원시 죽전동")
+                .build();
+
+        mvc.perform(post("/account")
+                .content(new ObjectMapper().writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        ).andExpect(status().isUnauthorized());
+    }
 
 }
