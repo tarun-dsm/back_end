@@ -3,17 +3,17 @@ package toyproject.syxxn.back_end.dto.request;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
 @Getter
 @AllArgsConstructor
 public class UpdateReviewRequest {
 
-    @NotNull
+    @NotBlank
     private final BigDecimal ratingScore;
 
-    @NotNull
+    @NotBlank
     private final String comment;
 
 }
