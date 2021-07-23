@@ -11,8 +11,6 @@ import toyproject.syxxn.back_end.service.account.AccountService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/account")
@@ -29,12 +27,12 @@ public class AccountController {
     }
 
     @GetMapping("/email/{email}")
-    public void confirmEmail(@PathVariable @Email @NotBlank String email) {
+    public void confirmEmail(@PathVariable @Email String email) {
         accountService.confirmEmail(email);
     }
 
     @GetMapping("/nickname/{nickname}")
-    public void confirmNickname(@PathVariable @NotBlank @Length(min = 2, max = 10) String nickname) {
+    public void confirmNickname(@PathVariable @Length(min = 2, max = 10) String nickname) {
         accountService.confirmNickname(nickname);
     }
 
