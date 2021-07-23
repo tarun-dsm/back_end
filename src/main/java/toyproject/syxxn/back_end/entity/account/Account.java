@@ -43,7 +43,6 @@ public class Account {
     @NotNull
     private Boolean isExperienceRasingPet;
 
-    @NotNull
     @Column(length = 100)
     private String experience;
 
