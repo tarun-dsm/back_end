@@ -12,10 +12,10 @@ import toyproject.syxxn.back_end.service.account.AccountService;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 
-@RestController
 @RequestMapping("/account")
 @RequiredArgsConstructor
 @Validated
+@RestController
 public class AccountController {
 
     private final AccountService accountService;

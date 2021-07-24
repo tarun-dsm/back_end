@@ -3,6 +3,8 @@ package toyproject.syxxn.back_end.entity.account;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import toyproject.syxxn.back_end.entity.Sex;
+import toyproject.syxxn.back_end.entity.application.Application;
+import toyproject.syxxn.back_end.entity.pet.PetImage;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.review.Review;
 
@@ -63,5 +65,9 @@ public class Account {
     @OneToMany(mappedBy = "account")
     @JsonManagedReference
     private List<Post> posts;
+
+    @OneToOne(mappedBy = "accuont", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Application application;
 
 }

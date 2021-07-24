@@ -9,9 +9,9 @@ import toyproject.syxxn.back_end.service.review.ReviewService;
 
 import javax.validation.Valid;
 
-@RestController
 @RequestMapping("/review")
 @RequiredArgsConstructor
+@RestController
 public class ReviewController {
 
     private final ReviewService reviewService;

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import toyproject.syxxn.back_end.entity.account.Account;
+import toyproject.syxxn.back_end.entity.application.Application;
 import toyproject.syxxn.back_end.entity.pet.PetImage;
 import toyproject.syxxn.back_end.entity.pet.PetInfo;
 
@@ -67,5 +68,9 @@ public class Post {
     @OneToMany(mappedBy = "post")
     @JsonManagedReference
     private List<PetImage> petImages;
+
+    @OneToMany(mappedBy = "post")
+    @JsonManagedReference
+    private List<Application> applications;
 
 }

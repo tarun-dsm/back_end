@@ -21,7 +21,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
 
     private final AuthenticationFacade authenticationFacade;
-    
+
     @Override
     public void writeReview(ReviewRequest request) {
         Account writer = accountRepository.findById(authenticationFacade.getUserId())
