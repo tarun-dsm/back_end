@@ -48,7 +48,7 @@ public class ApplicationControllerTest {
     @Autowired
     private PasswordEncoder encoder;
 
-    Long post_id;
+    Integer post_id;
 
     @BeforeEach
     public void setUp() {
@@ -74,9 +74,8 @@ public class ApplicationControllerTest {
                 Post.builder()
                         .account(account)
                         .applicationEndDate(LocalDate.of(2021,10,22))
-                        .isWithinADay(false)
-                        .tripStartDate(LocalDate.of(2021,10,24))
-                        .tripEndDate(LocalDate.of(2021,10,29))
+                        .protectionStartDate(LocalDate.of(2021,10,24))
+                        .protectionEndDate(LocalDate.of(2021,10,29))
                         .contactInfo("010-0000-0000")
                         .description("랄랄라")
                         .isUpdated(false)
@@ -95,9 +94,9 @@ public class ApplicationControllerTest {
 
     @AfterEach
     public void deleteAll() {
-/*        accountRepository.deleteAll();
+        accountRepository.deleteAll();
         applicationRepository.deleteAll();
-        postRepository.deleteAll();*/
+        postRepository.deleteAll();
     }
 
     @WithMockUser(value = "1223", password = "123")
