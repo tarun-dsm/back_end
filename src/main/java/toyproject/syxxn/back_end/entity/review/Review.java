@@ -5,24 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.format.annotation.DateTimeFormat;
+import toyproject.syxxn.back_end.entity.BaseCreatedAtEntity;
 import toyproject.syxxn.back_end.entity.account.Account;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Review {
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Review extends BaseCreatedAtEntity {
 
     @NotNull
     @Column(columnDefinition = "bigdecimal(1,1)")
@@ -30,11 +25,6 @@ public class Review {
 
     @NotNull
     private String comment;
-
-    @NotNull
-    @CreatedDate
-    @DateTimeFormat(pattern = "yyyy-MM-dd`T`hh:mm:SS")
-    private LocalDateTime createdAt;
 
     @ManyToOne
     @JsonBackReference

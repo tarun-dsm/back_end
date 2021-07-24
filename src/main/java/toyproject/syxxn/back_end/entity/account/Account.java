@@ -2,9 +2,9 @@ package toyproject.syxxn.back_end.entity.account;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+import toyproject.syxxn.back_end.entity.BaseIdEntity;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.application.Application;
-import toyproject.syxxn.back_end.entity.pet.PetImage;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.review.Review;
 
@@ -18,10 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"email","nickname"})})
-public class Account {
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Account extends BaseIdEntity {
 
     @NotNull
     @Column(length = 45)
@@ -66,7 +63,7 @@ public class Account {
     @JsonManagedReference
     private List<Post> posts;
 
-    @OneToOne(mappedBy = "accuont", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Application application;
 

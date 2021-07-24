@@ -6,8 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.format.annotation.DateTimeFormat;
+import toyproject.syxxn.back_end.entity.BaseCreatedAtEntity;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.application.Application;
 import toyproject.syxxn.back_end.entity.pet.PetImage;
@@ -16,7 +15,6 @@ import toyproject.syxxn.back_end.entity.pet.PetInfo;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -24,10 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Post {
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Post extends BaseCreatedAtEntity {
 
     @NotNull
     private Boolean isWithinADay;
@@ -47,11 +42,6 @@ public class Post {
     @NotNull
     @Column(length = 100)
     private String contactInfo;
-
-    @NotNull
-    @CreatedDate
-    @DateTimeFormat(pattern = "yyyy-MM-dd`T`hh:mm:SS")
-    private LocalDateTime createdAt;
 
     @NotNull
     private Boolean isUpdated;
