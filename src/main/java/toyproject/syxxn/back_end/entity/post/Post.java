@@ -48,7 +48,7 @@ public class Post extends BaseCreatedAtEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
     @OneToOne(mappedBy = "post", fetch = FetchType.LAZY)

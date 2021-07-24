@@ -32,7 +32,7 @@ public class PetInfo extends BaseIdEntity {
 
     @OneToOne
     @JsonBackReference
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
 }

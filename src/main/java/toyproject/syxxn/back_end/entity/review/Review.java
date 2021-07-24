@@ -28,12 +28,12 @@ public class Review extends BaseCreatedAtEntity {
 
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "writer_id")
+    @JoinColumn(name = "writer_id", nullable = false)
     private Account writer;
 
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "target_id")
+    @JoinColumn(name = "target_id", nullable = false)
     private Account target;
 
     public void update(String comment, BigDecimal ratingScore) {
