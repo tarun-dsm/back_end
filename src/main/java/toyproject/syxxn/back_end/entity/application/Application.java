@@ -10,6 +10,7 @@ import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.post.Post;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Builder
@@ -20,6 +21,10 @@ public class Application extends BaseCreatedAtEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @NotNull
+    @Column(columnDefinition = "bit(1)")
+    private Boolean isAccepted;
 
     @OneToOne
     @JsonBackReference
