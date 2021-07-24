@@ -23,7 +23,7 @@ public class Application extends BaseCreatedAtEntity {
 
     @OneToOne
     @JsonBackReference
-    @JoinColumn(name = "account_id", nullable = false)
+    @JoinColumn(name = "account_id", nullable = false, unique = true)
     private Account account;
 
     @ManyToOne

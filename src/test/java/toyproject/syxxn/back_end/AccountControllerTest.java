@@ -72,6 +72,7 @@ public class AccountControllerTest {
     @AfterEach
     public void deleteAll() {
         accountRepository.deleteAll();
+        verifyNumberRepository.deleteAll();
     }
 
     @Test

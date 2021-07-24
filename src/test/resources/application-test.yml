@@ -8,7 +8,8 @@ spring:
     database: h2
     generate-ddl: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
+    show-sql: true
   redis:
     host: localhost
     port: 6379
