@@ -10,6 +10,8 @@ import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.exception.PostNotFoundException;
+import toyproject.syxxn.back_end.exception.UserAlreadyApplicationException;
+import toyproject.syxxn.back_end.exception.UserIsWriterException;
 import toyproject.syxxn.back_end.exception.UserNotAccessibleException;
 import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
 
@@ -27,20 +29,29 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Transactional
     public void protectionApplication(Integer id) {
         Account account = accountRepository.findById(authenticationFacade.getUserId())
-                    .orElseThrow(UserNotAccessibleException::new);
-
-        applicationRepository.findByAccount(account)
-                .ifPresent(applicationRepository::delete);
-
+                .filter(Account::getIsLocationConfirm)
+                .orElseThrow(UserNotAccessibleException::new);
         Post post = postRepository.findById(id)
                 .orElseThrow(PostNotFoundException::new);
+
+        if (account.getId().equals(post.getAccount().getId())) {
+            throw new UserIsWriterException();
+        }
+
+        applicationRepository.findByAccount(account)
+                .filter(application -> application.getPost().getId().equals(post.getId()))
+                .ifPresent(application -> {
+                    throw new UserAlreadyApplicationException();
+        });
 
         applicationRepository.save(
                Application.builder()
                        .account(account)
                        .post(post)
+                       .isAccepted(false)
                        .build()
         );
+
     }
 
 }

@@ -26,9 +26,9 @@ public class Application extends BaseCreatedAtEntity {
     @Column(columnDefinition = "bit(1)")
     private Boolean isAccepted;
 
-    @OneToOne
+    @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "account_id", nullable = false, unique = true)
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
     @ManyToOne

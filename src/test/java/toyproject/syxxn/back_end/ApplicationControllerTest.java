@@ -1,8 +1,6 @@
 package toyproject.syxxn.back_end;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,7 +46,7 @@ public class ApplicationControllerTest {
     @Autowired
     private PasswordEncoder encoder;
 
-    Integer post_id;
+    Integer postId;
 
     @BeforeEach
     public void setUp() {
@@ -58,10 +56,52 @@ public class ApplicationControllerTest {
 
         Account account = accountRepository.save(
                 Account.builder()
-                        .email("adsf1234@naver.com")
-                        .password(encoder.encode("asdf123@4"))
+                        .email("test0000@naver.com")
+                        .password(encoder.encode("asdf123@"))
+                        .sex(Sex.MALE)
+                        .nickname("나는야1번")
+                        .age(18)
+                        .isExperienceRasingPet(false)
+                        .experience(null)
+                        .address("경기도 서울시 구성동")
+                        .isLocationConfirm(true)
+                        .build()
+        );
+
+        Account account2 = accountRepository.save(
+                Account.builder()
+                        .email("test1234@naver.com")
+                        .password(encoder.encode("asdf123@"))
                         .sex(Sex.FEMALE)
-                        .nickname("Tarun")
+                        .nickname("나는야2번")
+                        .age(18)
+                        .isExperienceRasingPet(false)
+                        .experience(null)
+                        .address("경기도 서울시 구성동")
+                        .isLocationConfirm(true)
+                        .build()
+        );
+
+        accountRepository.save(
+                Account.builder()
+                        .email("test5678@naver.com")
+                        .password(encoder.encode("asdf123@"))
+                        .sex(Sex.FEMALE)
+                        .nickname("나는야3번")
+                        .age(18)
+                        .isExperienceRasingPet(false)
+                        .experience(null)
+                        .address("경기도 서울시 구성동")
+                        .isLocationConfirm(true)
+                        .build()
+        );
+
+        accountRepository.save(
+                Account.builder()
+                        .email("test9101@naver.com")
+                        .password(encoder.encode("asdf123@"))
+                        .sex(Sex.MALE)
+                        .nickname("나는야4번")
                         .age(18)
                         .isExperienceRasingPet(false)
                         .experience(null)
@@ -81,13 +121,13 @@ public class ApplicationControllerTest {
                         .isUpdated(false)
                         .build()
         );
-
-        post_id = post.getId();
+        postId = post.getId();
 
         applicationRepository.save(
                 Application.builder()
                         .post(post)
-                        .account(account)
+                        .account(account2)
+                        .isAccepted(false)
                         .build()
         );
     }
@@ -99,25 +139,46 @@ public class ApplicationControllerTest {
         postRepository.deleteAll();
     }
 
-    @WithMockUser(value = "1223", password = "123")
-    @Test
-    public void protectionApplication_401() throws Exception {
-        mvc.perform(post("/application/1")).andDo(print())
-                .andExpect(status().isUnauthorized());
-    }
-
-    @WithMockUser(value = "1", password = "asdf1234@")
+    @WithMockUser(value = "3", password = "asdf123@")
     @Test
     public void protectionApplication() throws Exception {
-        mvc.perform(post("/application/1"))
+        mvc.perform(post("/application/"+postId)).andDo(print())
                 .andExpect(status().isOk());
     }
 
-    @WithMockUser(value = "10", password = "asdf1234@")
+    @WithMockUser(value = "5", password = "asdf123@")
+    @Test
+    public void protectionApplication_400() throws Exception {
+        mvc.perform(post("/application/"+postId))
+                .andExpect(status().isBadRequest());
+    }
+
+    @WithMockUser(value = "1223", password = "123")
+    @Test
+    public void protectionApplication_401() throws Exception {
+        mvc.perform(post("/application/"+postId))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @WithMockUser(value = "13", password = "asdf123@")
     @Test
     public void protectionApplication_404() throws Exception {
-        mvc.perform(post("/application/1234")).andDo(print())
+        mvc.perform(post("/application/112"))
                 .andExpect(status().isNotFound());
+    }
+
+    @WithMockUser(value = "18", password = "asdf123@")
+    @Test
+    public void protectionApplication_409() throws Exception {
+        mvc.perform(post("/application/"+postId))
+                .andExpect(status().isConflict());
+    }
+
+    @WithMockUser(value = "24", password = "123")
+    @Test
+    public void protectionApplication_401_2() throws Exception {
+        mvc.perform(post("/application/"+postId))
+                .andExpect(status().isUnauthorized());
     }
 
 }

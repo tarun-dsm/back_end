@@ -56,19 +56,19 @@ public class Account {
     @Column(columnDefinition = "bit(1)")
     private Boolean isLocationConfirm;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Post> posts;
 
-    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JsonManagedReference
-    private Application application;
+    private List<Application> applications;
 
-    @OneToMany(mappedBy = "writer", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "writer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Review> writtenReview;
 
-    @OneToMany(mappedBy = "target", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "target", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Review> reviews;
 
