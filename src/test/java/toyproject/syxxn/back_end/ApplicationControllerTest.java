@@ -57,7 +57,7 @@ public class ApplicationControllerTest {
 
         Account account = accountRepository.save(
                 Account.builder()
-                        .email("test0000@naver.com")
+                        .email("test1@naver.com")
                         .password(encoder.encode("asdf123@"))
                         .sex(Sex.MALE)
                         .nickname("나는야1번")
@@ -71,7 +71,7 @@ public class ApplicationControllerTest {
 
         Account account2 = accountRepository.save(
                 Account.builder()
-                        .email("test1234@naver.com")
+                        .email("test2@naver.com")
                         .password(encoder.encode("asdf123@"))
                         .sex(Sex.FEMALE)
                         .nickname("나는야2번")
@@ -85,7 +85,7 @@ public class ApplicationControllerTest {
 
         accountRepository.save(
                 Account.builder()
-                        .email("test5678@naver.com")
+                        .email("test3@naver.com")
                         .password(encoder.encode("asdf123@"))
                         .sex(Sex.FEMALE)
                         .nickname("나는야3번")
@@ -99,7 +99,7 @@ public class ApplicationControllerTest {
 
         accountRepository.save(
                 Account.builder()
-                        .email("test9101@naver.com")
+                        .email("test4@naver.com")
                         .password(encoder.encode("asdf123@"))
                         .sex(Sex.MALE)
                         .nickname("나는야4번")
@@ -141,7 +141,7 @@ public class ApplicationControllerTest {
     }
 
     @Order(1)
-    @WithMockUser(value = "3", password = "asdf123@")
+    @WithMockUser(value = "test3@naver.com", password = "asdf123@")
     @Test
     public void protectionApplication() throws Exception {
         mvc.perform(post("/application/"+postId)).andDo(print())
@@ -149,7 +149,7 @@ public class ApplicationControllerTest {
     }
 
     @Order(2)
-    @WithMockUser(value = "5", password = "asdf123@")
+    @WithMockUser(value = "test1@naver.com", password = "asdf123@")
     @Test
     public void protectionApplication_400() throws Exception {
         mvc.perform(post("/application/"+postId))
@@ -157,7 +157,7 @@ public class ApplicationControllerTest {
     }
 
     @Order(3)
-    @WithMockUser(value = "1223", password = "123")
+    @WithMockUser(value = "test@naver.com", password = "123")
     @Test
     public void protectionApplication_401() throws Exception {
         mvc.perform(post("/application/"+postId))
@@ -165,7 +165,7 @@ public class ApplicationControllerTest {
     }
 
     @Order(4)
-    @WithMockUser(value = "13", password = "asdf123@")
+    @WithMockUser(value = "test1@naver.com", password = "asdf123@")
     @Test
     public void protectionApplication_404() throws Exception {
         mvc.perform(post("/application/112"))
@@ -173,7 +173,7 @@ public class ApplicationControllerTest {
     }
 
     @Order(5)
-    @WithMockUser(value = "18", password = "asdf123@")
+    @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void protectionApplication_409() throws Exception {
         mvc.perform(post("/application/"+postId))
@@ -181,7 +181,7 @@ public class ApplicationControllerTest {
     }
 
     @Order(6)
-    @WithMockUser(value = "24", password = "123")
+    @WithMockUser(value = "test4@naver.com", password = "123")
     @Test
     public void protectionApplication_401_2() throws Exception {
         mvc.perform(post("/application/"+postId))

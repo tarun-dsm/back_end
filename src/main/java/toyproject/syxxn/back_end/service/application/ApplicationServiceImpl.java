@@ -28,7 +28,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     @Transactional
     public void protectionApplication(Integer id) {
-        Account account = accountRepository.findById(authenticationFacade.getUserId())
+        Account account = accountRepository.findByEmail(authenticationFacade.getUserId())
                 .filter(Account::getIsLocationConfirm)
                 .orElseThrow(UserNotAccessibleException::new);
         Post post = postRepository.findById(id)
