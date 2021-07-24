@@ -51,19 +51,15 @@ public class Account extends BaseIdEntity {
     @NotNull
     private Boolean isLocationConfirm;
 
-    @OneToMany(mappedBy = "writer")
-    @JsonManagedReference
-    private List<Review> writtenReviews;
-
-    @OneToMany(mappedBy = "target")
+    @OneToMany(mappedBy = "target", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Review> reviews;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Post> posts;
 
-    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private Application application;
 

@@ -26,14 +26,11 @@ public class Review extends BaseCreatedAtEntity {
     @NotNull
     private String comment;
 
-    @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "writer_id", nullable = false)
-    private Account writer;
+    private Long writerId;
 
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "target_id", nullable = false)
+    @JoinColumn(name = "account_id", nullable = false)
     private Account target;
 
     public void update(String comment, BigDecimal ratingScore) {

@@ -51,15 +51,15 @@ public class Post extends BaseCreatedAtEntity {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @OneToOne(mappedBy = "post", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private PetInfo petInfo;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<PetImage> petImages;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Application> applications;
 

@@ -33,7 +33,7 @@ public class ReviewServiceImpl implements ReviewService {
                 Review.builder()
                         .comment(request.getComment())
                         .ratingScore(request.getRatingScore())
-                        .writer(writer)
+                        .writerId(writer.getId())
                         .target(target)
                         .build()
         );
@@ -43,7 +43,7 @@ public class ReviewServiceImpl implements ReviewService {
     public void deleteReview(Long id) {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(ReviewNotFoundException::new);
-        if (review.getWriter().getId().equals(authenticationFacade.getUserId())) {
+        if (review.getWriterId().equals(authenticationFacade.getUserId())) {
             throw new UserNotAccessibleException();
         }
 
@@ -54,7 +54,7 @@ public class ReviewServiceImpl implements ReviewService {
     public void updateReview(Long id, UpdateReviewRequest request) {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(ReviewNotFoundException::new);
-        if (review.getWriter().getId().equals(authenticationFacade.getUserId())) {
+        if (review.getWriterId().equals(authenticationFacade.getUserId())) {
             throw new UserNotAccessibleException();
         }
 
