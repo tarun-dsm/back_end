@@ -25,16 +25,13 @@ import java.util.List;
 public class Post extends BaseCreatedAtEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotNull
-    private Boolean isWithinADay;
+    private LocalDate protectionStartDate;
 
     @NotNull
-    private LocalDate tripStartDate;
-
-    @NotNull
-    private LocalDate tripEndDate;
+    private LocalDate protectionEndDate;
 
     @NotNull
     private LocalDate applicationEndDate;
@@ -54,15 +51,15 @@ public class Post extends BaseCreatedAtEntity {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @OneToOne(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private PetInfo petInfo;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<PetImage> petImages;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Application> applications;
 

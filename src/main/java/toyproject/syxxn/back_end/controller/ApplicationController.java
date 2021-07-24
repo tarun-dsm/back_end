@@ -15,7 +15,7 @@ public class ApplicationController {
     private final ApplicationService applicationService;
 
     @PostMapping("/{id}")
-    public void protectionApplication(@PathVariable Long id) {
+    public void protectionApplication(@PathVariable Integer id) {
         applicationService.protectionApplication(id);
     }
 

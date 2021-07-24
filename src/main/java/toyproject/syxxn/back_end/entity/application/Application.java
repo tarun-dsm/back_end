@@ -19,7 +19,7 @@ import javax.persistence.*;
 public class Application extends BaseCreatedAtEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @OneToOne
     @JsonBackReference

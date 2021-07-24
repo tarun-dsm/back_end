@@ -35,7 +35,7 @@ public class JwtTokenProvider {
 
     private final AuthDetailsService authDetailsService;
 
-    public String generateAccessToken(Long id) {
+    public String generateAccessToken(Integer id) {
         return Jwts.builder()
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiration * 1000))
                 .setIssuedAt(new Date())
@@ -45,7 +45,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String generateRefreshToken(Long id) {
+    public String generateRefreshToken(Integer id) {
         return Jwts.builder()
                 .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpiration * 1000))
                 .setIssuedAt(new Date())

@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 public class PetInfo {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotNull
     @Column(length = 30)

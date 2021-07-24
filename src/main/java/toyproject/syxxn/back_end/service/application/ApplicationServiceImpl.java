@@ -25,32 +25,22 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     @Transactional
-    public void protectionApplication(Long id) {
+    public void protectionApplication(Integer id) {
         Account account = accountRepository.findById(authenticationFacade.getUserId())
                     .orElseThrow(UserNotAccessibleException::new);
 
         applicationRepository.findByAccount(account)
-                .ifPresent(application -> applicationRepository.deleteById(application.getId()));// 이 친구가 실행이 안돼요 ㅠㅠㅠ
-        applicationRepository.deleteAll();
+                .ifPresent(applicationRepository::delete);
 
-        System.out.println("깔깔깔ㄲ깔깔 껄껄껄껄");
-        applicationRepository.flush();
-
-
-        applicationRepository.findAll()
-                .forEach(System.out::println);
         Post post = postRepository.findById(id)
                 .orElseThrow(PostNotFoundException::new);
 
-        System.out.println("여기까진 살아 있을텐데");
-        System.out.println("죽지 마 친구야!");
         applicationRepository.save(
                Application.builder()
                        .account(account)
                        .post(post)
                        .build()
         );
-        System.out.println("안돼 죽었어 ㅠㅠㅠ");
     }
 
 }

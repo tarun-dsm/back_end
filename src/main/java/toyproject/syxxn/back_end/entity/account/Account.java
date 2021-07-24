@@ -5,6 +5,7 @@ import lombok.*;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.application.Application;
 import toyproject.syxxn.back_end.entity.post.Post;
+import toyproject.syxxn.back_end.entity.review.Review;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,7 +20,7 @@ import java.util.List;
 public class Account {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotNull
     @Column(length = 45)
@@ -34,6 +35,7 @@ public class Account {
     private String nickname;
 
     @NotNull
+    @Column(columnDefinition = "int(3)")
     private Integer age;
 
     @NotNull
@@ -41,6 +43,7 @@ public class Account {
     private Sex sex;
 
     @NotNull
+    @Column(columnDefinition = "bit(1)")
     private Boolean isExperienceRasingPet;
 
     @Column(length = 100)
@@ -50,14 +53,23 @@ public class Account {
     private String address;
 
     @NotNull
+    @Column(columnDefinition = "bit(1)")
     private Boolean isLocationConfirm;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "account")
     @JsonManagedReference
     private List<Post> posts;
 
-    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Application application;
+
+    @OneToMany(mappedBy = "writer", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Review> writtenReview;
+
+    @OneToMany(mappedBy = "target", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Review> reviews;
 
 }
