@@ -21,12 +21,11 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
 
     private final AuthenticationFacade authenticationFacade;
-
-
+    
     @Override
     public void writeReview(ReviewRequest request) {
         Account writer = accountRepository.findById(authenticationFacade.getUserId())
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(UserNotAccessibleException::new);
         Account target = accountRepository.findById(request.getTargetId())
                 .orElseThrow(UserNotFoundException::new);
 
