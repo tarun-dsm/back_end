@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackEndApplication.class)
 @ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ApplicationControllerTest {
 
     private MockMvc mvc;
@@ -139,6 +140,7 @@ public class ApplicationControllerTest {
         postRepository.deleteAll();
     }
 
+    @Order(1)
     @WithMockUser(value = "3", password = "asdf123@")
     @Test
     public void protectionApplication() throws Exception {
@@ -146,6 +148,7 @@ public class ApplicationControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Order(2)
     @WithMockUser(value = "5", password = "asdf123@")
     @Test
     public void protectionApplication_400() throws Exception {
@@ -153,6 +156,7 @@ public class ApplicationControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Order(3)
     @WithMockUser(value = "1223", password = "123")
     @Test
     public void protectionApplication_401() throws Exception {
@@ -160,6 +164,7 @@ public class ApplicationControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
+    @Order(4)
     @WithMockUser(value = "13", password = "asdf123@")
     @Test
     public void protectionApplication_404() throws Exception {
@@ -167,6 +172,7 @@ public class ApplicationControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Order(5)
     @WithMockUser(value = "18", password = "asdf123@")
     @Test
     public void protectionApplication_409() throws Exception {
@@ -174,6 +180,7 @@ public class ApplicationControllerTest {
                 .andExpect(status().isConflict());
     }
 
+    @Order(6)
     @WithMockUser(value = "24", password = "123")
     @Test
     public void protectionApplication_401_2() throws Exception {
