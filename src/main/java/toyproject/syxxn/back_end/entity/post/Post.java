@@ -24,6 +24,9 @@ import java.util.List;
 @Entity
 public class Post extends BaseCreatedAtEntity {
 
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NotNull
     private Boolean isWithinADay;
 

@@ -18,6 +18,9 @@ import javax.persistence.*;
 @Entity
 public class Application extends BaseCreatedAtEntity {
 
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @OneToOne
     @JsonBackReference
     @JoinColumn(name = "account_id", nullable = false)

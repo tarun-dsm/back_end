@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseCreatedAtEntity extends BaseIdEntity {
+public abstract class BaseCreatedAtEntity {
 
     @CreatedDate
     @DateTimeFormat(pattern = "yyyy-MM-dd`T`hh:mm:SS")

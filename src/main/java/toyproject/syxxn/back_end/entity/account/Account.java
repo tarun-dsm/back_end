@@ -2,11 +2,9 @@ package toyproject.syxxn.back_end.entity.account;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-import toyproject.syxxn.back_end.entity.BaseIdEntity;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.application.Application;
 import toyproject.syxxn.back_end.entity.post.Post;
-import toyproject.syxxn.back_end.entity.review.Review;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,7 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"email","nickname"})})
-public class Account extends BaseIdEntity {
+public class Account {
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotNull
     @Column(length = 45)
@@ -50,10 +51,6 @@ public class Account extends BaseIdEntity {
 
     @NotNull
     private Boolean isLocationConfirm;
-
-    @OneToMany(mappedBy = "target", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Review> reviews;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     @JsonManagedReference
