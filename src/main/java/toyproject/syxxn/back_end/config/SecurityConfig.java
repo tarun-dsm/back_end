@@ -33,17 +33,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
         http
                 .formLogin().disable()
                 .csrf().disable()
-                .cors().and()
+                .cors().disable()
                 .sessionManagement().disable()
+                .formLogin().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/").permitAll()
                 .antMatchers(HttpMethod.POST, "/account").permitAll()
-                .antMatchers(HttpMethod.GET, "/account/email/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/account/nickname/**").permitAll()
-                .antMatchers("/email/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/account/email").permitAll()
+                .antMatchers(HttpMethod.GET, "/account/nickname").permitAll()
+                .antMatchers(HttpMethod.POST,"/email").permitAll()
                 .antMatchers("/auth").permitAll()
-                .anyRequest().authenticated().and()
-                .apply(new JwtConfigure(jwtTokenProvider));
+                .anyRequest().authenticated()
+                .and().apply(new JwtConfigure(jwtTokenProvider));
     }
 
     @Override
