@@ -83,6 +83,7 @@ public class AuthControllerTest {
     @AfterEach
     public void deleteAll() {
         accountRepository.deleteAll();
+        refreshTokenRepository.deleteAll();
     }
 
     @Test
