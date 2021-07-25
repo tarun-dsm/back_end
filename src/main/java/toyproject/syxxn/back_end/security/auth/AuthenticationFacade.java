@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthenticationFacade {
 
-    public String getUserId() {
+    public String getUserEmail() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
