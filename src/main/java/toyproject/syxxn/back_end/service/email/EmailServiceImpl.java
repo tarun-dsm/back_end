@@ -8,9 +8,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.syxxn.back_end.dto.request.VerifyRequest;
+import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumber;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumberRepository;
 import toyproject.syxxn.back_end.exception.EmailSendException;
+import toyproject.syxxn.back_end.exception.UserAlreadyRegisteredException;
 import toyproject.syxxn.back_end.exception.VerifyNumberNotMatchException;
 
 import java.util.Random;
@@ -23,12 +25,19 @@ public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender javaMailSender;
 
+    private final AccountRepository accountRepository;
+
     private final VerifyNumberRepository verifyNumberRepository;
 
     @Async
     @Transactional
     @Override
     public void sendVerifyNumberEmail(String email) {
+        accountRepository.findByEmail(email)
+                .ifPresent(account -> {
+                    throw new UserAlreadyRegisteredException();
+                });
+
         verifyNumberRepository.findById(email)
                 .ifPresent(verifyNumberRepository::delete);
         String authNumber = generateVerifyNumber();
