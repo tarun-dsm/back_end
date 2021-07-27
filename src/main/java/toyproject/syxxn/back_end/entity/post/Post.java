@@ -28,6 +28,10 @@ public class Post extends BaseCreatedAtEntity {
     private Integer id;
 
     @NotNull
+    @Column(length = 30)
+    private String title;
+
+    @NotNull
     private LocalDate protectionStartDate;
 
     @NotNull

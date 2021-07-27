@@ -119,6 +119,7 @@ public class ApplicationControllerTest {
                         .contactInfo("010-0000-0000")
                         .description("랄랄라")
                         .isUpdated(false)
+                        .isEnd(false)
                         .build()
         );
         postId = post.getId();
