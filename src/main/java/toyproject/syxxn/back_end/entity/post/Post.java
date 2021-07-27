@@ -37,6 +37,10 @@ public class Post extends BaseCreatedAtEntity {
     private LocalDate applicationEndDate;
 
     @NotNull
+    @Column(columnDefinition = "bit(1)")
+    private Boolean isEnd;
+
+    @NotNull
     private String description;
 
     @NotNull
@@ -44,6 +48,7 @@ public class Post extends BaseCreatedAtEntity {
     private String contactInfo;
 
     @NotNull
+    @Column(columnDefinition = "bit(1)")
     private Boolean isUpdated;
 
     @ManyToOne(fetch = FetchType.LAZY)
