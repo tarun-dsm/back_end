@@ -20,6 +20,7 @@ import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
 import java.time.LocalDate;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,6 +48,8 @@ public class ApplicationControllerTest {
     private PasswordEncoder encoder;
 
     Integer postId;
+    Account account;
+    Account account2;
 
     @BeforeEach
     public void setUp() {
@@ -54,7 +57,7 @@ public class ApplicationControllerTest {
                 .webAppContextSetup(context)
                 .build();
 
-        Account account = accountRepository.save(
+        account = accountRepository.save(
                 Account.builder()
                         .email("test1@naver.com")
                         .password(encoder.encode("asdf123@"))
@@ -68,7 +71,7 @@ public class ApplicationControllerTest {
                         .build()
         );
 
-        Account account2 = accountRepository.save(
+        account2 = accountRepository.save(
                 Account.builder()
                         .email("test2@naver.com")
                         .password(encoder.encode("asdf123@"))
@@ -110,18 +113,7 @@ public class ApplicationControllerTest {
                         .build()
         );
 
-        Post post = postRepository.save(
-                Post.builder()
-                        .account(account)
-                        .applicationEndDate(LocalDate.of(2021,10,22))
-                        .protectionStartDate(LocalDate.of(2021,10,24))
-                        .protectionEndDate(LocalDate.of(2021,10,29))
-                        .contactInfo("010-0000-0000")
-                        .description("랄랄라")
-                        .isUpdated(false)
-                        .isEnd(false)
-                        .build()
-        );
+        Post post = createPost(false);
         postId = post.getId();
 
         applicationRepository.save(
@@ -143,7 +135,7 @@ public class ApplicationControllerTest {
     @WithMockUser(value = "test3@naver.com", password = "asdf123@")
     @Test
     public void protectionApplication() throws Exception {
-        mvc.perform(post("/application/"+postId)).andDo(print())
+        mvc.perform(post("/application/"+postId))
                 .andExpect(status().isOk());
     }
 
@@ -180,6 +172,59 @@ public class ApplicationControllerTest {
     public void protectionApplication_401_2() throws Exception {
         mvc.perform(post("/application/"+postId))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @WithMockUser(value = "test2@naver.com", password = "asdf123@")
+    @Test
+    public void cancelApplication() throws Exception {
+        Integer applicationId = createApplication(false, false).getId();
+
+        mvc.perform(delete("/application/"+applicationId))
+                .andExpect(status().isOk());
+    }
+
+    @WithMockUser(value = "test2@naver.com", password = "asdf123@")
+    @Test
+    public void cancelApplication_400() throws Exception {
+        Integer applicationId = createApplication(true, false).getId();
+
+        mvc.perform(delete("/application/"+applicationId))
+                .andExpect(status().isBadRequest());
+    }
+
+    @WithMockUser(value = "test3@naver.com", password = "asdf123@")
+    @Test
+    public void cancelApplication_404() throws Exception {
+        Integer applicationId = createApplication(false, false).getId();
+
+        mvc.perform(delete("/application/"+applicationId))
+                .andExpect(status().isNotFound());
+    }
+
+    private Application createApplication(boolean isEnd, boolean isAccepted) {
+        return applicationRepository.save(
+                Application.builder()
+                        .post(createPost(isEnd))
+                        .account(account2)
+                        .isAccepted(isAccepted)
+                        .build()
+        );
+    }
+
+    private Post createPost(boolean isEnd) {
+        return postRepository.save(
+                Post.builder()
+                        .account(account)
+                        .title("제목을 까먹었지 뭐야..")
+                        .applicationEndDate(LocalDate.of(2021,10,22))
+                        .protectionStartDate(LocalDate.of(2021,10,24))
+                        .protectionEndDate(LocalDate.of(2021,10,29))
+                        .contactInfo("010-0000-0000")
+                        .description("랄랄라")
+                        .isUpdated(false)
+                        .isEnd(isEnd)
+                        .build()
+        );
     }
 
 }
