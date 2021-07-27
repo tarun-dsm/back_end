@@ -79,16 +79,13 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public void acceptApplication(Integer applicationId) {
         Account account = getAccount();
-
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(ApplicationNotFoundException::new);
-
         Post post = application.getPost();
 
         if (!post.getAccount().getId().equals(account.getId())) {
             throw new UserNotAccessibleException();
         }
-
         if (isApplicationClosed(post)) {
             throw new AfterApplicationClosedException();
         }
