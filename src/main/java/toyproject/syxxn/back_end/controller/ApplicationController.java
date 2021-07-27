@@ -1,10 +1,8 @@
 package toyproject.syxxn.back_end.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import toyproject.syxxn.back_end.service.application.ApplicationService;
 
 @RequestMapping("/application")
@@ -15,8 +13,19 @@ public class ApplicationController {
     private final ApplicationService applicationService;
 
     @PostMapping("/{id}")
-    public void protectionApplication(@PathVariable Integer id) {
-        applicationService.protectionApplication(id);
+    public void protectionApplication(@PathVariable("id") Integer postId) {
+        applicationService.protectionApplication(postId);
+    }
+
+    @DeleteMapping("/{id}")
+    void cancelApplication(@PathVariable("id") Integer applicationId) {
+        applicationService.cancelApplication(applicationId);
+    }
+
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void acceptApplication(@PathVariable("id") Integer applicationId) {
+        applicationService.acceptApplication(applicationId);
     }
 
 }
