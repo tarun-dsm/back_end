@@ -12,6 +12,8 @@ import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.exception.*;
 import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
 
+import java.time.LocalDate;
+
 @RequiredArgsConstructor
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -33,6 +35,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         if (account.getId().equals(post.getAccount().getId())) {
             throw new UserIsWriterException();
+        }
+        if (isApplicationClosed(post)) {
+            throw new AfterApplicationClosedException();
         }
 
         applicationRepository.findByAccount(account)
@@ -65,7 +70,29 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public void acceptApplication(Integer applicationId) {
+        Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
+                .orElseThrow(UserNotAccessibleException::new);
 
+        Application application = applicationRepository.findById(applicationId)
+                .orElseThrow(ApplicationNotFoundException::new);
+
+        Post post = application.getPost();
+
+        if (!post.getAccount().getId().equals(account.getId())) {
+            throw new UserNotAccessibleException();
+        }
+
+        if (isApplicationClosed(post)) {
+            throw new AfterApplicationClosedException();
+        }
+
+        application.acceptApplication();
+        applicationRepository.save(application);
+
+    }
+
+    private boolean isApplicationClosed(Post post) {
+        return (LocalDate.now().isAfter(post.getApplicationEndDate()) || post.getIsEnd());
     }
 
 }

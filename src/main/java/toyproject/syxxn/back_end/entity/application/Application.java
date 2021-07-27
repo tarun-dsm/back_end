@@ -36,4 +36,8 @@ public class Application extends BaseCreatedAtEntity {
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
+    public void acceptApplication() {
+        isAccepted = true;
+    }
+
 }
