@@ -9,10 +9,7 @@ import toyproject.syxxn.back_end.entity.application.Application;
 import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
-import toyproject.syxxn.back_end.exception.PostNotFoundException;
-import toyproject.syxxn.back_end.exception.UserAlreadyApplicationException;
-import toyproject.syxxn.back_end.exception.UserIsWriterException;
-import toyproject.syxxn.back_end.exception.UserNotAccessibleException;
+import toyproject.syxxn.back_end.exception.*;
 import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
 
 @RequiredArgsConstructor
@@ -27,11 +24,11 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     @Transactional
-    public void protectionApplication(Integer id) {
+    public void protectionApplication(Integer postId) {
         Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .filter(Account::getIsLocationConfirm)
                 .orElseThrow(UserNotAccessibleException::new);
-        Post post = postRepository.findById(id)
+        Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
 
         if (account.getId().equals(post.getAccount().getId())) {
@@ -51,6 +48,23 @@ public class ApplicationServiceImpl implements ApplicationService {
                        .isAccepted(false)
                        .build()
         );
+
+    }
+
+    @Override
+    public void cancelApplication(Integer applicationId) {
+        Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
+                .orElseThrow(UserNotAccessibleException::new);
+
+        Application application = applicationRepository.findById(applicationId)
+                .filter(a -> a.getAccount().getId().equals(account.getId()))
+                .orElseThrow(ApplicationNotFoundException::new);
+
+        applicationRepository.delete(application);
+    }
+
+    @Override
+    public void acceptApplication(Integer applicationId) {
 
     }
 
