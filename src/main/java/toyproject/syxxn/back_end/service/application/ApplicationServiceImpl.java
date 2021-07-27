@@ -3,6 +3,9 @@ package toyproject.syxxn.back_end.service.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import toyproject.syxxn.back_end.dto.response.ApplicationResponse;
+import toyproject.syxxn.back_end.dto.response.MyApplication;
+import toyproject.syxxn.back_end.dto.response.MyApplicationResponse;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.application.Application;
@@ -13,6 +16,8 @@ import toyproject.syxxn.back_end.exception.*;
 import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -27,9 +32,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     @Transactional
     public void protectionApplication(Integer postId) {
-        Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
-                .filter(Account::getIsLocationConfirm)
-                .orElseThrow(UserNotAccessibleException::new);
+        Account account = getAccount();
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
 
@@ -58,8 +61,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public void cancelApplication(Integer applicationId) {
-        Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
-                .orElseThrow(UserNotAccessibleException::new);
+        Account account = getAccount();
 
         Application application = applicationRepository.findById(applicationId)
                 .filter(a -> a.getAccount().getId().equals(account.getId()))
@@ -70,8 +72,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public void acceptApplication(Integer applicationId) {
-        Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
-                .orElseThrow(UserNotAccessibleException::new);
+        Account account = getAccount();
 
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(ApplicationNotFoundException::new);
@@ -89,6 +90,38 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.acceptApplication();
         applicationRepository.save(application);
 
+    }
+
+    @Override
+    public MyApplicationResponse getMyApplications() {
+        Account account = getAccount();
+        List<Application> applications = applicationRepository.findAllByAccount(account);
+        List<MyApplication> myApplications = new ArrayList<>();
+
+        for (Application application: applications) {
+            myApplications.add(
+                    MyApplication.builder()
+                            .id(application.getId())
+                            .applicationDate(application.getCreatedAt())
+                            .isAccepted(application.getIsAccepted())
+                            .postId(application.getPost().getId())
+                            .postName(application.getPost().getTitle())
+                            .build()
+            );
+        }
+
+        return new MyApplicationResponse(myApplications);
+    }
+
+    @Override
+    public ApplicationResponse getApplications(Integer postId) {
+        return new ApplicationResponse(null);
+    }
+
+    private Account getAccount() {
+        return accountRepository.findByEmail(authenticationFacade.getUserEmail())
+                .filter(Account::getIsLocationConfirm)
+                .orElseThrow(UserNotAccessibleException::new);
     }
 
     private boolean isApplicationClosed(Post post) {
