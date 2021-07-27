@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccessTokenResponse {
+public class MyApplicationResponse {
 
-    private String accessToken;
+    private List<MyApplicationDto> myApplications;
 
 }

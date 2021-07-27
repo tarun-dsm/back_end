@@ -6,16 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.format.annotation.DateTimeFormat;
+import toyproject.syxxn.back_end.entity.BaseCreatedAtEntity;
 import toyproject.syxxn.back_end.entity.account.Account;
+import toyproject.syxxn.back_end.entity.application.Application;
 import toyproject.syxxn.back_end.entity.pet.PetImage;
 import toyproject.syxxn.back_end.entity.pet.PetInfo;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -23,22 +22,27 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Post {
+public class Post extends BaseCreatedAtEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotNull
-    private Boolean isWithinADay;
+    @Column(length = 30)
+    private String title;
 
     @NotNull
-    private LocalDate tripStartDate;
+    private LocalDate protectionStartDate;
 
     @NotNull
-    private LocalDate tripEndDate;
+    private LocalDate protectionEndDate;
 
     @NotNull
     private LocalDate applicationEndDate;
+
+    @NotNull
+    @Column(columnDefinition = "bit(1)")
+    private Boolean isEnd;
 
     @NotNull
     private String description;
@@ -48,24 +52,28 @@ public class Post {
     private String contactInfo;
 
     @NotNull
-    @CreatedDate
-    @DateTimeFormat(pattern = "yyyy-MM-dd`T`hh:mm:SS")
-    private LocalDateTime createdAt;
-
-    @NotNull
+    @Column(columnDefinition = "bit(1)")
     private Boolean isUpdated;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @OneToOne(mappedBy = "post", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private PetInfo petInfo;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<PetImage> petImages;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private List<Application> applications;
+
+    public void isEnd() {
+        this.isEnd = true;
+    }
 
 }

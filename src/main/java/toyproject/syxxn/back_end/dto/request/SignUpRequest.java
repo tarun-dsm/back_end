@@ -6,37 +6,36 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Getter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class SignUpRequest {
 
     @Email
-    @NotNull
-    private final String email;
+    @NotBlank
+    private String email;
 
-    @NotNull
+    @NotBlank
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[0-9])(?=.*[~!@#*_])[a-zA-Z0-9~!@#*_]{8,15}$")
-    private final String password;
+    private String password;
 
-    @NotNull
-    private final String nickname;
+    @NotBlank
+    private String nickname;
 
-    @NotNull
-    private final int age;
+    private int age;
 
-    @NotNull
-    private final String sex;
+    @NotBlank
+    private String sex;
 
-    @NotNull
-    private final boolean isExperienceRasingPet;
+    private boolean isExperienceRasingPet;
 
-    private final String experience;
+    private String experience;
 
-    @NotNull
-    private final String address;
+    @NotBlank
+    private String address;
 
 }

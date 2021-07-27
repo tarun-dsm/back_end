@@ -1,4 +1,6 @@
 spring:
+  jackson:
+    property-naming-strategy: SNAKE_CASE
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:test
@@ -8,10 +10,22 @@ spring:
     database: h2
     generate-ddl: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
   redis:
     host: localhost
-    port: 6379
+    port: 6380
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: a@gmail.com
+    password: asdf
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
 
 auth:
   jwt:

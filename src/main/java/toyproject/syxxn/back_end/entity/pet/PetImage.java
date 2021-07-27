@@ -18,14 +18,14 @@ import javax.validation.constraints.NotNull;
 public class PetImage {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotNull
     private String path;
 
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
 }

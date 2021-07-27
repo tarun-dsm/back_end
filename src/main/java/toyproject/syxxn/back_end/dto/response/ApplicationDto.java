@@ -5,13 +5,20 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TokenResponse {
+public class ApplicationDto {
 
-    private String accessToken;
-    private String refreshToken;
+    private Integer applicationId;
+
+    private Integer applicantId;
+
+    private String applicantNickname;
+
+    private LocalDateTime applicationDate;
 
 }

@@ -22,6 +22,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    private final MyBasicAuthenticationEntryPoint myBasicAuthenticationEntryPoint;
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -32,13 +34,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .formLogin().disable()
-                .csrf().disable()
-                .cors().and()
                 .sessionManagement().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/").permitAll()
-                .anyRequest().authenticated().and()
-                .apply(new JwtConfigure(jwtTokenProvider));
+                .antMatchers(HttpMethod.POST, "/account").permitAll()
+                .antMatchers(HttpMethod.GET, "/account/email/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/account/nickname").permitAll()
+                .antMatchers(HttpMethod.POST,"/email").permitAll()
+                .antMatchers("/auth").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                    .httpBasic().authenticationEntryPoint(myBasicAuthenticationEntryPoint)
+                .and()
+                    .apply(new JwtConfigure(jwtTokenProvider));
     }
 
     @Override

@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthenticationFacade {
 
-    public Long getUserId() {
-        return Long.getLong(SecurityContextHolder.getContext().getAuthentication().getName());
+    public String getUserEmail() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
 }

@@ -8,10 +8,9 @@ import toyproject.syxxn.back_end.service.email.EmailService;
 
 import javax.validation.Valid;
 
-
-@RestController
 @RequestMapping("/email")
 @RequiredArgsConstructor
+@RestController
 public class EmailController {
 
     private final EmailService emailService;

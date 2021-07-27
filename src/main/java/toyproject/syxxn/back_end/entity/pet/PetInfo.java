@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 public class PetInfo {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotNull
     @Column(length = 30)
@@ -34,7 +34,7 @@ public class PetInfo {
 
     @OneToOne
     @JsonBackReference
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
 }

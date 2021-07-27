@@ -1,6 +1,35 @@
 spring:
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  datasource:
+    driver-class-name:
+    url: jdbc:h2:mem:test
+    username: test
+    password: 1234
+  jpa:
+    database: h2
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+  redis:
+    host: localhost
+    port: 6380
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
+    username: ${ACCOUNT_EMAIL}
+    password: ${ACCOUNT_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+
+auth:
+  jwt:
+    secret: asdf1234
+    exp:
+      access: 2021
+      refresh: 20210629

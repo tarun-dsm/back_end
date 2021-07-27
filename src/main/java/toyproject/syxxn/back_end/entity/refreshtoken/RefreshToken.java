@@ -19,7 +19,7 @@ import java.io.Serializable;
 public class RefreshToken implements Serializable {
 
     @Id
-    private Long accountId;
+    private Integer accountId;
 
     @Indexed
     private String refreshToken;

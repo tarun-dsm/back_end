@@ -12,6 +12,7 @@ import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshToken;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshTokenRepository;
+import toyproject.syxxn.back_end.entity.verify.VerifyNumber;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumberRepository;
 import toyproject.syxxn.back_end.exception.UserEmailAlreadyExistsException;
 import toyproject.syxxn.back_end.exception.UserNicknameAlreadyExistsException;
@@ -37,6 +38,7 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public TokenResponse signUp(SignUpRequest request) {
         verifyNumberRepository.findById(request.getEmail())
+                .filter(VerifyNumber::isVerified)
                 .orElseThrow(UserNotUnauthenticatedException::new);
 
         Account account = accountRepository.save(

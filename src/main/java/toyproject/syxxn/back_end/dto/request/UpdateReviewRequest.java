@@ -2,18 +2,20 @@ package toyproject.syxxn.back_end.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class UpdateReviewRequest {
 
-    @NotNull
-    private final BigDecimal ratingScore;
+    @NotBlank
+    private BigDecimal ratingScore;
 
-    @NotNull
-    private final String comment;
+    @NotBlank
+    private String comment;
 
 }

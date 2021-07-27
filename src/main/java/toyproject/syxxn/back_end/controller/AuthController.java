@@ -10,9 +10,9 @@ import toyproject.syxxn.back_end.service.auth.AuthService;
 
 import javax.validation.Valid;
 
-@RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@RestController
 public class AuthController {
 
     private final AuthService authService;
