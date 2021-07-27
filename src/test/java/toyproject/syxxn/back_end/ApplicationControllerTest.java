@@ -20,8 +20,7 @@ import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
 import java.time.LocalDate;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -199,6 +198,44 @@ public class ApplicationControllerTest {
 
         mvc.perform(delete("/application/"+applicationId))
                 .andExpect(status().isNotFound());
+    }
+
+    @WithMockUser(value = "test2@naver.com", password = "asdf123@")
+    @Test
+    public void getMyApplications() throws Exception {
+        mvc.perform(get("/application"))
+                .andExpect(status().isOk());
+    }
+
+    @WithMockUser(value = "test1@naver.com", password = "asdf123@")
+    @Test
+    public void acceptApplication() throws Exception {
+        Integer applicationId = createApplication(false, false).getId();
+        mvc.perform(patch("/application/"+applicationId))
+                .andExpect(status().isNoContent()).andDo(print());
+    }
+
+    @WithMockUser(value = "test1@naver.com", password = "asdf123@")
+    @Test
+    public void acceptApplication_400() throws Exception {
+        Integer applicationId = createApplication(true, false).getId();
+        mvc.perform(patch("/application/"+applicationId))
+                .andExpect(status().isBadRequest());
+    }
+
+    @WithMockUser(value = "test3@naver.com", password = "asdf123@")
+    @Test
+    public void acceptApplication_401() throws Exception {
+        Integer applicationId = createApplication(false, false).getId();
+        mvc.perform(patch("/application/"+applicationId))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @WithMockUser(value = "test1@naver.com", password = "asdf123@")
+    @Test
+    public void getApplications() throws Exception {
+        mvc.perform(get("/application/post/1"))
+                .andExpect(status().isOk()).andDo(print());
     }
 
     private Application createApplication(boolean isEnd, boolean isAccepted) {
