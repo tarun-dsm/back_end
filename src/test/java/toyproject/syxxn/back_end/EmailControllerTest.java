@@ -93,7 +93,15 @@ public class EmailControllerTest {
     }*/
 
     @Test
-    public void sendVerifyNumberEmail_400() throws Exception {
+    public void sendVerifyNumberEmail_400_1() throws Exception {
+        mvc.perform(post("/email")
+                .content(new ObjectMapper().writeValueAsString(new EmailRequest("test2@dsm.hs.kr")))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void sendVerifyNumberEmail_400_2() throws Exception {
         mvc.perform(post("/email")
                 .content(new ObjectMapper().writeValueAsString(new EmailRequest("test3")))
                 .contentType(MediaType.APPLICATION_JSON)

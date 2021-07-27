@@ -145,6 +145,14 @@ public class ApplicationControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(value = "test2@naver.com", password = "asdf123@")
+    @Test
+    public void protectionApplication_400_2() throws Exception {
+        Post post = createPost(true);
+        mvc.perform(post("/application/"+post.getIsEnd()))
+                .andExpect(status().isBadRequest());
+    }
+
     @WithMockUser(value = "test@naver.com", password = "123")
     @Test
     public void protectionApplication_401() throws Exception {
@@ -236,6 +244,15 @@ public class ApplicationControllerTest {
     public void getApplications() throws Exception {
         mvc.perform(get("/application/post/1"))
                 .andExpect(status().isOk()).andDo(print());
+    }
+
+    @WithMockUser(value = "test1@naver.com", password = "asdf123@")
+    @Test
+    public void getApplications_400() throws Exception {
+        Post post = createPost(true);
+
+        mvc.perform(get("/application/post/"+post.getId()))
+                .andExpect(status().isNotFound());
     }
 
     private Application createApplication(boolean isEnd, boolean isAccepted) {
