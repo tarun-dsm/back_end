@@ -20,9 +20,11 @@ public class MyApplicationDto {
 
     private Integer postId;
 
-    private Boolean isAccepted;
+    private boolean isAccepted;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd`T`hh:mm:SS")
+    private boolean isEnd;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd`T`hh:mm:ss")
     private LocalDateTime applicationDate;
 
 }

@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public abstract class BaseCreatedAtEntity {
 
     @CreatedDate
-    @DateTimeFormat(pattern = "yyyy-MM-dd`T`hh:mm:SS")
+    @DateTimeFormat(pattern = "yyyy-MM-dd`T`hh:mm:ss")
     @Column(nullable = false)
     private LocalDateTime createdAt;
 

@@ -72,4 +72,8 @@ public class Post extends BaseCreatedAtEntity {
     @JsonManagedReference
     private List<Application> applications;
 
+    public void isEnd() {
+        this.isEnd = true;
+    }
+
 }

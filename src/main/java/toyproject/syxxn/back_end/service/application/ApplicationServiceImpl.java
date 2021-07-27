@@ -68,9 +68,14 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .filter(a -> a.getAccount().getId().equals(account.getId()))
                 .orElseThrow(ApplicationNotFoundException::new);
 
+        if (isApplicationClosed(application.getPost())) {
+            throw new AfterApplicationClosedException();
+        }
+
         applicationRepository.delete(application);
     }
 
+    @Transactional
     @Override
     public void acceptApplication(Integer applicationId) {
         Account account = getAccount();
@@ -89,8 +94,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         application.acceptApplication();
+        post.isEnd();
         applicationRepository.save(application);
-
+        postRepository.save(post);
     }
 
     @Override
@@ -107,6 +113,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                             .isAccepted(application.getIsAccepted())
                             .postId(application.getPost().getId())
                             .postName(application.getPost().getTitle())
+                            .isEnd(application.getPost().getIsEnd())
                             .build()
             );
         }
@@ -119,6 +126,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Account account = getAccount();
         Post post = postRepository.findById(postId)
                 .filter(p -> p.getAccount().getId().equals(account.getId()))
+                .filter(p -> !p.getIsEnd())
                 .orElseThrow(PostNotFoundException::new);
 
         List<Application> applications = applicationRepository.findAllByPost(post);
@@ -129,6 +137,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                     ApplicationDto.builder()
                             .applicationId(application.getId())
                             .applicationDate(application.getCreatedAt())
+                            .applicantId(application.getAccount().getId())
                             .applicantNickname(application.getAccount().getNickname())
                             .build()
             );
