@@ -3,8 +3,9 @@ package toyproject.syxxn.back_end.service.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import toyproject.syxxn.back_end.dto.response.ApplicationDto;
 import toyproject.syxxn.back_end.dto.response.ApplicationResponse;
-import toyproject.syxxn.back_end.dto.response.MyApplication;
+import toyproject.syxxn.back_end.dto.response.MyApplicationDto;
 import toyproject.syxxn.back_end.dto.response.MyApplicationResponse;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
@@ -96,11 +97,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     public MyApplicationResponse getMyApplications() {
         Account account = getAccount();
         List<Application> applications = applicationRepository.findAllByAccount(account);
-        List<MyApplication> myApplications = new ArrayList<>();
+        List<MyApplicationDto> myApplications = new ArrayList<>();
 
         for (Application application: applications) {
             myApplications.add(
-                    MyApplication.builder()
+                    MyApplicationDto.builder()
                             .id(application.getId())
                             .applicationDate(application.getCreatedAt())
                             .isAccepted(application.getIsAccepted())
@@ -115,7 +116,25 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ApplicationResponse getApplications(Integer postId) {
-        return new ApplicationResponse(null);
+        Account account = getAccount();
+        Post post = postRepository.findById(postId)
+                .filter(p -> p.getAccount().getId().equals(account.getId()))
+                .orElseThrow(PostNotFoundException::new);
+
+        List<Application> applications = applicationRepository.findAllByPost(post);
+        List<ApplicationDto> applicationList = new ArrayList<>();
+
+        for (Application application: applications) {
+            applicationList.add(
+                    ApplicationDto.builder()
+                            .applicationId(application.getId())
+                            .applicationDate(application.getCreatedAt())
+                            .applicantNickname(application.getAccount().getNickname())
+                            .build()
+            );
+        }
+
+        return new ApplicationResponse(applicationList);
     }
 
     private Account getAccount() {
