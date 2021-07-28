@@ -4,8 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 @Getter
@@ -14,10 +15,13 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class ReviewRequest {
 
-    @NotBlank
-    private Double ratingScore;
+    @NotNull
+    @DecimalMin(value = "0.0")
+    @DecimalMax(value = "5.0")
+    @Digits(integer = 1, fraction = 1)
+    private BigDecimal grade;
 
-    @NotBlank
+    @NotNull
     private String comment;
 
 }
