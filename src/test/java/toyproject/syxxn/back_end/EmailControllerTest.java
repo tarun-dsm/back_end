@@ -8,19 +8,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import toyproject.syxxn.back_end.dto.request.EmailRequest;
 import toyproject.syxxn.back_end.dto.request.VerifyRequest;
-import toyproject.syxxn.back_end.entity.Sex;
-import toyproject.syxxn.back_end.entity.account.Account;
-import toyproject.syxxn.back_end.entity.account.AccountRepository;
-import toyproject.syxxn.back_end.entity.verify.VerifyNumber;
-import toyproject.syxxn.back_end.entity.verify.VerifyNumberRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -29,51 +21,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackEndApplication.class)
 @ActiveProfiles("test")
-public class EmailControllerTest {
+public class EmailControllerTest extends BaseTest {
 
     private MockMvc mvc;
 
-    @Autowired
-    private WebApplicationContext context;
-
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private VerifyNumberRepository verifyNumberRepository;
-
-    @Autowired
-    private PasswordEncoder encoder;
-
     @BeforeEach
     public void setUp() {
-        mvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .build();
+        mvc = setMvc();
 
-        accountRepository.save(
-                Account.builder()
-                        .email("test1@naver.com")
-                        .password(encoder.encode("asdf123@"))
-                        .sex(Sex.MALE)
-                        .nickname("나는야1번")
-                        .age(18)
-                        .isExperienceRasingPet(false)
-                        .experience(null)
-                        .address("경기도 서울시 구성동")
-                        .isLocationConfirm(true)
-                        .build()
-        );
-
-        verifyNumberRepository.save(
-                new VerifyNumber("test2@dsm.hs.kr","123456",false)
-        );
+        createAccount("test1@naver.com", true);
+        createVerifyNumber();
     }
 
     @AfterEach
     public void deleteAll() {
-        accountRepository.deleteAll();
-        verifyNumberRepository.deleteAll();
+        deleteEvery();
     }
 
     /*@Test
@@ -119,7 +81,7 @@ public class EmailControllerTest {
     @Test
     public void verify() throws Exception {
         mvc.perform(patch("/email")
-                .content(new ObjectMapper().writeValueAsString(new VerifyRequest("test2@dsm.hs.kr","123456")))
+                .content(new ObjectMapper().writeValueAsString(new VerifyRequest("2000ls@gmail.com","123456")))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
     }

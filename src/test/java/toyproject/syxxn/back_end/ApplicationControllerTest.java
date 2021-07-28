@@ -2,23 +2,14 @@ package toyproject.syxxn.back_end;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
-import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.application.Application;
-import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
-import toyproject.syxxn.back_end.entity.post.PostRepository;
-import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -27,108 +18,34 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackEndApplication.class)
 @ActiveProfiles("test")
-public class ApplicationControllerTest {
+public class ApplicationControllerTest extends BaseTest {
 
     private MockMvc mvc;
 
-    @Autowired
-    private WebApplicationContext context;
-
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
-    private ApplicationRepository applicationRepository;
-
-    @Autowired
-    private PasswordEncoder encoder;
-
     Integer postId;
-    Account account;
+    Account account1;
     Account account2;
+    Application application;
 
     @BeforeEach
     public void setUp() {
-        mvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .build();
+        mvc = setMvc();
 
-        account = accountRepository.save(
-                Account.builder()
-                        .email("test1@naver.com")
-                        .password(encoder.encode("asdf123@"))
-                        .sex(Sex.MALE)
-                        .nickname("나는야1번")
-                        .age(18)
-                        .isExperienceRasingPet(false)
-                        .experience(null)
-                        .address("경기도 서울시 구성동")
-                        .isLocationConfirm(true)
-                        .build()
-        );
+        account1 = createAccount("test1@naver.com", true);
+        account2 = createAccount("test2@naver.com", true);
+        createAccount("test3@naver.com", true);
+        createAccount("test4@naver.com", false);
 
-        account2 = accountRepository.save(
-                Account.builder()
-                        .email("test2@naver.com")
-                        .password(encoder.encode("asdf123@"))
-                        .sex(Sex.FEMALE)
-                        .nickname("나는야2번")
-                        .age(18)
-                        .isExperienceRasingPet(false)
-                        .experience(null)
-                        .address("경기도 서울시 구성동")
-                        .isLocationConfirm(true)
-                        .build()
-        );
-
-        accountRepository.save(
-                Account.builder()
-                        .email("test3@naver.com")
-                        .password(encoder.encode("asdf123@"))
-                        .sex(Sex.FEMALE)
-                        .nickname("나는야3번")
-                        .age(18)
-                        .isExperienceRasingPet(false)
-                        .experience(null)
-                        .address("경기도 서울시 구성동")
-                        .isLocationConfirm(true)
-                        .build()
-        );
-
-        accountRepository.save(
-                Account.builder()
-                        .email("test4@naver.com")
-                        .password(encoder.encode("asdf123@"))
-                        .sex(Sex.MALE)
-                        .nickname("나는야4번")
-                        .age(18)
-                        .isExperienceRasingPet(false)
-                        .experience(null)
-                        .address("경기도 서울시 구성동")
-                        .isLocationConfirm(false)
-                        .build()
-        );
-
-        Post post = createPost(false);
+        Post post = createPost(account1, false, "2021-10-10");
         postId = post.getId();
 
-        applicationRepository.save(
-                Application.builder()
-                        .post(post)
-                        .account(account2)
-                        .isAccepted(false)
-                        .build()
-        );
+        application = createApplication(account1, account2,false, false, "2021-05-10");
+        createApplication(account1, account2,false, false, "2021-08-10");
     }
 
     @AfterEach
     public void deleteAll() {
-        accountRepository.deleteAll();
-        applicationRepository.deleteAll();
-        postRepository.deleteAll();
+        deleteEvery();
     }
 
     @WithMockUser(value = "test3@naver.com", password = "asdf123@")
@@ -148,7 +65,7 @@ public class ApplicationControllerTest {
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void protectionApplication_400_2() throws Exception {
-        Post post = createPost(true);
+        Post post = createPost(account1,true, "2021-05-10");
         mvc.perform(post("/application/"+post.getIsApplicationEnd()))
                 .andExpect(status().isBadRequest());
     }
@@ -170,7 +87,7 @@ public class ApplicationControllerTest {
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void protectionApplication_409() throws Exception {
-        mvc.perform(post("/application/"+postId))
+        mvc.perform(post("/application/"+ application.getPost().getId()))
                 .andExpect(status().isConflict());
     }
 
@@ -184,27 +101,22 @@ public class ApplicationControllerTest {
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void cancelApplication() throws Exception {
-        Integer applicationId = createApplication(false, false).getId();
-
-        mvc.perform(delete("/application/"+applicationId))
+        mvc.perform(delete("/application/"+application.getId()))
                 .andExpect(status().isOk());
     }
 
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void cancelApplication_400() throws Exception {
-        Integer applicationId = createApplication(true, false).getId();
-
-        mvc.perform(delete("/application/"+applicationId))
+        Integer id = createApplication(account1, account2, true, true, "2021-07-28").getId();
+        mvc.perform(delete("/application/"+id))
                 .andExpect(status().isBadRequest());
     }
 
     @WithMockUser(value = "test3@naver.com", password = "asdf123@")
     @Test
     public void cancelApplication_404() throws Exception {
-        Integer applicationId = createApplication(false, false).getId();
-
-        mvc.perform(delete("/application/"+applicationId))
+        mvc.perform(delete("/application/"+application.getId()))
                 .andExpect(status().isNotFound());
     }
 
@@ -218,24 +130,23 @@ public class ApplicationControllerTest {
     @WithMockUser(value = "test1@naver.com", password = "asdf123@")
     @Test
     public void acceptApplication() throws Exception {
-        Integer applicationId = createApplication(false, false).getId();
-        mvc.perform(patch("/application/"+applicationId))
+
+        mvc.perform(patch("/application/"+application.getId()))
                 .andExpect(status().isNoContent()).andDo(print());
     }
 
     @WithMockUser(value = "test1@naver.com", password = "asdf123@")
     @Test
     public void acceptApplication_400() throws Exception {
-        Integer applicationId = createApplication(true, false).getId();
-        mvc.perform(patch("/application/"+applicationId))
+        Integer id = createApplication(account1, account2,true, false,"2021-10-10").getId();
+        mvc.perform(patch("/application/"+id))
                 .andExpect(status().isBadRequest());
     }
 
     @WithMockUser(value = "test3@naver.com", password = "asdf123@")
     @Test
     public void acceptApplication_401() throws Exception {
-        Integer applicationId = createApplication(false, false).getId();
-        mvc.perform(patch("/application/"+applicationId))
+        mvc.perform(patch("/application/"+application.getId()))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -249,36 +160,10 @@ public class ApplicationControllerTest {
     @WithMockUser(value = "test1@naver.com", password = "asdf123@")
     @Test
     public void getApplications_400() throws Exception {
-        Post post = createPost(true);
+        Post post = createPost(account1, true, "2021-05-10");
 
         mvc.perform(get("/application/post/"+post.getId()))
                 .andExpect(status().isNotFound());
-    }
-
-    private Application createApplication(boolean isEnd, boolean isAccepted) {
-        return applicationRepository.save(
-                Application.builder()
-                        .post(createPost(isEnd))
-                        .account(account2)
-                        .isAccepted(isAccepted)
-                        .build()
-        );
-    }
-
-    private Post createPost(boolean isEnd) {
-        return postRepository.save(
-                Post.builder()
-                        .account(account)
-                        .title("제목을 까먹었지 뭐야..")
-                        .applicationEndDate(LocalDate.of(2021,10,22))
-                        .protectionStartDate(LocalDate.of(2021,10,24))
-                        .protectionEndDate(LocalDate.of(2021,10,29))
-                        .contactInfo("010-0000-0000")
-                        .description("랄랄라")
-                        .isUpdated(false)
-                        .isApplicationEnd(isEnd)
-                        .build()
-        );
     }
 
 }

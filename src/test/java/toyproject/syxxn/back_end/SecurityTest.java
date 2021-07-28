@@ -6,15 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
-import toyproject.syxxn.back_end.entity.account.AccountRepository;
-import toyproject.syxxn.back_end.entity.refreshtoken.RefreshToken;
-import toyproject.syxxn.back_end.entity.refreshtoken.RefreshTokenRepository;
 import toyproject.syxxn.back_end.exception.InvalidTokenException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
 import toyproject.syxxn.back_end.security.auth.AuthDetails;
@@ -27,10 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackEndApplication.class)
 @ActiveProfiles("test")
-public class SecurityTest {
-
-    @Autowired
-    private AccountRepository accountRepository;
+public class SecurityTest extends BaseTest {
 
     @Autowired
     private AuthenticationFacade authenticationFacade;
@@ -39,45 +31,20 @@ public class SecurityTest {
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
-
-    @Autowired
     private AuthDetailsService authDetailsService;
-
-    @Autowired
-    private PasswordEncoder encoder;
 
     Account account;
     String refreshToken;
 
     @BeforeEach
     public void setUp() {
-        account = accountRepository.save(
-                Account.builder()
-                        .email("test1@naver.com")
-                        .password(encoder.encode("asdf123@"))
-                        .sex(Sex.MALE)
-                        .nickname("나는야1번")
-                        .age(18)
-                        .isExperienceRasingPet(false)
-                        .experience(null)
-                        .address("경기도 서울시 구성동")
-                        .isLocationConfirm(true)
-                        .build()
-        );
-
-        refreshToken = refreshTokenRepository.save(
-                RefreshToken.builder()
-                        .accountId(account.getId())
-                        .refreshExp(12134L)
-                        .refreshToken(jwtTokenProvider.generateRefreshToken(account.getId()))
-                        .build()
-        ).getRefreshToken();
+        account = createAccount("test1@naver.com", false);
+        refreshToken = createRefreshToken(account).getRefreshToken();
     }
 
     @AfterEach
     public void deleteAll() {
-        accountRepository.deleteAll();
+        deleteEvery();
     }
 
     @WithMockUser(value = "test@gmail.com", password = "testpass")

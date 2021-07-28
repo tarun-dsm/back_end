@@ -1,37 +1,25 @@
 package toyproject.syxxn.back_end;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import toyproject.syxxn.back_end.dto.request.ReviewRequest;
-import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
-import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.application.Application;
-import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
-import toyproject.syxxn.back_end.entity.post.Post;
-import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.entity.review.Review;
-import toyproject.syxxn.back_end.entity.review.ReviewRepository;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,105 +27,35 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class ReviewControllerTest {
+public class ReviewControllerTest extends BaseTest{
 
     private MockMvc mvc;
 
-    @Autowired
-    private WebApplicationContext context;
-
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private ApplicationRepository applicationRepository;
-
-    @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
-    private ReviewRepository reviewRepository;
-
-    @Autowired
-    private PasswordEncoder encoder;
-
-    Account account;
+    Account account1;
     Account account2;
     Application application;
     Application notDoneApplication;
+    Review review;
 
     @BeforeEach
     public void setUp() {
-        mvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .build();
+        mvc = setMvc();
 
-        account = accountRepository.save(
-                Account.builder()
-                        .email("test1@naver.com")
-                        .password(encoder.encode("asdf123@"))
-                        .sex(Sex.MALE)
-                        .nickname("나는야1번")
-                        .age(18)
-                        .isExperienceRasingPet(false)
-                        .experience(null)
-                        .address("경기도 서울시 구성동")
-                        .isLocationConfirm(true)
-                        .build()
-        );
+        account1 = createAccount("test1@naver.com", true);
+        account2 = createAccount("test2@naver.com", true);
+        createAccount("test3@naver.com", true);
+        createAccount("test4@naver.com", false);
 
-        account2 = accountRepository.save(
-                Account.builder()
-                        .email("test2@naver.com")
-                        .password(encoder.encode("asdf123@"))
-                        .sex(Sex.FEMALE)
-                        .nickname("나는야2번")
-                        .age(18)
-                        .isExperienceRasingPet(false)
-                        .experience(null)
-                        .address("경기도 서울시 구성동")
-                        .isLocationConfirm(true)
-                        .build()
-        );
+        notDoneApplication = createApplication(account1, account2,true, true, "2021-10-22");
+        application = createApplication(account1, account2,true, true, "2021-05-22");
+        createApplication(account1, account2,true, false, "2021-05-22");
 
-        accountRepository.save(
-                Account.builder()
-                        .email("test3@naver.com")
-                        .password(encoder.encode("asdf123@"))
-                        .sex(Sex.FEMALE)
-                        .nickname("나는야3번")
-                        .age(18)
-                        .isExperienceRasingPet(false)
-                        .experience(null)
-                        .address("경기도 서울시 구성동")
-                        .isLocationConfirm(true)
-                        .build()
-        );
-
-        accountRepository.save(
-                Account.builder()
-                        .email("test4@naver.com")
-                        .password(encoder.encode("asdf123@"))
-                        .sex(Sex.MALE)
-                        .nickname("나는야4번")
-                        .age(18)
-                        .isExperienceRasingPet(false)
-                        .experience(null)
-                        .address("경기도 서울시 구성동")
-                        .isLocationConfirm(false)
-                        .build()
-        );
-
-        notDoneApplication = createApplication(account2,true, true, "2021-10-22");
-        application = createApplication(account2,true, true, "2021-05-22");
-        createApplication(account2,true, false, "2021-05-22");
+        review = createReview(account1, account2);
     }
 
     @AfterEach
     public void deleteAll() {
-        accountRepository.deleteAll();
-        applicationRepository.deleteAll();
-        reviewRepository.deleteAll();
+        deleteEvery();
     }
 
     @WithMockUser(value = "test1@naver.com", password = "asdf123@")
@@ -159,7 +77,7 @@ public class ReviewControllerTest {
         mvc.perform(post("/review/"+application.getId())
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-        ).andExpect(status().isCreated());
+        ).andDo(print()).andExpect(status().isCreated());
     }
 
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
@@ -219,7 +137,7 @@ public class ReviewControllerTest {
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void writeReview_409() throws Exception {
-        Integer id = createReview().getApplication().getId();
+        Integer id = createReview(account1, account2).getApplication().getId();
         ReviewRequest request = createRequest();
 
         mvc.perform(post("/review/"+id)
@@ -231,7 +149,7 @@ public class ReviewControllerTest {
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void deleteReview() throws Exception {
-        Integer id = createReview().getId();
+        Integer id = createReview(account1, account2).getId();
 
         mvc.perform(delete("/review/"+id)
         ).andExpect(status().isOk());
@@ -240,8 +158,6 @@ public class ReviewControllerTest {
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void deleteReview_404() throws Exception {
-        createReview();
-
         mvc.perform(delete("/review/456")
         ).andExpect(status().isNotFound());
     }
@@ -249,19 +165,16 @@ public class ReviewControllerTest {
     @WithMockUser(value = "test3@naver.com", password = "asdf123@")
     @Test
     public void deleteReview_404_() throws Exception {
-        Integer id = createReview().getId();
-
-        mvc.perform(delete("/review/"+id)
+        mvc.perform(delete("/review/"+review.getId())
         ).andExpect(status().isNotFound());
     }
 
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void updateReview() throws Exception {
-        Integer id = createReview().getId();
         ReviewRequest request = createRequest();
 
-        mvc.perform(put("/review/"+id)
+        mvc.perform(put("/review/"+review.getId())
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andExpect(status().isNoContent());
@@ -270,10 +183,9 @@ public class ReviewControllerTest {
     @WithMockUser(value = "test3@naver.com", password = "asdf123@")
     @Test
     public void updateReview_401() throws Exception {
-        Integer id = createReview().getId();
         ReviewRequest request = createRequest();
 
-        mvc.perform(put("/review/"+id)
+        mvc.perform(put("/review/"+review.getId())
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andExpect(status().isNotFound());
@@ -282,7 +194,6 @@ public class ReviewControllerTest {
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void updateReview_404() throws Exception {
-        createReview();
         ReviewRequest request = createRequest();
 
         mvc.perform(put("/review/4561")
@@ -293,7 +204,6 @@ public class ReviewControllerTest {
 
     @Test
     public void reviewTest() {
-        Review review = createReview();
         assertNotNull(review.getId());
         assertNotNull(review.getGrade());
         assertNotNull(review.getComment());
@@ -307,44 +217,6 @@ public class ReviewControllerTest {
                 .grade(BigDecimal.valueOf(2.3))
                 .comment("울랄라 리뷰")
                 .build();
-    }
-
-    private Review createReview() {
-        return reviewRepository.save(
-                Review.builder()
-                        .target(account)
-                        .writer(account2)
-                        .application(createApplication(account2, true, true, "2021-05-22"))
-                        .grade(BigDecimal.valueOf(4.5))
-                        .comment("대체 왜 ratingScore 안에는 값이 안들어가는건지 모르겠음 어이없어")
-                        .build()
-        );
-    }
-
-    private Application createApplication(Account account, boolean isEnd, boolean isAccepted, String endDate) {
-        return applicationRepository.save(
-                Application.builder()
-                        .post(createPost(isEnd, endDate))
-                        .account(account)
-                        .isAccepted(isAccepted)
-                        .build()
-        );
-    }
-
-    private Post createPost(boolean isEnd, String endDate) {
-        return postRepository.save(
-                Post.builder()
-                        .account(account)
-                        .title("제목을 까먹었지 뭐야..")
-                        .applicationEndDate(LocalDate.parse(endDate))
-                        .protectionStartDate(LocalDate.of(2021,10,24))
-                        .protectionEndDate(LocalDate.of(2021,10,29))
-                        .contactInfo("010-0000-0000")
-                        .description("랄랄라")
-                        .isUpdated(false)
-                        .isApplicationEnd(isEnd)
-                        .build()
-        );
     }
 
 }

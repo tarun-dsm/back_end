@@ -5,21 +5,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import toyproject.syxxn.back_end.dto.request.SignUpRequest;
-import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
-import toyproject.syxxn.back_end.entity.account.AccountRepository;
-import toyproject.syxxn.back_end.entity.verify.VerifyNumber;
-import toyproject.syxxn.back_end.entity.verify.VerifyNumberRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -30,53 +22,23 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackEndApplication.class)
 @ActiveProfiles("test")
-public class AccountControllerTest {
+public class AccountControllerTest extends BaseTest{
 
     private MockMvc mvc;
-
-    @Autowired
-    private WebApplicationContext context;
-
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private VerifyNumberRepository verifyNumberRepository;
-
-    @Autowired
-    private PasswordEncoder encoder;
 
     Account account;
 
     @BeforeEach
     public void setUp() {
-        mvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .build();
+        mvc = setMvc();
 
-        account = accountRepository.save(
-                Account.builder()
-                        .email("adsf1234@naver.com")
-                        .password(encoder.encode("asdf1234"))
-                        .sex(Sex.FEMALE)
-                        .nickname("Tarun")
-                        .age(18)
-                        .isExperienceRasingPet(false)
-                        .experience(null)
-                        .address("경기도 서울시 구성동")
-                        .isLocationConfirm(false)
-                .build()
-        );
-
-        verifyNumberRepository.save(
-                new VerifyNumber("2000ls@gmail.com", "123456", true)
-        );
+        account = createAccount("adsf1234@naver.com", true);
+        createVerifyNumber();
     }
 
     @AfterEach
     public void deleteAll() {
-        accountRepository.deleteAll();
-        verifyNumberRepository.deleteAll();
+        deleteEvery();
     }
 
     @Test

@@ -5,22 +5,14 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import toyproject.syxxn.back_end.dto.request.SignInRequest;
-import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
-import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshToken;
-import toyproject.syxxn.back_end.entity.refreshtoken.RefreshTokenRepository;
-import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -31,60 +23,24 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackEndApplication.class)
 @ActiveProfiles("test")
-public class AuthControllerTest {
+public class AuthControllerTest extends BaseTest {
 
     private MockMvc mvc;
-
-    @Autowired
-    private WebApplicationContext context;
-
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    private PasswordEncoder encoder;
 
     RefreshToken refreshToken;
 
     @BeforeEach
     public void setUp() {
-        mvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .build();
+        mvc = setMvc();
 
-        Account account = accountRepository.save(
-                Account.builder()
-                        .email("test1@naver.com")
-                        .password(encoder.encode("asdf123@"))
-                        .sex(Sex.MALE)
-                        .nickname("나는야1번")
-                        .age(18)
-                        .isExperienceRasingPet(false)
-                        .experience(null)
-                        .address("경기도 서울시 구성동")
-                        .isLocationConfirm(true)
-                        .build()
-        );
+        Account account = createAccount("test1@naver.com", true);
 
-        refreshToken = refreshTokenRepository.save(
-                RefreshToken.builder()
-                        .accountId(account.getId())
-                        .refreshExp(1234L)
-                        .refreshToken(jwtTokenProvider.generateRefreshToken(account.getId()))
-                        .build()
-        );
+        refreshToken = createRefreshToken(account);
     }
 
     @AfterEach
     public void deleteAll() {
-        accountRepository.deleteAll();
-        refreshTokenRepository.deleteAll();
+        deleteEvery();
     }
 
     @Test
