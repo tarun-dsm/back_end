@@ -1,5 +1,7 @@
 package toyproject.syxxn.back_end;
 
+import org.aspectj.lang.annotation.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +15,6 @@ import toyproject.syxxn.back_end.entity.account.Account;
 import java.math.BigDecimal;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
@@ -42,6 +43,11 @@ public class ProfileControllerTest extends BaseTest {
         createReview(account2, account1, BigDecimal.valueOf(0.2));
     }
 
+    @AfterEach
+    public void deleteAll() {
+        deleteEvery();
+    }
+
     @WithMockUser(value = "test1@naver.com", password = "asdf123@")
     @Test
     public void getProfile() throws Exception {
@@ -52,7 +58,7 @@ public class ProfileControllerTest extends BaseTest {
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void getProfile_other() throws Exception {
-        mvc.perform(get("/profile/"+account1.getId())
+        mvc.perform(get("/profile/"+account2.getId())
         ).andExpect(status().isOk());
     }
 
