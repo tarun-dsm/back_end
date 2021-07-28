@@ -3,6 +3,8 @@ package toyproject.syxxn.back_end.service.profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import toyproject.syxxn.back_end.dto.response.ProfileResponse;
+import toyproject.syxxn.back_end.dto.response.ProfileReviewDto;
+import toyproject.syxxn.back_end.dto.response.ProfileReviewResponse;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
@@ -13,6 +15,7 @@ import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -22,12 +25,9 @@ public class ProfileServiceImpl implements ProfileService {
     private final AccountRepository accountRepository;
     private final ReviewRepository reviewRepository;
 
-    private final AuthenticationFacade authenticationFacade;
-
     @Override
     public ProfileResponse getProfile(Integer accountId) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(UserNotFoundException::new);
+        Account account = getAccount(accountId);
         List<Review> reviews = reviewRepository.findAllByTarget(account);
         BigDecimal avgGrade = getAvg(reviews);
 
@@ -44,6 +44,32 @@ public class ProfileServiceImpl implements ProfileService {
                 .experience(experience)
                 .isLocationConfirm(account.getIsLocationConfirm())
                 .build();
+    }
+
+    @Override
+    public ProfileReviewResponse getReviews(Integer accountId) {
+        Account account = getAccount(accountId);
+        List<Review> reviews = reviewRepository.findAllByTarget(account);
+        List<ProfileReviewDto> reviewDto = new ArrayList<>();
+
+        for (Review review : reviews) {
+            reviewDto.add(
+                    ProfileReviewDto.builder()
+                            .id(review.getId())
+                            .nickName(review.getWriter().getNickname())
+                            .grade(review.getGrade())
+                            .comment(review.getComment())
+                            .createdAt(review.getCreatedAt())
+                            .build()
+            );
+        }
+
+        return new ProfileReviewResponse(reviewDto);
+    }
+
+    private Account getAccount(Integer accountId) {
+        return accountRepository.findById(accountId)
+                .orElseThrow(UserNotFoundException::new);
     }
 
     private static BigDecimal getAvg(List<Review> reviews) {
