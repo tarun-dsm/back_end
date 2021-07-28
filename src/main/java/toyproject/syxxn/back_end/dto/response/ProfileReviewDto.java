@@ -16,7 +16,7 @@ public class ProfileReviewDto {
 
     private Integer id;
 
-    private String nickName;
+    private String nickname;
 
     private BigDecimal grade;
 

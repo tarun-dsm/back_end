@@ -56,7 +56,7 @@ public class ProfileServiceImpl implements ProfileService {
             reviewDto.add(
                     ProfileReviewDto.builder()
                             .id(review.getId())
-                            .nickName(review.getWriter().getNickname())
+                            .nickname(review.getWriter().getNickname())
                             .grade(review.getGrade())
                             .comment(review.getComment())
                             .createdAt(review.getCreatedAt())
