@@ -25,8 +25,8 @@ import java.util.List;
 public class ApplicationServiceImpl implements ApplicationService {
 
     private final AccountRepository accountRepository;
-    private final PostRepository postRepository;
     private final ApplicationRepository applicationRepository;
+    private final PostRepository postRepository;
 
     private final AuthenticationFacade authenticationFacade;
 

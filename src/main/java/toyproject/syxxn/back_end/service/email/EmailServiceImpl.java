@@ -21,13 +21,12 @@ import java.util.Random;
 @Service
 public class EmailServiceImpl implements EmailService {
 
-    private static final Random RANDOM = new Random();
+    private final AccountRepository accountRepository;
+    private final VerifyNumberRepository verifyNumberRepository;
 
     private final JavaMailSender javaMailSender;
 
-    private final AccountRepository accountRepository;
-
-    private final VerifyNumberRepository verifyNumberRepository;
+    private static final Random RANDOM = new Random();
 
     @Async
     @Transactional
