@@ -242,7 +242,7 @@ public class ApplicationControllerTest {
     @WithMockUser(value = "test1@naver.com", password = "asdf123@")
     @Test
     public void getApplications() throws Exception {
-        mvc.perform(get("/application/post/1"))
+        mvc.perform(get("/application/post/"+postId))
                 .andExpect(status().isOk()).andDo(print());
     }
 
