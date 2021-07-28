@@ -50,7 +50,7 @@ public class ReviewControllerTest extends BaseTest{
         application = createApplication(account1, account2,true, true, "2021-05-22");
         createApplication(account1, account2,true, false, "2021-05-22");
 
-        review = createReview(account1, account2);
+        review = createReview(account1, account2, BigDecimal.valueOf(1.2));
     }
 
     @AfterEach
@@ -137,7 +137,7 @@ public class ReviewControllerTest extends BaseTest{
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void writeReview_409() throws Exception {
-        Integer id = createReview(account1, account2).getApplication().getId();
+        Integer id = createReview(account1, account2, BigDecimal.valueOf(5.0)).getApplication().getId();
         ReviewRequest request = createRequest();
 
         mvc.perform(post("/review/"+id)
@@ -149,7 +149,7 @@ public class ReviewControllerTest extends BaseTest{
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void deleteReview() throws Exception {
-        Integer id = createReview(account1, account2).getId();
+        Integer id = createReview(account1, account2, BigDecimal.valueOf(3.2)).getId();
 
         mvc.perform(delete("/review/"+id)
         ).andExpect(status().isOk());

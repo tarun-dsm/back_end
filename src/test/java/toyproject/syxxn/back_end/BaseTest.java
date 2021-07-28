@@ -126,13 +126,13 @@ public class BaseTest {
         );
     }
 
-    public Review createReview(Account account1, Account account2) {
+    public Review createReview(Account account1, Account account2, BigDecimal grade) {
         return reviewRepository.save(
                 Review.builder()
                         .target(account1)
                         .writer(account2)
                         .application(createApplication(account1, account2, true, true, "2021-05-22"))
-                        .grade(BigDecimal.valueOf(4.5))
+                        .grade(grade)
                         .comment("대체 왜 ratingScore 안에는 값이 안들어가는건지 모르겠음 어이없어")
                         .build()
         );
