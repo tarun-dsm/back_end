@@ -21,9 +21,7 @@ import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
     private final JwtTokenProvider jwtTokenProvider;
-
-    private final MyBasicAuthenticationEntryPoint myBasicAuthenticationEntryPoint;
-
+    
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -42,8 +40,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .antMatchers(HttpMethod.POST,"/email").permitAll()
                 .antMatchers("/auth").permitAll()
                 .anyRequest().authenticated()
-                .and()
-                    .httpBasic().authenticationEntryPoint(myBasicAuthenticationEntryPoint)
                 .and()
                     .apply(new JwtConfigure(jwtTokenProvider));
     }

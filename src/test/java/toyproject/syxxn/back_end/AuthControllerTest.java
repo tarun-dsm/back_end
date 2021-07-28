@@ -26,6 +26,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackEndApplication.class)
 @ActiveProfiles("test")
@@ -49,6 +51,7 @@ public class AuthControllerTest {
     private PasswordEncoder encoder;
 
     String refreshToken;
+    RefreshToken refreshTokenEntity;
 
     @BeforeEach
     public void setUp() {
@@ -78,6 +81,13 @@ public class AuthControllerTest {
                         .build()
         ).getRefreshToken();
 
+        refreshTokenEntity = refreshTokenRepository.save(
+                RefreshToken.builder()
+                        .accountId(account.getId())
+                        .refreshExp(1234L)
+                        .refreshToken(jwtTokenProvider.generateRefreshToken(account.getId()))
+                        .build()
+        );
     }
 
     @AfterEach
@@ -128,6 +138,13 @@ public class AuthControllerTest {
         mvc.perform(put("/auth")
                 .header("X-Refresh-Token","asdf.asdf.asdf")
         ).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void test() {
+        assertNotNull(refreshTokenEntity.getRefreshToken());
+        assertNotNull(refreshTokenEntity.getRefreshExp());
+        assertNotNull(refreshTokenEntity.getAccountId());
     }
 
 }
