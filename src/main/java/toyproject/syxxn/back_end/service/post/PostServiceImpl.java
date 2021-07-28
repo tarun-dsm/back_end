@@ -36,7 +36,7 @@ public class PostServiceImpl implements PostService {
     private final AuthenticationFacade authenticationFacade;
 
     @Value("${file.path}")
-    private final String path;
+    private String path;
 
     @Override
     public void deletePost(Integer postId) {

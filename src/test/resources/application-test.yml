@@ -33,3 +33,6 @@ auth:
     exp:
       access: 2021
       refresh: 20210629
+
+file:
+  path: D://
