@@ -13,8 +13,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class ProfileResponse {
 
-    private Boolean isMyself;
-
     private String nickname;
 
     private Integer age;

@@ -3,6 +3,7 @@ package toyproject.syxxn.back_end.service.profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import toyproject.syxxn.back_end.dto.response.ProfileResponse;
+import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.review.Review;
@@ -30,21 +31,17 @@ public class ProfileServiceImpl implements ProfileService {
         List<Review> reviews = reviewRepository.findAllByTarget(account);
         BigDecimal avgGrade = getAvg(reviews);
 
-        boolean isMyself = false;
-
-        if (account.getEmail().equals(authenticationFacade.getUserEmail())) {
-            isMyself = true;
-        }
+        String experience = account.getExperience() == null ? "": account.getExperience();
+        String sex = account.getSex().equals(Sex.MALE)?"남성":"여성";
 
         return ProfileResponse.builder()
-                .isMyself(isMyself)
                 .nickname(account.getNickname())
                 .age(account.getAge())
-                .sex(account.getSex().toString())
+                .sex(sex)
                 .avgGrade(avgGrade)
                 .rating(getRating(avgGrade.doubleValue()))
                 .isExperienceRasingPet(account.getIsExperienceRasingPet())
-                .experience(account.getExperience())
+                .experience(experience)
                 .isLocationConfirm(account.getIsLocationConfirm())
                 .build();
     }
@@ -58,13 +55,13 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     private static String getRating(Double avgGrade) {
-        if (avgGrade.compareTo(5.0) > 0) {
+        if (avgGrade.compareTo(4.5) > 0) {
             return "1등급";
-        } else if (avgGrade.compareTo(4.0) > 0) {
+        } else if (avgGrade.compareTo(3.5) > 0) {
             return "2등급";
-        } else if (avgGrade.compareTo(3.0) > 0) {
+        } else if (avgGrade.compareTo(2.5) > 0) {
             return "3등급";
-        } else if (avgGrade.compareTo(2.0) > 0) {
+        } else if (avgGrade.compareTo(1.5) > 0) {
             return "4등급";
         }
         return "5등급";
