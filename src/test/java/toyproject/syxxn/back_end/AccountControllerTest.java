@@ -25,6 +25,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackEndApplication.class)
 @ActiveProfiles("test")
@@ -44,13 +46,15 @@ public class AccountControllerTest {
     @Autowired
     private PasswordEncoder encoder;
 
+    Account account;
+
     @BeforeEach
     public void setUp() {
         mvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .build();
 
-        accountRepository.save(
+        account = accountRepository.save(
                 Account.builder()
                         .email("adsf1234@naver.com")
                         .password(encoder.encode("asdf1234"))
@@ -190,6 +194,19 @@ public class AccountControllerTest {
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void accountTest() {
+        assertEquals(18, (int) account.getAge());
+        assertFalse(account.getIsExperienceRasingPet());
+        assertNotNull(account.getSex());
+        assertNull(account.getExperience());
+        assertNotNull(account.getAddress());
+        assertNull(account.getPosts());
+        assertNull(account.getApplications());
+        assertNull(account.getWrittenReview());
+        assertNull(account.getReviews());
     }
 
 }

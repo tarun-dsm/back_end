@@ -34,6 +34,8 @@ import java.time.LocalDate;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @ActiveProfiles("test")
@@ -205,7 +207,7 @@ public class ReviewControllerTest {
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void writeReview_409() throws Exception {
-        Integer id = createReview_ApplicationId();
+        Integer id = createReview().getApplication().getId();
         ReviewRequest request = createRequest();
 
         mvc.perform(post("/review/"+id)
@@ -217,7 +219,7 @@ public class ReviewControllerTest {
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void deleteReview() throws Exception {
-        Integer id = createReview_ReviewId();
+        Integer id = createReview().getId();
 
         mvc.perform(delete("/review/"+id)
         ).andExpect(status().isOk());
@@ -226,7 +228,7 @@ public class ReviewControllerTest {
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void deleteReview_404() throws Exception {
-        createReview_ReviewId();
+        createReview();
 
         mvc.perform(delete("/review/456")
         ).andExpect(status().isNotFound());
@@ -235,7 +237,7 @@ public class ReviewControllerTest {
     @WithMockUser(value = "test3@naver.com", password = "asdf123@")
     @Test
     public void deleteReview_404_() throws Exception {
-        Integer id = createReview_ReviewId();
+        Integer id = createReview().getId();
 
         mvc.perform(delete("/review/"+id)
         ).andExpect(status().isNotFound());
@@ -244,7 +246,7 @@ public class ReviewControllerTest {
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void updateReview() throws Exception {
-        Integer id = createReview_ReviewId();
+        Integer id = createReview().getId();
         ReviewRequest request = createRequest();
 
         mvc.perform(put("/review/"+id)
@@ -256,7 +258,7 @@ public class ReviewControllerTest {
     @WithMockUser(value = "test3@naver.com", password = "asdf123@")
     @Test
     public void updateReview_401() throws Exception {
-        Integer id = createReview_ReviewId();
+        Integer id = createReview().getId();
         ReviewRequest request = createRequest();
 
         mvc.perform(put("/review/"+id)
@@ -268,13 +270,24 @@ public class ReviewControllerTest {
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void updateReview_404() throws Exception {
-        createReview_ReviewId();
+        createReview();
         ReviewRequest request = createRequest();
 
         mvc.perform(put("/review/4561")
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void reviewTest() {
+        Review review = createReview();
+        assertNotNull(review.getId());
+        assertNotNull(review.getGrade());
+        assertNotNull(review.getComment());
+        assertNotNull(review.getWriter());
+        assertNotNull(review.getTarget());
+        assertNotNull(review.getApplication());
     }
 
     private ReviewRequest createRequest() {
@@ -284,7 +297,7 @@ public class ReviewControllerTest {
                 .build();
     }
 
-    private Integer createReview_ApplicationId() {
+    private Review createReview() {
         return reviewRepository.save(
                 Review.builder()
                         .target(account)
@@ -293,19 +306,7 @@ public class ReviewControllerTest {
                         .grade(BigDecimal.valueOf(4.5))
                         .comment("대체 왜 ratingScore 안에는 값이 안들어가는건지 모르겠음 어이없어")
                         .build()
-        ).getApplication().getId();
-    }
-
-    private Integer createReview_ReviewId() {
-        return reviewRepository.save(
-                Review.builder()
-                        .target(account)
-                        .writer(account2)
-                        .application(createApplication(account2, true, true))
-                        .grade(BigDecimal.valueOf(4.5))
-                        .comment("대체 왜 ratingScore 안에는 값이 안들어가는건지 모르겠음 어이없어")
-                        .build()
-        ).getId();
+        );
     }
 
     private Application createApplication(Account account, boolean isEnd, boolean isAccepted) {
