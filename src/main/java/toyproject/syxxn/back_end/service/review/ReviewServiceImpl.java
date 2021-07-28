@@ -37,7 +37,7 @@ public class ReviewServiceImpl implements ReviewService {
                     throw new UserAlreadyWrittenReviewException();
                 });
 
-        if (!isApplicationClosed(application.getPost())) {
+        if (!isReviewablePeriod(application.getPost())) {
             throw new NotReviewablePeriodException();
         }
 
@@ -87,8 +87,8 @@ public class ReviewServiceImpl implements ReviewService {
                 .orElseThrow(UserNotUnauthenticatedException::new);
     }
 
-    private boolean isApplicationClosed(Post post) {
-        return (LocalDate.now().isAfter(post.getApplicationEndDate()) || post.getIsEnd());
+    private boolean isReviewablePeriod(Post post) {
+        return (LocalDate.now().isAfter(post.getApplicationEndDate()) && post.getIsApplicationEnd());
     }
 
 }

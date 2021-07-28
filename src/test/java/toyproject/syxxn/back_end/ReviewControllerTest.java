@@ -64,6 +64,7 @@ public class ReviewControllerTest {
     Account account;
     Account account2;
     Application application;
+    Application notDoneApplication;
 
     @BeforeEach
     public void setUp() {
@@ -127,9 +128,9 @@ public class ReviewControllerTest {
                         .build()
         );
 
-        createApplication(account2,false, false);
-        application = createApplication(account2,true, true);
-        createApplication(account2,true, false);
+        notDoneApplication = createApplication(account2,true, true, "2021-10-22");
+        application = createApplication(account2,true, true, "2021-05-22");
+        createApplication(account2,true, false, "2021-05-22");
     }
 
     @AfterEach
@@ -159,6 +160,17 @@ public class ReviewControllerTest {
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andExpect(status().isCreated());
+    }
+
+    @WithMockUser(value = "test2@naver.com", password = "asdf123@")
+    @Test
+    public void writeReview_400() throws Exception {
+        ReviewRequest request = createRequest();
+
+        mvc.perform(post("/review/"+notDoneApplication.getId())
+                .content(new ObjectMapper().writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        ).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -302,35 +314,35 @@ public class ReviewControllerTest {
                 Review.builder()
                         .target(account)
                         .writer(account2)
-                        .application(createApplication(account2, true, true))
+                        .application(createApplication(account2, true, true, "2021-05-22"))
                         .grade(BigDecimal.valueOf(4.5))
                         .comment("대체 왜 ratingScore 안에는 값이 안들어가는건지 모르겠음 어이없어")
                         .build()
         );
     }
 
-    private Application createApplication(Account account, boolean isEnd, boolean isAccepted) {
+    private Application createApplication(Account account, boolean isEnd, boolean isAccepted, String endDate) {
         return applicationRepository.save(
                 Application.builder()
-                        .post(createPost(isEnd))
+                        .post(createPost(isEnd, endDate))
                         .account(account)
                         .isAccepted(isAccepted)
                         .build()
         );
     }
 
-    private Post createPost(boolean isEnd) {
+    private Post createPost(boolean isEnd, String endDate) {
         return postRepository.save(
                 Post.builder()
                         .account(account)
                         .title("제목을 까먹었지 뭐야..")
-                        .applicationEndDate(LocalDate.of(2021,10,22))
+                        .applicationEndDate(LocalDate.parse(endDate))
                         .protectionStartDate(LocalDate.of(2021,10,24))
                         .protectionEndDate(LocalDate.of(2021,10,29))
                         .contactInfo("010-0000-0000")
                         .description("랄랄라")
                         .isUpdated(false)
-                        .isEnd(isEnd)
+                        .isApplicationEnd(isEnd)
                         .build()
         );
     }
