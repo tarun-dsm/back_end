@@ -39,7 +39,7 @@ public class ApplicationControllerTest extends BaseTest {
         Post post = createPost(account1, false, "2021-10-10");
         postId = post.getId();
 
-        application = createApplication(account1, account2,false, false, "2021-05-10");
+        application = createApplication(account1, account2,false, false, "2021-10-10");
         createApplication(account1, account2,false, false, "2021-08-10");
     }
 
