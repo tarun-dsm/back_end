@@ -11,6 +11,7 @@ import toyproject.syxxn.back_end.entity.application.Application;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Getter
 @Builder
@@ -23,7 +24,7 @@ public class Review extends BaseCreatedAtEntity {
     private Integer id;
 
     @NotNull
-    private Double ratingScore;
+    private BigDecimal grade;
 
     @NotNull
     private String comment;
@@ -42,5 +43,10 @@ public class Review extends BaseCreatedAtEntity {
     @JsonBackReference
     @JoinColumn(name = "application_id", nullable = false)
     private Application application;
+
+    public void update(BigDecimal grade, String comment) {
+        this.grade = grade;
+        this.comment = comment;
+    }
 
 }

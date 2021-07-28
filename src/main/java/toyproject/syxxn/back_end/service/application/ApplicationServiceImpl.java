@@ -146,7 +146,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private Account getAccount() {
         return accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .filter(Account::getIsLocationConfirm)
-                .orElseThrow(UserNotAccessibleException::new);
+                .orElseThrow(UserNotUnauthenticatedException::new);
     }
 
     private boolean isApplicationClosed(Post post) {
