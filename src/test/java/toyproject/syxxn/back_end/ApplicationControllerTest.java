@@ -149,7 +149,7 @@ public class ApplicationControllerTest {
     @Test
     public void protectionApplication_400_2() throws Exception {
         Post post = createPost(true);
-        mvc.perform(post("/application/"+post.getIsEnd()))
+        mvc.perform(post("/application/"+post.getIsApplicationEnd()))
                 .andExpect(status().isBadRequest());
     }
 
@@ -276,7 +276,7 @@ public class ApplicationControllerTest {
                         .contactInfo("010-0000-0000")
                         .description("랄랄라")
                         .isUpdated(false)
-                        .isEnd(isEnd)
+                        .isApplicationEnd(isEnd)
                         .build()
         );
     }

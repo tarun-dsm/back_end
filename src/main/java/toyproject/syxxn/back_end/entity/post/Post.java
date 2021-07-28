@@ -42,7 +42,7 @@ public class Post extends BaseCreatedAtEntity {
 
     @NotNull
     @Column(columnDefinition = "bit(1)")
-    private Boolean isEnd;
+    private Boolean isApplicationEnd;
 
     @NotNull
     private String description;
@@ -73,7 +73,7 @@ public class Post extends BaseCreatedAtEntity {
     private List<Application> applications;
 
     public void isEnd() {
-        this.isEnd = true;
+        this.isApplicationEnd = true;
     }
 
 }

@@ -110,7 +110,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                             .isAccepted(application.getIsAccepted())
                             .postId(application.getPost().getId())
                             .postName(application.getPost().getTitle())
-                            .isEnd(application.getPost().getIsEnd())
+                            .isEnd(application.getPost().getIsApplicationEnd())
                             .build()
             );
         }
@@ -123,7 +123,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Account account = getAccount();
         Post post = postRepository.findById(postId)
                 .filter(p -> p.getAccount().getId().equals(account.getId()))
-                .filter(p -> !p.getIsEnd())
+                .filter(p -> !p.getIsApplicationEnd())
                 .orElseThrow(PostNotFoundException::new);
 
         List<Application> applications = applicationRepository.findAllByPost(post);
@@ -150,7 +150,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private boolean isApplicationClosed(Post post) {
-        return (LocalDate.now().isAfter(post.getApplicationEndDate()) || post.getIsEnd());
+        return (LocalDate.now().isAfter(post.getApplicationEndDate()) || post.getIsApplicationEnd());
     }
 
 }
