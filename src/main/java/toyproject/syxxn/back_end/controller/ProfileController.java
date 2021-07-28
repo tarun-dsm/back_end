@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import toyproject.syxxn.back_end.dto.response.PostResponse;
 import toyproject.syxxn.back_end.dto.response.ProfileResponse;
 import toyproject.syxxn.back_end.dto.response.ProfileReviewResponse;
 import toyproject.syxxn.back_end.service.profile.ProfileService;
@@ -21,9 +22,14 @@ public class ProfileController {
         return profileService.getProfile(accountId);
     }
 
-    @GetMapping("/review/{id}")
+    @GetMapping("/reviews/{id}")
     public ProfileReviewResponse getReviews(@PathVariable("id") Integer accountId) {
         return profileService.getReviews(accountId);
+    }
+
+    @GetMapping("/posts/{id}")
+    public PostResponse getPosts(@PathVariable("id") Integer accountId) {
+        return profileService.getPosts(accountId);
     }
 
 }

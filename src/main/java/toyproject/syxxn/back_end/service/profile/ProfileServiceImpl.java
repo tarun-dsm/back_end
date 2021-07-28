@@ -2,16 +2,15 @@ package toyproject.syxxn.back_end.service.profile;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import toyproject.syxxn.back_end.dto.response.ProfileResponse;
-import toyproject.syxxn.back_end.dto.response.ProfileReviewDto;
-import toyproject.syxxn.back_end.dto.response.ProfileReviewResponse;
+import toyproject.syxxn.back_end.dto.response.*;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
+import toyproject.syxxn.back_end.entity.post.Post;
+import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.entity.review.Review;
 import toyproject.syxxn.back_end.entity.review.ReviewRepository;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
-import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -24,6 +23,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     private final AccountRepository accountRepository;
     private final ReviewRepository reviewRepository;
+    private final PostRepository postRepository;
 
     @Override
     public ProfileResponse getProfile(Integer accountId) {
@@ -65,6 +65,28 @@ public class ProfileServiceImpl implements ProfileService {
         }
 
         return new ProfileReviewResponse(reviewDto);
+    }
+
+    @Override
+    public PostResponse getPosts(Integer accountId) {
+        Account account = getAccount(accountId);
+
+        List<Post> posts = postRepository.findAllByAccountOrderByCreatedAtDesc(account);
+        List<PostDto> postDto = new ArrayList<>();
+
+        for (Post post : posts) {
+            postDto.add(
+                    PostDto.builder()
+                            .id(post.getId())
+                            .title(post.getTitle())
+                            .nickname(account.getNickname())
+                            .firstImagePath(post.getPetImages().get(0).getPath())
+                            .createdAt(post.getCreatedAt())
+                            .build()
+            );
+        }
+
+        return new PostResponse(postDto);
     }
 
     private Account getAccount(Integer accountId) {
