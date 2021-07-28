@@ -17,6 +17,7 @@ import toyproject.syxxn.back_end.entity.refreshtoken.RefreshToken;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshTokenRepository;
 import toyproject.syxxn.back_end.exception.InvalidTokenException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
+import toyproject.syxxn.back_end.security.auth.AuthDetails;
 import toyproject.syxxn.back_end.security.auth.AuthDetailsService;
 import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
@@ -46,12 +47,12 @@ public class SecurityTest {
     @Autowired
     private PasswordEncoder encoder;
 
-    Integer accountId;
+    Account account;
     String refreshToken;
 
     @BeforeEach
     public void setUp() {
-        accountId = accountRepository.save(
+        account = accountRepository.save(
                 Account.builder()
                         .email("test1@naver.com")
                         .password(encoder.encode("asdf123@"))
@@ -63,13 +64,13 @@ public class SecurityTest {
                         .address("경기도 서울시 구성동")
                         .isLocationConfirm(true)
                         .build()
-        ).getId();
+        );
 
         refreshToken = refreshTokenRepository.save(
                 RefreshToken.builder()
-                        .accountId(accountId)
+                        .accountId(account.getId())
                         .refreshExp(12134L)
-                        .refreshToken(jwtTokenProvider.generateRefreshToken(accountId))
+                        .refreshToken(jwtTokenProvider.generateRefreshToken(account.getId()))
                         .build()
         ).getRefreshToken();
     }
@@ -87,8 +88,8 @@ public class SecurityTest {
 
     @Test
     public void generatedToken() {
-        assertNotNull(jwtTokenProvider.generateAccessToken(accountId));
-        assertNotNull(jwtTokenProvider.generateRefreshToken(accountId));
+        assertNotNull(jwtTokenProvider.generateAccessToken(account.getId()));
+        assertNotNull(jwtTokenProvider.generateRefreshToken(account.getId()));
     }
 
     @Test
@@ -99,8 +100,21 @@ public class SecurityTest {
 
     @Test
     public void loadUserByUsername() {
-        assertNotNull(authDetailsService.loadUserByUsername(accountId.toString()));
+        assertNotNull(authDetailsService.loadUserByUsername(account.getId().toString()));
         assertThrows(UserNotFoundException.class, () -> authDetailsService.loadUserByUsername("99999"));
+    }
+
+    @WithMockUser(value = "test1@naver.com", password = "asdf123@")
+    @Test
+    public void authDetailsTest() {
+        AuthDetails authDetails = new AuthDetails(account);
+        assertTrue(authDetails.isEnabled());
+        assertTrue(authDetails.isAccountNonExpired());
+        assertTrue(authDetails.isAccountNonLocked());
+        assertTrue(authDetails.isCredentialsNonExpired());
+        assertNotNull(authDetails.getUsername());
+        assertNotNull(authDetails.getPassword());
+        assertNotNull(authDetails.getAuthorities());
     }
 
 }

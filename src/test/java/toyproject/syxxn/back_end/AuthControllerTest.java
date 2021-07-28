@@ -50,8 +50,7 @@ public class AuthControllerTest {
     @Autowired
     private PasswordEncoder encoder;
 
-    String refreshToken;
-    RefreshToken refreshTokenEntity;
+    RefreshToken refreshToken;
 
     @BeforeEach
     public void setUp() {
@@ -74,14 +73,6 @@ public class AuthControllerTest {
         );
 
         refreshToken = refreshTokenRepository.save(
-                RefreshToken.builder()
-                        .accountId(account.getId())
-                        .refreshExp(1234L)
-                        .refreshToken(jwtTokenProvider.generateRefreshToken(account.getId()))
-                        .build()
-        ).getRefreshToken();
-
-        refreshTokenEntity = refreshTokenRepository.save(
                 RefreshToken.builder()
                         .accountId(account.getId())
                         .refreshExp(1234L)
@@ -129,7 +120,7 @@ public class AuthControllerTest {
     @Test
     public void tokenRefresh() throws Exception {
         mvc.perform(put("/auth")
-                .header("X-Refresh-Token",refreshToken)
+                .header("X-Refresh-Token",refreshToken.getRefreshToken())
         ).andExpect(status().isNoContent());
     }
 
@@ -142,9 +133,9 @@ public class AuthControllerTest {
 
     @Test
     public void test() {
-        assertNotNull(refreshTokenEntity.getRefreshToken());
-        assertNotNull(refreshTokenEntity.getRefreshExp());
-        assertNotNull(refreshTokenEntity.getAccountId());
+        assertNotNull(refreshToken.getRefreshToken());
+        assertNotNull(refreshToken.getRefreshExp());
+        assertNotNull(refreshToken.getAccountId());
     }
 
 }
