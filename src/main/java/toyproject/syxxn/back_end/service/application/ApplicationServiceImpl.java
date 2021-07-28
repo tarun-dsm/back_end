@@ -44,11 +44,10 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new AfterApplicationClosedException();
         }
 
-        applicationRepository.findByAccount(account)
-                .filter(application -> application.getPost().getId().equals(post.getId()))
+        applicationRepository.findByAccountAndPost(account, post)
                 .ifPresent(application -> {
                     throw new UserAlreadyApplicationException();
-        });
+                });
 
         applicationRepository.save(
                Application.builder()

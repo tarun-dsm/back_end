@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface ApplicationRepository extends JpaRepository<Application, Integer> {
-    Optional<Application> findByAccount(Account account);
+    Optional<Application> findByAccountAndPost(Account account, Post post);
     List<Application> findAllByAccount(Account account);
     List<Application> findAllByPost(Post post);
 }
