@@ -6,6 +6,10 @@ spring:
     url: jdbc:h2:mem:test
     username: test
     password: 1234
+  servlet:
+    multipart:
+      max-file-size: 512MB
+      max-request-size: 512MB
   jpa:
     database: h2
     generate-ddl: true

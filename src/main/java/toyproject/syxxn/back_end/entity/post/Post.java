@@ -41,15 +41,15 @@ public class Post extends BaseCreatedAtEntity {
     private LocalDate applicationEndDate;
 
     @NotNull
-    @Column(columnDefinition = "bit(1)")
-    private Boolean isApplicationEnd;
-
-    @NotNull
     private String description;
 
     @NotNull
     @Column(length = 100)
     private String contactInfo;
+
+    @NotNull
+    @Column(columnDefinition = "bit(1)")
+    private Boolean isApplicationEnd;
 
     @NotNull
     @Column(columnDefinition = "bit(1)")
