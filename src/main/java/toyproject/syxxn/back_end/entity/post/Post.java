@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import toyproject.syxxn.back_end.dto.request.PostDto;
+import toyproject.syxxn.back_end.dto.request.PostRequest;
 import toyproject.syxxn.back_end.entity.BaseCreatedAtEntity;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.application.Application;
@@ -74,6 +76,16 @@ public class Post extends BaseCreatedAtEntity {
 
     public void isEnd() {
         this.isApplicationEnd = true;
+    }
+
+    public void update(PostDto post) {
+        this.title = post.getTitle();
+        this.protectionStartDate = post.getProtectionStartDate();
+        this.protectionEndDate = post.getProtectionEndDate();
+        this.applicationEndDate = post.getApplicationEndDate();
+        this.description = post.getDescription();
+        this.contactInfo = post.getContactInfo();
+        this.isUpdated = true;
     }
 
 }
