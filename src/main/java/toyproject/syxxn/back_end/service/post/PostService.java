@@ -8,4 +8,5 @@ import java.util.List;
 public interface PostService {
     void deletePost(Integer postId);
     Integer writePost(List<MultipartFile> files, PostRequest request);
+    Integer updatePost(Integer postId, List<MultipartFile> files, PostRequest request);
 }

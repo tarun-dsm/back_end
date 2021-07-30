@@ -88,6 +88,24 @@ public class PostServiceImpl implements PostService {
         return post.getId();
     }
 
+    @Override
+    public Integer updatePost(Integer postId, List<MultipartFile> files, PostRequest request) {
+        Account account = getAccount();
+        Post post = postRepository.findById(postId)
+                .filter(p -> p.getAccount().getId().equals(account.getId()))
+                .orElseThrow(PostNotFoundException::new);
+
+        post.update(request.getPost());
+        post.getPetInfo().update(request.getPet());
+        postRepository.save(post);
+        petInfoRepository.save(post.getPetInfo());
+
+        petImageRepository.deleteAllByPost(post);
+        saveFile(files, post);
+
+        return null;
+    }
+
     private Account getAccount() {
         return accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .filter(Account::getIsLocationConfirm)
