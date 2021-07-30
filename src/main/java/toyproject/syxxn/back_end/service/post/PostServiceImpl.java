@@ -52,7 +52,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     @Override
     public Integer writePost(List<MultipartFile> files, PostRequest request) {
-        Account acocunt = getAccount();
+        Account account = getAccount();
         PostDto postDto = request.getPost();
         PetDto petDto = request.getPet();
 
@@ -64,7 +64,7 @@ public class PostServiceImpl implements PostService {
                 Post.builder()
                         .title(postDto.getTitle())
                         .description(postDto.getDescription())
-                        .account(acocunt)
+                        .account(account)
                         .protectionStartDate(postDto.getProtectionStartDate())
                         .protectionEndDate(postDto.getProtectionEndDate())
                         .applicationEndDate(postDto.getApplicationEndDate())
@@ -83,6 +83,18 @@ public class PostServiceImpl implements PostService {
                         .build()
         );
 
+        saveFile(files, post);
+
+        return post.getId();
+    }
+
+    private Account getAccount() {
+        return accountRepository.findByEmail(authenticationFacade.getUserEmail())
+                .filter(Account::getIsLocationConfirm)
+                .orElseThrow(UserNotUnauthenticatedException::new);
+    }
+
+    private void saveFile(List<MultipartFile> files, Post post) {
         try {
             for (MultipartFile file : files) {
                 if (file.getOriginalFilename() == null) {
@@ -107,16 +119,6 @@ public class PostServiceImpl implements PostService {
             e.printStackTrace();
             throw new FileSaveFailedException();
         }
-
-        return post.getId();
     }
-
-    private Account getAccount() {
-        return accountRepository.findByEmail(authenticationFacade.getUserEmail())
-                .filter(Account::getIsLocationConfirm)
-                .orElseThrow(UserNotUnauthenticatedException::new);
-    }
-
-
 
 }
