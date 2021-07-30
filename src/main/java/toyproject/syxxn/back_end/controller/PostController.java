@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
+import toyproject.syxxn.back_end.dto.response.PostDetailsResponse;
 import toyproject.syxxn.back_end.service.post.PostService;
 
 import java.util.List;
@@ -34,6 +35,11 @@ public class PostController {
                               @RequestParam("files") List<MultipartFile> files,
                              @RequestBody PostRequest request) {
         return postService.updatePost(postId, files, request);
+    }
+
+    @GetMapping("/{id}")
+    PostDetailsResponse getPostDetails(@PathVariable("id") Integer postId) {
+        return postService.getPostDetails(postId);
     }
 
 }

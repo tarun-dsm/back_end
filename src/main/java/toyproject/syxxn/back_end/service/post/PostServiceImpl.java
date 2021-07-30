@@ -8,6 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 import toyproject.syxxn.back_end.dto.request.PetDto;
 import toyproject.syxxn.back_end.dto.request.PostDto;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
+import toyproject.syxxn.back_end.dto.response.PetDetailsDto;
+import toyproject.syxxn.back_end.dto.response.PostDetailsDto;
+import toyproject.syxxn.back_end.dto.response.PostDetailsResponse;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
@@ -22,6 +25,7 @@ import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -104,6 +108,47 @@ public class PostServiceImpl implements PostService {
         saveFile(files, post);
 
         return null;
+    }
+
+    @Override
+    public PostDetailsResponse getPostDetails(Integer postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(PostNotFoundException::new);
+
+        PetInfo petInfo = post.getPetInfo();
+
+        List<PetImage> petImages = petImageRepository.findAllByPost(post);
+        List<String> filePaths = new ArrayList<>();
+
+        for (PetImage petImage : petImages) {
+            filePaths.add(petImage.getPath());
+        }
+
+        PostDetailsDto postDetailsDto = PostDetailsDto.builder()
+                .title(post.getTitle())
+                .description(post.getDescription())
+                .protectionStartDate(post.getProtectionStartDate())
+                .protectionEndDate(post.getProtectionEndDate())
+                .applicationEndDate(post.getApplicationEndDate())
+                .contactInfo(post.getContactInfo())
+                .createdAt(post.getCreatedAt())
+                .isApplicationEnd(post.getIsApplicationEnd())
+                .isUpdated(post.getIsUpdated())
+                .build();
+
+        PetDetailsDto petDetailsDto = PetDetailsDto.builder()
+                .petName(petInfo.getPetName())
+                .petSpecies(petInfo.getPetSpecies())
+                .petSex(petInfo.getPetSex().toString())
+                .filePaths(filePaths)
+                .build();
+
+
+        return PostDetailsResponse.builder()
+                .nickname(post.getAccount().getNickname())
+                .pet(petDetailsDto)
+                .post(postDetailsDto)
+                .build();
     }
 
     private Account getAccount() {
