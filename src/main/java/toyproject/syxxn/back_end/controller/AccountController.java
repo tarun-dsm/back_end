@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import toyproject.syxxn.back_end.dto.request.CoordinatesRequest;
 import toyproject.syxxn.back_end.dto.request.SignUpRequest;
 import toyproject.syxxn.back_end.dto.response.TokenResponse;
 import toyproject.syxxn.back_end.service.account.AccountService;
@@ -34,6 +35,12 @@ public class AccountController {
     @GetMapping("/nickname/{nickname}")
     public void confirmNickname(@PathVariable @Length(min = 2, max = 10) String nickname) {
         accountService.confirmNickname(nickname);
+    }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void saveCoordinate(@RequestBody @Valid CoordinatesRequest request) {
+        accountService.saveCoordinate(request);
     }
 
 }

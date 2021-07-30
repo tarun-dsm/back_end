@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import toyproject.syxxn.back_end.dto.request.CoordinatesRequest;
 import toyproject.syxxn.back_end.dto.request.SignUpRequest;
 import toyproject.syxxn.back_end.dto.response.TokenResponse;
 import toyproject.syxxn.back_end.entity.account.Account;
@@ -16,7 +17,9 @@ import toyproject.syxxn.back_end.entity.verify.VerifyNumber;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumberRepository;
 import toyproject.syxxn.back_end.exception.UserEmailAlreadyExistsException;
 import toyproject.syxxn.back_end.exception.UserNicknameAlreadyExistsException;
+import toyproject.syxxn.back_end.exception.UserNotAccessibleException;
 import toyproject.syxxn.back_end.exception.UserNotUnauthenticatedException;
+import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 
 import java.math.BigDecimal;
@@ -30,6 +33,7 @@ public class AccountServiceImpl implements AccountService{
     private final VerifyNumberRepository verifyNumberRepository;
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final AuthenticationFacade authenticationFacade;
 
     private final PasswordEncoder encoder;
 
@@ -82,6 +86,15 @@ public class AccountServiceImpl implements AccountService{
     public void confirmNickname(String nickname) {
         accountRepository.findByNickname(nickname)
                 .ifPresent(account -> {throw new UserNicknameAlreadyExistsException(); });
+    }
+
+    @Override
+    public void saveCoordinate(CoordinatesRequest request) {
+        Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
+                .orElseThrow(UserNotAccessibleException::new);
+
+        account.updateLocation(request.getLongitude(), request.getLatitude());
+        accountRepository.save(account);
     }
 
 }
