@@ -35,7 +35,4 @@ public class SignUpRequest {
 
     private String experience;
 
-    @NotBlank
-    private String address;
-
 }

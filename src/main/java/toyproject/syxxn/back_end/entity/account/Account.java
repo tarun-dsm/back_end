@@ -9,6 +9,7 @@ import toyproject.syxxn.back_end.entity.review.Review;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -50,7 +51,10 @@ public class Account {
     private String experience;
 
     @NotNull
-    private String address;
+    private BigDecimal longitude;
+
+    @NotNull
+    private BigDecimal latitude;
 
     @NotNull
     @Column(columnDefinition = "bit(1)")
@@ -71,5 +75,11 @@ public class Account {
     @OneToMany(mappedBy = "target", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Review> reviews;
+
+    public void updateLocation(BigDecimal longitude, BigDecimal latitude) {
+        this.isLocationConfirm = true;
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
 
 }

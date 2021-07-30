@@ -78,7 +78,8 @@ public class BaseTest {
                         .age(18)
                         .isExperienceRasingPet(false)
                         .experience(null)
-                        .address("경기도 서울시 구성동")
+                        .latitude(BigDecimal.ZERO)
+                        .longitude(BigDecimal.ZERO)
                         .isLocationConfirm(isLocationConfirm)
                         .build()
         );

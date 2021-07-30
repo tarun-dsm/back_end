@@ -19,6 +19,8 @@ import toyproject.syxxn.back_end.exception.UserNicknameAlreadyExistsException;
 import toyproject.syxxn.back_end.exception.UserNotUnauthenticatedException;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 
+import java.math.BigDecimal;
+
 @RequiredArgsConstructor
 @Service
 public class AccountServiceImpl implements AccountService{
@@ -50,7 +52,8 @@ public class AccountServiceImpl implements AccountService{
                         .sex(Sex.valueOf(request.getSex()))
                         .isExperienceRasingPet(request.isExperienceRasingPet())
                         .experience(request.getExperience())
-                        .address(request.getAddress())
+                        .latitude(BigDecimal.ZERO)
+                        .longitude(BigDecimal.ZERO)
                         .isLocationConfirm(false)
                         .build()
         );

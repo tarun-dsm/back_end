@@ -111,7 +111,6 @@ public class AccountControllerTest extends BaseTest{
                 .sex("FEMALE")
                 .isExperienceRasingPet(true)
                 .experience("야호")
-                .address("경상북도 수원시 죽전동")
                 .build();
 
         mvc.perform(post("/account")
@@ -130,7 +129,6 @@ public class AccountControllerTest extends BaseTest{
                 .sex("FEMALE")
                 .isExperienceRasingPet(true)
                 .experience("야호")
-                .address("경상북도 수원시 죽전동")
                 .build();
 
         mvc.perform(post("/account")
@@ -149,7 +147,6 @@ public class AccountControllerTest extends BaseTest{
                 .sex("FEMALE")
                 .isExperienceRasingPet(true)
                 .experience("야호")
-                .address("경상북도 수원시 죽전동")
                 .build();
 
         mvc.perform(post("/account")
@@ -164,7 +161,6 @@ public class AccountControllerTest extends BaseTest{
         assertFalse(account.getIsExperienceRasingPet());
         assertNotNull(account.getSex());
         assertNull(account.getExperience());
-        assertNotNull(account.getAddress());
         assertNull(account.getPosts());
         assertNull(account.getApplications());
         assertNull(account.getWrittenReview());
