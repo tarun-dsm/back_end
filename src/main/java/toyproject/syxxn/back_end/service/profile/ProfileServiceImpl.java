@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -72,10 +73,9 @@ public class ProfileServiceImpl implements ProfileService {
         Account account = getAccount(accountId);
 
         List<Post> posts = postRepository.findAllByAccountOrderByCreatedAtDesc(account);
-        List<ProfilePostDto> postDto = new ArrayList<>();
 
-        for (Post post : posts) {
-            postDto.add(
+        return new ProfilePostResponse(posts.stream().map(
+                post ->
                     ProfilePostDto.builder()
                             .id(post.getId())
                             .title(post.getTitle())
@@ -83,10 +83,8 @@ public class ProfileServiceImpl implements ProfileService {
                             .createdAt(post.getCreatedAt())
                             .isApplicationEnd(post.getIsApplicationEnd())
                             .build()
-            );
-        }
 
-        return new ProfilePostResponse(postDto);
+        ).collect(Collectors.toList()));
     }
 
     private Account getAccount(Integer accountId) {
