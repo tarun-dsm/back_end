@@ -160,8 +160,7 @@ public class PostServiceImpl implements PostService {
 
         for (Post post : posts) {
             Account writer = post.getAccount();
-            double distance = distance(writer.getLatitude().doubleValue(), writer.getLongitude().doubleValue(), account.getLatitude().doubleValue(), account.getLongitude().doubleValue());
-            if (!account.getIsLocationConfirm() || distance >= 1) {
+            if (!account.getIsLocationConfirm() || distance(account, writer) >= 1) {
                 postDto.add(addDto(post, writer));
             }
         }
@@ -212,7 +211,12 @@ public class PostServiceImpl implements PostService {
                 .build();
     }
 
-    private static double distance(double writerLat, double writerLon, double myLat, double myLon) {
+    private static double distance(Account account, Account writer) {
+        double writerLon = writer.getLongitude().doubleValue();
+        double writerLat = writer.getLatitude().doubleValue();
+        double myLon = account.getLongitude().doubleValue();
+        double myLat = account.getLatitude().doubleValue();
+
         double theta = Math.abs(writerLon - myLon);
         double distance = Math.sin(degreeToRadion(myLat)) * Math.sin(degreeToRadion(writerLat)) + Math.cos(degreeToRadion(myLat)) * Math.cos(degreeToRadion(writerLat)) * Math.cos(degreeToRadion(theta));
 
