@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -156,22 +157,17 @@ public class PostServiceImpl implements PostService {
     public PostResponse getPosts() {
         Account account = getAccount();
         List<Post> posts = postRepository.findAllByIsApplicationEndFalseOrderByCreatedAtDesc();
-        List<toyproject.syxxn.back_end.dto.response.PostDto> postDto = new ArrayList<>();
 
-        for (Post post : posts) {
-            Account writer = post.getAccount();
-            if (!account.getIsLocationConfirm() || distance(account, writer) >= 1) {
-                postDto.add(toyproject.syxxn.back_end.dto.response.PostDto.builder()
+        return new PostResponse(posts.stream()
+                .filter(post -> account.getIsLocationConfirm() || distance(account, post.getAccount()) >= 1)
+                .map(post -> toyproject.syxxn.back_end.dto.response.PostDto.builder()
                         .id(post.getId())
-                        .writer(writer.getNickname())
+                        .writer(post.getAccount().getNickname())
                         .title(post.getTitle())
                         .firstImagePath(post.getPetImages().get(0).getPath())
                         .createdAt(post.getCreatedAt())
-                        .build());
-            }
-        }
-
-        return new PostResponse(postDto);
+                        .build()).collect(Collectors.toList())
+        );
     }
 
     private Account getAccount() {
