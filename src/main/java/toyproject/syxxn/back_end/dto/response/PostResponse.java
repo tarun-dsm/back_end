@@ -10,5 +10,4 @@ import java.util.List;
 public class PostResponse {
 
     List<PostDto> posts;
-
 }
