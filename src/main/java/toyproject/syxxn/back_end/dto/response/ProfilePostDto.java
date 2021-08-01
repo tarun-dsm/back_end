@@ -11,16 +11,16 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostDto {
+public class ProfilePostDto {
 
     private Integer id;
 
     private String title;
 
-    private String nickname;
-
     private String firstImagePath;
 
     private LocalDateTime createdAt;
+
+    private Boolean isApplicationEnd;
 
 }

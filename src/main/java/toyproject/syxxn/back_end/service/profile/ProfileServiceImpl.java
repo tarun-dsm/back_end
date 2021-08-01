@@ -68,25 +68,25 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public PostResponse getPosts(Integer accountId) {
+    public ProfilePostResponse getPosts(Integer accountId) {
         Account account = getAccount(accountId);
 
         List<Post> posts = postRepository.findAllByAccountOrderByCreatedAtDesc(account);
-        List<PostDto> postDto = new ArrayList<>();
+        List<ProfilePostDto> postDto = new ArrayList<>();
 
         for (Post post : posts) {
             postDto.add(
-                    PostDto.builder()
+                    ProfilePostDto.builder()
                             .id(post.getId())
                             .title(post.getTitle())
-                            .nickname(account.getNickname())
                             .firstImagePath(post.getPetImages().get(0).getPath())
                             .createdAt(post.getCreatedAt())
+                            .isApplicationEnd(post.getIsApplicationEnd())
                             .build()
             );
         }
 
-        return new PostResponse(postDto);
+        return new ProfilePostResponse(postDto);
     }
 
     private Account getAccount(Integer accountId) {
