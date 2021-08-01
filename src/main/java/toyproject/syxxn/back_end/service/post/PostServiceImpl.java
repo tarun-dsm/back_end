@@ -161,7 +161,13 @@ public class PostServiceImpl implements PostService {
         for (Post post : posts) {
             Account writer = post.getAccount();
             if (!account.getIsLocationConfirm() || distance(account, writer) >= 1) {
-                postDto.add(addDto(post, writer));
+                postDto.add(toyproject.syxxn.back_end.dto.response.PostDto.builder()
+                        .id(post.getId())
+                        .writer(writer.getNickname())
+                        .title(post.getTitle())
+                        .firstImagePath(post.getPetImages().get(0).getPath())
+                        .createdAt(post.getCreatedAt())
+                        .build());
             }
         }
 
@@ -199,16 +205,6 @@ public class PostServiceImpl implements PostService {
             e.printStackTrace();
             throw new FileSaveFailedException();
         }
-    }
-
-    private toyproject.syxxn.back_end.dto.response.PostDto addDto(Post post, Account writer) {
-        return toyproject.syxxn.back_end.dto.response.PostDto.builder()
-                .id(post.getId())
-                .writer(writer.getNickname())
-                .title(post.getTitle())
-                .firstImagePath(post.getPetImages().get(0).getPath())
-                .createdAt(post.getCreatedAt())
-                .build();
     }
 
     private static double distance(Account account, Account writer) {
