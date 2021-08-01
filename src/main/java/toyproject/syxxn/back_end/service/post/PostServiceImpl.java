@@ -11,6 +11,7 @@ import toyproject.syxxn.back_end.dto.request.PostRequest;
 import toyproject.syxxn.back_end.dto.response.PetDetailsDto;
 import toyproject.syxxn.back_end.dto.response.PostDetailsDto;
 import toyproject.syxxn.back_end.dto.response.PostDetailsResponse;
+import toyproject.syxxn.back_end.dto.response.PostResponse;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
@@ -151,6 +152,23 @@ public class PostServiceImpl implements PostService {
                 .build();
     }
 
+    @Override
+    public PostResponse getPosts() {
+        Account account = getAccount();
+        List<Post> posts = postRepository.findAllByIsApplicationEndFalseOrderByCreatedAtDesc();
+        List<toyproject.syxxn.back_end.dto.response.PostDto> postDto = new ArrayList<>();
+
+        for (Post post : posts) {
+            Account writer = post.getAccount();
+            double distance = distance(writer.getLatitude().doubleValue(), writer.getLongitude().doubleValue(), account.getLatitude().doubleValue(), account.getLongitude().doubleValue());
+            if (!account.getIsLocationConfirm() || distance >= 1) {
+                postDto.add(addDto(post, writer));
+            }
+        }
+
+        return new PostResponse(postDto);
+    }
+
     private Account getAccount() {
         return accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .filter(Account::getIsLocationConfirm)
@@ -182,6 +200,35 @@ public class PostServiceImpl implements PostService {
             e.printStackTrace();
             throw new FileSaveFailedException();
         }
+    }
+
+    private toyproject.syxxn.back_end.dto.response.PostDto addDto(Post post, Account writer) {
+        return toyproject.syxxn.back_end.dto.response.PostDto.builder()
+                .id(post.getId())
+                .writer(writer.getNickname())
+                .title(post.getTitle())
+                .firstImagePath(post.getPetImages().get(0).getPath())
+                .createdAt(post.getCreatedAt())
+                .build();
+    }
+
+    private static double distance(double writerLat, double writerLon, double myLat, double myLon) {
+        double theta = Math.abs(writerLon - myLon);
+        double distance = Math.sin(degreeToRadion(myLat)) * Math.sin(degreeToRadion(writerLat)) + Math.cos(degreeToRadion(myLat)) * Math.cos(degreeToRadion(writerLat)) * Math.cos(degreeToRadion(theta));
+
+        distance = Math.acos(distance);
+        distance = radionToDegrees(distance);
+        distance = distance * 60 * 1.1515 * 1.609344;
+
+        return distance;
+    }
+
+    private static double degreeToRadion(double deg) {
+        return (deg * Math.PI / 180);
+    }
+
+    private static double radionToDegrees(double rad) {
+        return (rad * 180 / Math.PI);
     }
 
 }

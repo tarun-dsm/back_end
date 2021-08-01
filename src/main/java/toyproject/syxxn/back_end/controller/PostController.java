@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
 import toyproject.syxxn.back_end.dto.response.PostDetailsResponse;
+import toyproject.syxxn.back_end.dto.response.PostResponse;
 import toyproject.syxxn.back_end.service.post.PostService;
 
 import java.util.List;
@@ -38,8 +39,13 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    PostDetailsResponse getPostDetails(@PathVariable("id") Integer postId) {
+    public PostDetailsResponse getPostDetails(@PathVariable("id") Integer postId) {
         return postService.getPostDetails(postId);
+    }
+
+    @GetMapping
+    public PostResponse getPosts() {
+        return postService.getPosts();
     }
 
 }
