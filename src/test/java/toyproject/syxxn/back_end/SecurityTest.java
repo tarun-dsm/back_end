@@ -3,12 +3,8 @@ package toyproject.syxxn.back_end;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.exception.InvalidTokenException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
@@ -19,9 +15,6 @@ import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = BackEndApplication.class)
-@ActiveProfiles("test")
 public class SecurityTest extends BaseTest {
 
     @Autowired

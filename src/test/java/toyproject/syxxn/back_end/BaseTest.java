@@ -1,8 +1,14 @@
 package toyproject.syxxn.back_end;
 
+import org.aspectj.lang.annotation.After;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -28,7 +34,9 @@ import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Component
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = BackEndApplication.class)
+@ActiveProfiles("test")
 public class BaseTest {
 
     @Autowired
@@ -64,6 +72,7 @@ public class BaseTest {
     @Autowired
     private PasswordEncoder encoder;
 
+    @AfterEach
     public void deleteEvery() {
         accountRepository.deleteAll();
         applicationRepository.deleteAll();

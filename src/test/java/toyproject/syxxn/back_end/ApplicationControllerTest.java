@@ -1,11 +1,7 @@
 package toyproject.syxxn.back_end;
 
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.application.Application;
@@ -15,9 +11,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = BackEndApplication.class)
-@ActiveProfiles("test")
 public class ApplicationControllerTest extends BaseTest {
 
     private MockMvc mvc;
@@ -41,11 +34,6 @@ public class ApplicationControllerTest extends BaseTest {
 
         application = createApplication(account1, account2,false, false, "2021-10-10");
         createApplication(account1, account2,false, false, "2021-08-10");
-    }
-
-    @AfterEach
-    public void deleteAll() {
-        deleteEvery();
     }
 
     @WithMockUser(value = "test3@naver.com", password = "asdf123@")

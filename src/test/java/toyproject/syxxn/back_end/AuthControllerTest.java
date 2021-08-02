@@ -1,14 +1,9 @@
 package toyproject.syxxn.back_end;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import toyproject.syxxn.back_end.dto.request.SignInRequest;
 import toyproject.syxxn.back_end.entity.account.Account;
@@ -20,9 +15,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = BackEndApplication.class)
-@ActiveProfiles("test")
 public class AuthControllerTest extends BaseTest {
 
     private MockMvc mvc;
@@ -36,11 +28,6 @@ public class AuthControllerTest extends BaseTest {
         Account account = createAccount("test1@naver.com", true, "Tarun");
 
         refreshToken = createRefreshToken(account);
-    }
-
-    @AfterEach
-    public void deleteAll() {
-        deleteEvery();
     }
 
     @Test

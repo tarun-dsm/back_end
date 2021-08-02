@@ -1,13 +1,8 @@
 package toyproject.syxxn.back_end;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import toyproject.syxxn.back_end.entity.account.Account;
 
@@ -17,9 +12,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = BackEndApplication.class)
-@ActiveProfiles("test")
 public class ProfileControllerTest extends BaseTest {
 
     private MockMvc mvc;
@@ -51,11 +43,6 @@ public class ProfileControllerTest extends BaseTest {
         createReview(account4, account5, BigDecimal.valueOf(2.8));
         createReview(account5, account4, BigDecimal.valueOf(1.8));
         createReview(account5, account4, BigDecimal.valueOf(1.8));
-    }
-
-    @AfterEach
-    public void deleteAll() {
-        deleteEvery();
     }
 
     @WithMockUser(value = "test1@naver.com", password = "asdf123@")
