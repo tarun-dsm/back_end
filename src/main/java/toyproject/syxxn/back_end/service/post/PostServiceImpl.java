@@ -25,6 +25,7 @@ import toyproject.syxxn.back_end.service.BaseService;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,7 +49,6 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(PostNotFoundException::new);
 
         if (!baseService.getLocalConfirmAccount().getEmail().equals(post.getAccount().getEmail())) {
-
             throw new UserNotAccessibleException();
         }
         postRepository.delete(post);
@@ -70,9 +70,9 @@ public class PostServiceImpl implements PostService {
                         .title(postDto.getTitle())
                         .description(postDto.getDescription())
                         .account(account)
-                        .protectionStartDate(postDto.getProtectionStartDate())
-                        .protectionEndDate(postDto.getProtectionEndDate())
-                        .applicationEndDate(postDto.getApplicationEndDate())
+                        .protectionStartDate(LocalDate.parse(postDto.getProtectionStartDate()))
+                        .protectionEndDate(LocalDate.parse(postDto.getProtectionEndDate()))
+                        .applicationEndDate(LocalDate.parse(postDto.getApplicationEndDate()))
                         .isApplicationEnd(false)
                         .isUpdated(false)
                         .contactInfo(postDto.getContactInfo())
@@ -144,7 +144,6 @@ public class PostServiceImpl implements PostService {
                 .filePaths(filePaths)
                 .build();
 
-
         return PostDetailsResponse.builder()
                 .writerId(post.getAccount().getId())
                 .nickname(post.getAccount().getNickname())
@@ -155,7 +154,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse getPosts() {
-        Account account = baseService.getLocalConfirmAccount();
+        Account account = baseService.getAccount();
         List<Post> posts = postRepository.findAllByIsApplicationEndFalseOrderByCreatedAtDesc();
 
         return new PostResponse(posts.stream()

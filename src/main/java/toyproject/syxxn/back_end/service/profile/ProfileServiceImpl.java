@@ -11,7 +11,7 @@ import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.entity.review.Review;
 import toyproject.syxxn.back_end.entity.review.ReviewRepository;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
-import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
+import toyproject.syxxn.back_end.service.BaseService;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -27,7 +27,7 @@ public class ProfileServiceImpl implements ProfileService {
     private final ReviewRepository reviewRepository;
     private final PostRepository postRepository;
 
-    private final AuthenticationFacade authenticationFacade;
+    private final BaseService baseService;
 
     @Override
     public ProfileResponse getProfile(Integer accountId) {
@@ -93,8 +93,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     private Account getAccount(Integer accountId) {
         if (accountId == null) {
-            return accountRepository.findByEmail(authenticationFacade.getUserEmail())
-                    .orElseThrow(UserNotFoundException::new);
+            return baseService.getAccount();
         } else {
             return accountRepository.findById(accountId)
                     .orElseThrow(UserNotFoundException::new);

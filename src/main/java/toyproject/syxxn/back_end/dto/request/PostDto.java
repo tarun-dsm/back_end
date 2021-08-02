@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 
 @Getter
 @Builder
@@ -24,13 +23,13 @@ public class PostDto {
     private String description;
 
     @NotNull
-    private LocalDate protectionStartDate;
+    private String protectionStartDate;
 
     @NotNull
-    private LocalDate protectionEndDate;
+    private String protectionEndDate;
 
     @NotNull
-    private LocalDate applicationEndDate;
+    private String applicationEndDate;
 
     @NotNull
     @Length(min = 5, max = 100)
