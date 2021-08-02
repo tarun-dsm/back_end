@@ -14,6 +14,7 @@ import toyproject.syxxn.back_end.entity.account.Account;
 import java.math.BigDecimal;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
@@ -25,21 +26,23 @@ public class ProfileControllerTest extends BaseTest {
 
     Account account1;
     Account account2;
+    Account account3;
 
     @BeforeEach
     public void setUp() {
         mvc = setMvc();
 
         account1 = createAccount("test1@naver.com", true, "Tarun");
-        account2 = createAccount("test2@naver.com", false, "Tarun");
+        account2 = createAccount("test2@naver.com", true, "Tarun");
+        account3 = createAccount("test3@naver.com", false, "Tarun");
 
         createApplication(account1, account2,true, true, "2021-05-22");
 
         createReview(account1, account2, BigDecimal.valueOf(3.2));
         createReview(account1, account2, BigDecimal.valueOf(3.7));
         createReview(account1, account2, BigDecimal.valueOf(4.2));
-        createReview(account2, account1, BigDecimal.valueOf(2.2));
-        createReview(account2, account1, BigDecimal.valueOf(0.2));
+        createReview(account2, account1, BigDecimal.valueOf(5.0));
+        createReview(account2, account1, BigDecimal.valueOf(4.8));
     }
 
     @AfterEach
@@ -59,6 +62,13 @@ public class ProfileControllerTest extends BaseTest {
     public void getProfile_mine() throws Exception {
         mvc.perform(get("/profile")
         ).andExpect(status().isOk());
+    }
+
+    @WithMockUser(value = "test3@naver.com", password = "asdf123@")
+    @Test
+    public void getProfile_account3() throws Exception {
+        mvc.perform(get("/profile")
+        ).andExpect(status().isOk()).andDo(print());
     }
 
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
@@ -89,6 +99,13 @@ public class ProfileControllerTest extends BaseTest {
         ).andExpect(status().isOk());
     }
 
+    @WithMockUser(value = "test3@naver.com", password = "asdf123@")
+    @Test
+    public void getReviews_account3() throws Exception {
+        mvc.perform(get("/profile/reviews")
+        ).andExpect(status().isOk());
+    }
+
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void getPosts() throws Exception {
@@ -99,6 +116,13 @@ public class ProfileControllerTest extends BaseTest {
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void getPosts_mine() throws Exception {
+        mvc.perform(get("/profile/posts")
+        ).andExpect(status().isOk());
+    }
+
+    @WithMockUser(value = "test3@naver.com", password = "asdf123@")
+    @Test
+    public void getPosts_account3() throws Exception {
         mvc.perform(get("/profile/posts")
         ).andExpect(status().isOk());
     }

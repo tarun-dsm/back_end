@@ -66,8 +66,8 @@ public class ApplicationControllerTest extends BaseTest {
     @Test
     public void protectionApplication_400_2() throws Exception {
         Post post = createPost(account1,true, "2021-05-10");
-        mvc.perform(post("/application/"+post.getIsApplicationEnd()))
-                .andExpect(status().isBadRequest());
+        mvc.perform(post("/application/"+post.getId()))
+                .andExpect(status().isBadRequest()).andDo(print());
     }
 
     @WithMockUser(value = "test@naver.com", password = "123")
@@ -153,7 +153,7 @@ public class ApplicationControllerTest extends BaseTest {
     @WithMockUser(value = "test1@naver.com", password = "asdf123@")
     @Test
     public void getApplications() throws Exception {
-        mvc.perform(get("/application/post/"+postId))
+        mvc.perform(get("/application/post/"+application.getPost().getId()))
                 .andExpect(status().isOk()).andDo(print());
     }
 
