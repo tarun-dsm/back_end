@@ -31,7 +31,12 @@ public class ProfileControllerTest extends BaseTest {
         Account account5 = createAccount("test5@naver.com", true);
 
 
-        createApplication(account1, account2,true, true, "2021-05-22");
+        createApplication(account1, account2, true);
+
+        createPost(account1);
+        createPost(account1);
+        createPost(account2);
+        createPost(account2);
 
         createReview(account1, account2, BigDecimal.valueOf(3.2));
         createReview(account1, account2, BigDecimal.valueOf(3.7));
@@ -119,7 +124,8 @@ public class ProfileControllerTest extends BaseTest {
     @Test
     public void getPosts() throws Exception {
         mvc.perform(get("/profile/posts/"+account1.getId())
-        ).andExpect(status().isOk());
+        ).andDo(print())
+                .andExpect(status().isOk());
     }
 
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
