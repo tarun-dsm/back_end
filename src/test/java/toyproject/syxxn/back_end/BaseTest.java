@@ -212,4 +212,12 @@ public class BaseTest {
         );
     }
 
+    public PetInfo createPetInfo(Account account) {
+        return petInfoRepository.save(
+                PetInfo.builder()
+                        .post(createPost(account, false, "2021-09-08"))
+                        .build()
+        );
+    }
+
 }
