@@ -121,7 +121,7 @@ public class PostControllerTest extends BaseTest {
     public void petEntity() {
         PetInfo petInfo = createPetInfo(account);
         petInfo.update(PetDto.builder()
-                .petSex("MAIL")
+                .petSex("MALE")
                 .petSpecies("울랄라종")
                 .petName("울랄라")
                 .build());

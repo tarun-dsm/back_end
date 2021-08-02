@@ -36,6 +36,7 @@ import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackEndApplication.class)
@@ -80,6 +81,8 @@ public class BaseTest {
         accountRepository.deleteAll();
         applicationRepository.deleteAll();
         postRepository.deleteAll();
+        petInfoRepository.deleteAll();
+        petImageRepository.deleteAll();
         refreshTokenRepository.deleteAll();
         reviewRepository.deleteAll();
         verifyNumberRepository.deleteAll();
@@ -152,7 +155,7 @@ public class BaseTest {
     }
 
     public Post createPost(Account account, boolean isEnd, String endDate) {
-        Post post = postRepository.save(
+        return postRepository.save(
                 Post.builder()
                         .account(account)
                         .title("제목을 까먹었지 뭐야..")
@@ -163,23 +166,7 @@ public class BaseTest {
                         .description("랄랄라")
                         .isUpdated(false)
                         .isApplicationEnd(isEnd)
-                        .build()
-        );
-        petInfoRepository.save(
-                PetInfo.builder()
-                        .petSex(Sex.MALE)
-                        .petName("아몰랑고양이")
-                        .petSpecies("코리안숏헤어인줄알았죠")
-                        .post(post)
-                        .build()
-        );
-        petImageRepository.save(
-                PetImage.builder()
-                        .path("https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMDA5MDhfMjI3%2FMDAxNTk5NTE0MTg2ODc2.XR5pv2EMxtHWqPvmQiKzdDehiQx_ocJmGYeQdg__1wgg.pws149iHO28YsC3jXUc25tJwkGPB8Cfzu7NjrOF2YxEg.JPEG.byb0111%2F1599514185873.jpg&type=a340")
-                        .post(post)
-                        .build()
-        );
-        return post;
+                .build());
     }
 
     public Review createReview(Account account1, Account account2, BigDecimal grade) {
@@ -213,9 +200,21 @@ public class BaseTest {
     }
 
     public PetInfo createPetInfo(Account account) {
+        Post post = createPost(account, false, "2021-08-16");
+
+        petImageRepository.save(
+                PetImage.builder()
+                        .path("https://dimg.donga.com/ugc/CDB/WEEKLY/Article/5b/b3/22/85/5bb32285000ed2738de6.jpg")
+                        .post(post)
+                        .build()
+        );
+
         return petInfoRepository.save(
                 PetInfo.builder()
-                        .post(createPost(account, false, "2021-09-08"))
+                        .petSex(Sex.MALE)
+                        .petName("아몰랑고양이")
+                        .petSpecies("코리안숏헤어인줄알았죠")
+                        .post(post)
                         .build()
         );
     }
