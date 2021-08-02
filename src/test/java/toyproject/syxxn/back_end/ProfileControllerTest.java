@@ -35,6 +35,9 @@ public class ProfileControllerTest extends BaseTest {
         account1 = createAccount("test1@naver.com", true, "Tarun");
         account2 = createAccount("test2@naver.com", true, "Tarun");
         account3 = createAccount("test3@naver.com", false, "Tarun");
+        Account account4 = createAccount("test4@naver.com", true);
+        Account account5 = createAccount("test5@naver.com", true);
+
 
         createApplication(account1, account2,true, true, "2021-05-22");
 
@@ -43,6 +46,11 @@ public class ProfileControllerTest extends BaseTest {
         createReview(account1, account2, BigDecimal.valueOf(4.2));
         createReview(account2, account1, BigDecimal.valueOf(5.0));
         createReview(account2, account1, BigDecimal.valueOf(4.8));
+
+        createReview(account4, account5, BigDecimal.valueOf(2.8));
+        createReview(account4, account5, BigDecimal.valueOf(2.8));
+        createReview(account5, account4, BigDecimal.valueOf(1.8));
+        createReview(account5, account4, BigDecimal.valueOf(1.8));
     }
 
     @AfterEach
@@ -61,12 +69,26 @@ public class ProfileControllerTest extends BaseTest {
     @Test
     public void getProfile_mine() throws Exception {
         mvc.perform(get("/profile")
-        ).andExpect(status().isOk());
+        ).andExpect(status().isOk()).andDo(print());
     }
 
     @WithMockUser(value = "test3@naver.com", password = "asdf123@")
     @Test
     public void getProfile_account3() throws Exception {
+        mvc.perform(get("/profile")
+        ).andExpect(status().isOk()).andDo(print());
+    }
+
+    @WithMockUser(value = "test4@naver.com", password = "asdf123@")
+    @Test
+    public void getProfile_account4() throws Exception {
+        mvc.perform(get("/profile")
+        ).andExpect(status().isOk()).andDo(print());
+    }
+
+    @WithMockUser(value = "test5@naver.com", password = "asdf123@")
+    @Test
+    public void getProfile_account5() throws Exception {
         mvc.perform(get("/profile")
         ).andExpect(status().isOk()).andDo(print());
     }

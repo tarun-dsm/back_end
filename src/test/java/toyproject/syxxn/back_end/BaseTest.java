@@ -96,6 +96,23 @@ public class BaseTest {
         );
     }
 
+    public Account createAccount(String email, boolean isLocationConfirm) {
+        return accountRepository.save(
+                Account.builder()
+                        .email(email)
+                        .password(encoder.encode("asdf123@"))
+                        .sex(Sex.FEMALE)
+                        .nickname("nickname")
+                        .age(18)
+                        .isExperienceRasingPet(true)
+                        .experience("지금 또로랑 같이 산지 6년째입니당")
+                        .latitude(BigDecimal.ZERO)
+                        .longitude(BigDecimal.ZERO)
+                        .isLocationConfirm(isLocationConfirm)
+                        .build()
+        );
+    }
+
     public RefreshToken createRefreshToken(Account account) {
         return refreshTokenRepository.save(
                 RefreshToken.builder()
