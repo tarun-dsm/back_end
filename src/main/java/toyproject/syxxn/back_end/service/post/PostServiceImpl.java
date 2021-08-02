@@ -47,7 +47,8 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
 
-        if (baseService.getLocalConfirmAccount().getEmail().equals(post.getAccount().getEmail())) {
+        if (!baseService.getLocalConfirmAccount().getEmail().equals(post.getAccount().getEmail())) {
+
             throw new UserNotAccessibleException();
         }
         postRepository.delete(post);
