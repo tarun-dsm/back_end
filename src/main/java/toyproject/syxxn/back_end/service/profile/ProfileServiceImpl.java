@@ -56,21 +56,16 @@ public class ProfileServiceImpl implements ProfileService {
         Account account = getAccount(accountId);
 
         List<Review> reviews = reviewRepository.findAllByTarget(account);
-        List<ProfileReviewDto> reviewDto = new ArrayList<>();
 
-        for (Review review : reviews) {
-            reviewDto.add(
-                    ProfileReviewDto.builder()
-                            .id(review.getId())
-                            .nickname(review.getWriter().getNickname())
-                            .grade(review.getGrade())
-                            .comment(review.getComment())
-                            .createdAt(review.getCreatedAt())
-                            .build()
-            );
-        }
-
-        return new ProfileReviewResponse(reviewDto);
+        return new ProfileReviewResponse(reviews.stream().map(
+                review -> ProfileReviewDto.builder()
+                        .id(review.getId())
+                        .nickname(review.getWriter().getNickname())
+                        .grade(review.getGrade())
+                        .comment(review.getComment())
+                        .createdAt(review.getCreatedAt())
+                        .build()
+        ).collect(Collectors.toList()));
     }
 
     @Override
@@ -106,7 +101,10 @@ public class ProfileServiceImpl implements ProfileService {
         }
     }
 
-    private static BigDecimal getAvg(List<Review> reviews) {
+    private BigDecimal getAvg(List<Review> reviews) {
+        if (reviews.size() == 0) {
+            return BigDecimal.ZERO;
+        }
         BigDecimal sumData = BigDecimal.ZERO;
         for (int i = 0; i < reviews.size(); i++){
             sumData = sumData.add(reviews.get(i).getGrade());
@@ -114,7 +112,7 @@ public class ProfileServiceImpl implements ProfileService {
         return sumData.divide(BigDecimal.valueOf(reviews.size()), MathContext.DECIMAL64);
     }
 
-    private static String getRating(Double avgGrade) {
+    private String getRating(Double avgGrade) {
         if (avgGrade.compareTo(4.5) > 0) {
             return "1등급";
         } else if (avgGrade.compareTo(3.5) > 0) {
@@ -123,8 +121,9 @@ public class ProfileServiceImpl implements ProfileService {
             return "3등급";
         } else if (avgGrade.compareTo(1.5) > 0) {
             return "4등급";
+        } else {
+            return "5등급";
         }
-        return "5등급";
     }
 
 }

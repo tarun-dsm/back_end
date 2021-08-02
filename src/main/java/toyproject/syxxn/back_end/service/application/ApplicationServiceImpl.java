@@ -20,6 +20,7 @@ import toyproject.syxxn.back_end.service.BaseService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -99,22 +100,17 @@ public class ApplicationServiceImpl implements ApplicationService {
     public MyApplicationResponse getMyApplications() {
         Account account = baseService.getLocalConfirmAccount();
         List<Application> applications = applicationRepository.findAllByAccount(account);
-        List<MyApplicationDto> myApplications = new ArrayList<>();
 
-        for (Application application: applications) {
-            myApplications.add(
-                    MyApplicationDto.builder()
-                            .id(application.getId())
-                            .applicationDate(application.getCreatedAt())
-                            .isAccepted(application.getIsAccepted())
-                            .postId(application.getPost().getId())
-                            .postName(application.getPost().getTitle())
-                            .isEnd(application.getPost().getIsApplicationEnd())
-                            .build()
-            );
-        }
-
-        return new MyApplicationResponse(myApplications);
+        return new MyApplicationResponse(applications.stream().map(
+                application -> MyApplicationDto.builder()
+                        .id(application.getId())
+                        .applicationDate(application.getCreatedAt())
+                        .isAccepted(application.getIsAccepted())
+                        .postId(application.getPost().getId())
+                        .postName(application.getPost().getTitle())
+                        .isEnd(application.getPost().getIsApplicationEnd())
+                        .build()
+        ).collect(Collectors.toList()));
     }
 
     @Override
