@@ -11,6 +11,10 @@ import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.application.Application;
 import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
+import toyproject.syxxn.back_end.entity.pet.PetImage;
+import toyproject.syxxn.back_end.entity.pet.PetImageRepository;
+import toyproject.syxxn.back_end.entity.pet.PetInfo;
+import toyproject.syxxn.back_end.entity.pet.PetInfoRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshToken;
@@ -43,6 +47,12 @@ public class BaseTest {
     private PostRepository postRepository;
 
     @Autowired
+    private PetInfoRepository petInfoRepository;
+
+    @Autowired
+    private PetImageRepository petImageRepository;
+
+    @Autowired
     private RefreshTokenRepository refreshTokenRepository;
 
     @Autowired
@@ -59,6 +69,7 @@ public class BaseTest {
         applicationRepository.deleteAll();
         postRepository.deleteAll();
         refreshTokenRepository.deleteAll();
+        reviewRepository.deleteAll();
         verifyNumberRepository.deleteAll();
     }
 
@@ -68,13 +79,13 @@ public class BaseTest {
                 .build();
     }
 
-    public Account createAccount(String email, boolean isLocationConfirm) {
+    public Account createAccount(String email, boolean isLocationConfirm, String nickname) {
         return accountRepository.save(
                 Account.builder()
                         .email(email)
                         .password(encoder.encode("asdf123@"))
                         .sex(Sex.MALE)
-                        .nickname("Tarun")
+                        .nickname(nickname)
                         .age(18)
                         .isExperienceRasingPet(false)
                         .experience(null)
@@ -112,7 +123,7 @@ public class BaseTest {
     }
 
     public Post createPost(Account account, boolean isEnd, String endDate) {
-        return postRepository.save(
+        Post post = postRepository.save(
                 Post.builder()
                         .account(account)
                         .title("제목을 까먹었지 뭐야..")
@@ -125,6 +136,21 @@ public class BaseTest {
                         .isApplicationEnd(isEnd)
                         .build()
         );
+        petInfoRepository.save(
+                PetInfo.builder()
+                        .petSex(Sex.MALE)
+                        .petName("아몰랑고양이")
+                        .petSpecies("코리안숏헤어인줄알았죠")
+                        .post(post)
+                        .build()
+        );
+        petImageRepository.save(
+                PetImage.builder()
+                        .path("https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMDA5MDhfMjI3%2FMDAxNTk5NTE0MTg2ODc2.XR5pv2EMxtHWqPvmQiKzdDehiQx_ocJmGYeQdg__1wgg.pws149iHO28YsC3jXUc25tJwkGPB8Cfzu7NjrOF2YxEg.JPEG.byb0111%2F1599514185873.jpg&type=a340")
+                        .post(post)
+                        .build()
+        );
+        return post;
     }
 
     public Review createReview(Account account1, Account account2, BigDecimal grade) {

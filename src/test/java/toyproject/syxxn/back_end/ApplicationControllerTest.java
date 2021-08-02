@@ -31,10 +31,10 @@ public class ApplicationControllerTest extends BaseTest {
     public void setUp() {
         mvc = setMvc();
 
-        account1 = createAccount("test1@naver.com", true);
-        account2 = createAccount("test2@naver.com", true);
-        createAccount("test3@naver.com", true);
-        createAccount("test4@naver.com", false);
+        account1 = createAccount("test1@naver.com", true, "Tarun");
+        account2 = createAccount("test2@naver.com", true, "Tarun");
+        createAccount("test3@naver.com", true, "Tarun");
+        createAccount("test4@naver.com", false, "Tarun");
 
         Post post = createPost(account1, false, "2021-10-10");
         postId = post.getId();

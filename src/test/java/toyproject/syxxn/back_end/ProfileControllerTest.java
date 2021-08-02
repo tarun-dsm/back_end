@@ -30,8 +30,8 @@ public class ProfileControllerTest extends BaseTest {
     public void setUp() {
         mvc = setMvc();
 
-        account1 = createAccount("test1@naver.com", true);
-        account2 = createAccount("test2@naver.com", false);
+        account1 = createAccount("test1@naver.com", true, "Tarun");
+        account2 = createAccount("test2@naver.com", false, "Tarun");
 
         createApplication(account1, account2,true, true, "2021-05-22");
 
@@ -56,6 +56,13 @@ public class ProfileControllerTest extends BaseTest {
 
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
+    public void getProfile_mine() throws Exception {
+        mvc.perform(get("/profile")
+        ).andExpect(status().isOk());
+    }
+
+    @WithMockUser(value = "test2@naver.com", password = "asdf123@")
+    @Test
     public void getProfile_other() throws Exception {
         mvc.perform(get("/profile/"+account2.getId())
         ).andExpect(status().isOk());
@@ -66,6 +73,34 @@ public class ProfileControllerTest extends BaseTest {
     public void getProfile_404() throws Exception {
         mvc.perform(get("/profile/1234")
         ).andExpect(status().isNotFound());
+    }
+
+    @WithMockUser(value = "test2@naver.com", password = "asdf123@")
+    @Test
+    public void getReviews() throws Exception {
+        mvc.perform(get("/profile/reviews/"+account1.getId())
+        ).andExpect(status().isOk());
+    }
+
+    @WithMockUser(value = "test2@naver.com", password = "asdf123@")
+    @Test
+    public void getReviews_mine() throws Exception {
+        mvc.perform(get("/profile/reviews")
+        ).andExpect(status().isOk());
+    }
+
+    @WithMockUser(value = "test2@naver.com", password = "asdf123@")
+    @Test
+    public void getPosts() throws Exception {
+        mvc.perform(get("/profile/posts/"+account1.getId())
+        ).andExpect(status().isOk());
+    }
+
+    @WithMockUser(value = "test2@naver.com", password = "asdf123@")
+    @Test
+    public void getPosts_mine() throws Exception {
+        mvc.perform(get("/profile/posts")
+        ).andExpect(status().isOk());
     }
 
 }

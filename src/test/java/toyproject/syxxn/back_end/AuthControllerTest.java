@@ -33,7 +33,7 @@ public class AuthControllerTest extends BaseTest {
     public void setUp() {
         mvc = setMvc();
 
-        Account account = createAccount("test1@naver.com", true);
+        Account account = createAccount("test1@naver.com", true, "Tarun");
 
         refreshToken = createRefreshToken(account);
     }

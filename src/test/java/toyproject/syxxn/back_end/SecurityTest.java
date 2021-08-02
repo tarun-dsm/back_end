@@ -38,7 +38,7 @@ public class SecurityTest extends BaseTest {
 
     @BeforeEach
     public void setUp() {
-        account = createAccount("test1@naver.com", false);
+        account = createAccount("test1@naver.com", false, "Tarun");
         refreshToken = createRefreshToken(account).getRefreshToken();
     }
 
