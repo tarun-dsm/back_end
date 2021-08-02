@@ -31,7 +31,6 @@ public class ProfileController {
 
     @GetMapping(value = {"/posts/{id}", "/posts"})
     public ProfilePostResponse getPosts(@PathVariable(value = "id", required = false) Integer accountId) {
-        System.out.println(accountId);
         return profileService.getPosts(accountId);
     }
 

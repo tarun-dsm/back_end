@@ -71,8 +71,8 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ProfilePostResponse getPosts(Integer accountId) {
         Account account = getAccount(accountId);
-
-        List<Post> posts = postRepository.findAllByAccountOrderByCreatedAtDesc(account);
+        System.out.println(account.getEmail());
+        List<Post> posts = postRepository.findAllByAccountAndPetImagesNotNullOrderByCreatedAtDesc(account);
 
         if (posts.size() == 0) {
             return new ProfilePostResponse(new ArrayList<>());
