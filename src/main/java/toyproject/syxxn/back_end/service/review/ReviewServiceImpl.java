@@ -12,6 +12,7 @@ import toyproject.syxxn.back_end.entity.review.Review;
 import toyproject.syxxn.back_end.entity.review.ReviewRepository;
 import toyproject.syxxn.back_end.exception.*;
 import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
+import toyproject.syxxn.back_end.service.BaseService;
 
 import java.time.LocalDate;
 
@@ -19,15 +20,14 @@ import java.time.LocalDate;
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
-    private final AccountRepository accountRepository;
     private final ApplicationRepository applicationRepository;
     private final ReviewRepository reviewRepository;
 
-    private final AuthenticationFacade authenticationFacade;
+    private final BaseService baseService;
 
     @Override
     public void writeReview(Integer applicationId, ReviewRequest request) {
-        Account writer = getAccount();
+        Account writer = baseService.getLocalConfirmAccount();
         Application application = applicationRepository.findById(applicationId)
                 .filter(Application::getIsAccepted)
                 .orElseThrow(ApplicationNotFoundException::new);
@@ -64,7 +64,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void deleteReview(Integer reviewId) {
         Review review = reviewRepository.findById(reviewId)
-                .filter(r -> r.getWriter().getId().equals(getAccount().getId()))
+                .filter(r -> r.getWriter().getId().equals(baseService.getLocalConfirmAccount().getId()))
                 .orElseThrow(ReviewNotFoundException::new);
 
         reviewRepository.delete(review);
@@ -73,18 +73,12 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void updateReview(Integer reviewId, ReviewRequest request) {
         Review review = reviewRepository.findById(reviewId)
-                .filter(r -> r.getWriter().getId().equals(getAccount().getId()))
+                .filter(r -> r.getWriter().getId().equals(baseService.getLocalConfirmAccount().getId()))
                 .orElseThrow(ReviewNotFoundException::new);
 
         review.update(request.getGrade(), request.getComment());
 
         reviewRepository.save(review);
-    }
-
-    private Account getAccount() {
-        return accountRepository.findByEmail(authenticationFacade.getUserEmail())
-                .filter(Account::getIsLocationConfirm)
-                .orElseThrow(UserNotUnauthenticatedException::new);
     }
 
     private boolean isReviewablePeriod(Post post) {

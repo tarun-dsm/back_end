@@ -14,7 +14,6 @@ import toyproject.syxxn.back_end.dto.response.PostDetailsResponse;
 import toyproject.syxxn.back_end.dto.response.PostResponse;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
-import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.pet.PetImage;
 import toyproject.syxxn.back_end.entity.pet.PetImageRepository;
 import toyproject.syxxn.back_end.entity.pet.PetInfo;
@@ -22,7 +21,7 @@ import toyproject.syxxn.back_end.entity.pet.PetInfoRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.exception.*;
-import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
+import toyproject.syxxn.back_end.service.BaseService;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,12 +33,11 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImpl implements PostService {
 
-    private final AccountRepository accountRepository;
     private final PostRepository postRepository;
     private final PetInfoRepository petInfoRepository;
     private final PetImageRepository  petImageRepository;
 
-    private final AuthenticationFacade authenticationFacade;
+    private final BaseService baseService;
 
     @Value("${file.path}")
     private String path;
@@ -49,7 +47,7 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
 
-        if (authenticationFacade.getUserEmail().equals(getAccount().getEmail())) {
+        if (baseService.getLocalConfirmAccount().getEmail().equals(post.getAccount().getEmail())) {
             throw new UserNotAccessibleException();
         }
         postRepository.delete(post);
@@ -58,7 +56,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     @Override
     public Integer writePost(List<MultipartFile> files, PostRequest request) {
-        Account account = getAccount();
+        Account account = baseService.getLocalConfirmAccount();
         PostDto postDto = request.getPost();
         PetDto petDto = request.getPet();
 
@@ -96,7 +94,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Integer updatePost(Integer postId, List<MultipartFile> files, PostRequest request) {
-        Account account = getAccount();
+        Account account = baseService.getLocalConfirmAccount();
         Post post = postRepository.findById(postId)
                 .filter(p -> p.getAccount().getId().equals(account.getId()))
                 .orElseThrow(PostNotFoundException::new);
@@ -155,7 +153,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse getPosts() {
-        Account account = getAccount();
+        Account account = baseService.getLocalConfirmAccount();
         List<Post> posts = postRepository.findAllByIsApplicationEndFalseOrderByCreatedAtDesc();
 
         return new PostResponse(posts.stream()
@@ -168,12 +166,6 @@ public class PostServiceImpl implements PostService {
                         .createdAt(post.getCreatedAt())
                         .build()).collect(Collectors.toList())
         );
-    }
-
-    private Account getAccount() {
-        return accountRepository.findByEmail(authenticationFacade.getUserEmail())
-                .filter(Account::getIsLocationConfirm)
-                .orElseThrow(UserNotUnauthenticatedException::new);
     }
 
     private void saveFile(List<MultipartFile> files, Post post) {

@@ -15,6 +15,7 @@ import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.exception.*;
 import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
+import toyproject.syxxn.back_end.service.BaseService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,16 +25,15 @@ import java.util.List;
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
 
-    private final AccountRepository accountRepository;
     private final ApplicationRepository applicationRepository;
     private final PostRepository postRepository;
 
-    private final AuthenticationFacade authenticationFacade;
+    private final BaseService baseService;
 
     @Override
     @Transactional
     public void protectionApplication(Integer postId) {
-        Account account = getAccount();
+        Account account = baseService.getLocalConfirmAccount();
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
 
@@ -61,7 +61,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public void cancelApplication(Integer applicationId) {
-        Account account = getAccount();
+        Account account = baseService.getLocalConfirmAccount();
 
         Application application = applicationRepository.findById(applicationId)
                 .filter(a -> a.getAccount().getId().equals(account.getId()))
@@ -77,7 +77,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Transactional
     @Override
     public void acceptApplication(Integer applicationId) {
-        Account account = getAccount();
+        Account account = baseService.getLocalConfirmAccount();
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(ApplicationNotFoundException::new);
         Post post = application.getPost();
@@ -97,7 +97,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public MyApplicationResponse getMyApplications() {
-        Account account = getAccount();
+        Account account = baseService.getLocalConfirmAccount();
         List<Application> applications = applicationRepository.findAllByAccount(account);
         List<MyApplicationDto> myApplications = new ArrayList<>();
 
@@ -119,7 +119,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ApplicationResponse getApplications(Integer postId) {
-        Account account = getAccount();
+        Account account = baseService.getLocalConfirmAccount();
         Post post = postRepository.findById(postId)
                 .filter(p -> p.getAccount().getId().equals(account.getId()))
                 .filter(p -> !p.getIsApplicationEnd())
@@ -140,12 +140,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         return new ApplicationResponse(applicationList);
-    }
-
-    private Account getAccount() {
-        return accountRepository.findByEmail(authenticationFacade.getUserEmail())
-                .filter(Account::getIsLocationConfirm)
-                .orElseThrow(UserNotUnauthenticatedException::new);
     }
 
     private boolean isApplicationClosed(Post post) {
