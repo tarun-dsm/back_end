@@ -15,10 +15,7 @@ import toyproject.syxxn.back_end.entity.refreshtoken.RefreshToken;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshTokenRepository;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumber;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumberRepository;
-import toyproject.syxxn.back_end.exception.UserEmailAlreadyExistsException;
-import toyproject.syxxn.back_end.exception.UserNicknameAlreadyExistsException;
-import toyproject.syxxn.back_end.exception.UserNotAccessibleException;
-import toyproject.syxxn.back_end.exception.UserNotUnauthenticatedException;
+import toyproject.syxxn.back_end.exception.*;
 import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 
@@ -91,7 +88,7 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public void saveCoordinate(CoordinatesRequest request) {
         Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
-                .orElseThrow(UserNotAccessibleException::new);
+                .orElseThrow(UserNotFoundException::new);
 
         account.updateLocation(request.getLongitude(), request.getLatitude());
         accountRepository.save(account);

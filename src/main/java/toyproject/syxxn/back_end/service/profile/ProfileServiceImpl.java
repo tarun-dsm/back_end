@@ -11,6 +11,7 @@ import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.entity.review.Review;
 import toyproject.syxxn.back_end.entity.review.ReviewRepository;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
+import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -26,9 +27,12 @@ public class ProfileServiceImpl implements ProfileService {
     private final ReviewRepository reviewRepository;
     private final PostRepository postRepository;
 
+    private final AuthenticationFacade authenticationFacade;
+
     @Override
     public ProfileResponse getProfile(Integer accountId) {
         Account account = getAccount(accountId);
+
         List<Review> reviews = reviewRepository.findAllByTarget(account);
         BigDecimal avgGrade = getAvg(reviews);
 
@@ -50,6 +54,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ProfileReviewResponse getReviews(Integer accountId) {
         Account account = getAccount(accountId);
+
         List<Review> reviews = reviewRepository.findAllByTarget(account);
         List<ProfileReviewDto> reviewDto = new ArrayList<>();
 
@@ -74,6 +79,10 @@ public class ProfileServiceImpl implements ProfileService {
 
         List<Post> posts = postRepository.findAllByAccountOrderByCreatedAtDesc(account);
 
+        if (posts.size() == 0) {
+            return new ProfilePostResponse(new ArrayList<>());
+        }
+
         return new ProfilePostResponse(posts.stream().map(
                 post ->
                     ProfilePostDto.builder()
@@ -88,8 +97,13 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     private Account getAccount(Integer accountId) {
-        return accountRepository.findById(accountId)
-                .orElseThrow(UserNotFoundException::new);
+        if (accountId == null) {
+            return accountRepository.findByEmail(authenticationFacade.getUserEmail())
+                    .orElseThrow(UserNotFoundException::new);
+        } else {
+            return accountRepository.findById(accountId)
+                    .orElseThrow(UserNotFoundException::new);
+        }
     }
 
     private static BigDecimal getAvg(List<Review> reviews) {

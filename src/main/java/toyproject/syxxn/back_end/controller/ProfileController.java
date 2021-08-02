@@ -10,6 +10,8 @@ import toyproject.syxxn.back_end.dto.response.ProfileResponse;
 import toyproject.syxxn.back_end.dto.response.ProfileReviewResponse;
 import toyproject.syxxn.back_end.service.profile.ProfileService;
 
+import java.util.Optional;
+
 @RequestMapping("/profile")
 @RequiredArgsConstructor
 @RestController
@@ -17,18 +19,19 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
-    @GetMapping("/{id}")
-    public ProfileResponse getProfile(@PathVariable("id") Integer accountId) {
+    @GetMapping(value = {"/{id}", ""})
+    public ProfileResponse getProfile(@PathVariable(value = "id", required = false) Integer accountId) {
         return profileService.getProfile(accountId);
     }
 
-    @GetMapping("/reviews/{id}")
-    public ProfileReviewResponse getReviews(@PathVariable("id") Integer accountId) {
+    @GetMapping(value = {"/reviews/{id}", "/reviews"})
+    public ProfileReviewResponse getReviews(@PathVariable(value = "id", required = false) Integer accountId) {
         return profileService.getReviews(accountId);
     }
 
-    @GetMapping("/posts/{id}")
-    public ProfilePostResponse getPosts(@PathVariable("id") Integer accountId) {
+    @GetMapping(value = {"/posts/{id}", "/posts"})
+    public ProfilePostResponse getPosts(@PathVariable(value = "id", required = false) Integer accountId) {
+        System.out.println(accountId);
         return profileService.getPosts(accountId);
     }
 

@@ -145,6 +145,7 @@ public class PostServiceImpl implements PostService {
 
 
         return PostDetailsResponse.builder()
+                .writerId(post.getAccount().getId())
                 .nickname(post.getAccount().getNickname())
                 .pet(petDetailsDto)
                 .post(postDetailsDto)

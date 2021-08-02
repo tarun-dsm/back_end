@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PostDetailsResponse {
 
+    private Integer writerId;
+
     private String nickname;
 
     private PostDetailsDto post;
