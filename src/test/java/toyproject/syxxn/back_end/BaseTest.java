@@ -12,6 +12,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import toyproject.syxxn.back_end.dto.request.PetDto;
+import toyproject.syxxn.back_end.dto.request.PostDto;
+import toyproject.syxxn.back_end.dto.request.PostRequest;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
@@ -187,6 +190,24 @@ public class BaseTest {
                         .application(createApplication(account1, account2, true, true, "2021-05-22"))
                         .grade(grade)
                         .comment("대체 왜 ratingScore 안에는 값이 안들어가는건지 모르겠음 어이없어")
+                        .build()
+        );
+    }
+
+    public PostRequest createPostRequest() {
+        return new PostRequest(
+                PostDto.builder()
+                        .title("이것은 제목")
+                        .description("이것은 설명")
+                        .protectionStartDate("2021-08-06")
+                        .protectionEndDate("2021-08-09")
+                        .applicationEndDate("2021-08-04")
+                        .contactInfo("010-0000-0000")
+                        .build(),
+                PetDto.builder()
+                        .petName("또로")
+                        .petSpecies("코리안숏헤어")
+                        .petSex(Sex.MALE.toString())
                         .build()
         );
     }

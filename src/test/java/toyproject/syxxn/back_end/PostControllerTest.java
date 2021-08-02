@@ -1,9 +1,12 @@
 package toyproject.syxxn.back_end;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import toyproject.syxxn.back_end.dto.request.PostRequest;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.post.Post;
 
@@ -16,16 +19,17 @@ public class PostControllerTest extends BaseTest {
     private MockMvc mvc;
 
     Account account;
-    Post post;
+    Integer postId;
 
     @BeforeEach
     public void setUp() {
         mvc = setMvc();
 
         account = createAccount("adsf1234@naver.com", true, "Tarun");
+        createAccount("test1@naver.com", true);
         createAccount("test1234@gmail.com", false, "ggosunnae");
 
-        post = createPost(account, false, "2021-09-01");
+        postId = createPost(account, false, "2021-09-01").getId();
     }
 
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
@@ -38,16 +42,74 @@ public class PostControllerTest extends BaseTest {
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
     @Test
     public void deletePost() throws Exception {
-        mvc.perform(delete("/post/" + post.getId())).andDo(print())
+        mvc.perform(delete("/post/" + postId)).andDo(print())
                 .andExpect(status().isOk());
     }
 
     @WithMockUser(value = "test1234@gmail.com", password = "asdf123@")
     @Test
     public void deletePost_401() throws Exception {
-        mvc.perform(delete("/post/" + post.getId()))
+        mvc.perform(delete("/post/" + postId))
                 .andExpect(status().isUnauthorized());
     }
 
+    @WithMockUser(value = "test1@naver.com", password = "asdf123@")
+    @Test
+    public void deletePost_401_() throws Exception {
+        mvc.perform(delete("/post/" + postId))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
+    @Test
+    public void updatePost_400() throws Exception {
+        PostRequest request = createPostRequest();
+        mvc.perform(put("/post/" + postId)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .param("files", "abc.jpg")
+                .content(new ObjectMapper().writeValueAsString(request))
+        ).andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
+    @Test
+    public void writePost() throws Exception {
+        PostRequest request = createPostRequest();
+        mvc.perform(post("/post")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .param("files", "맹구.jpg")
+                .content(new ObjectMapper().writeValueAsString(request))
+        ).andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
+    @Test
+    public void getPostDetails() throws Exception {
+        mvc.perform(get("/post/"+postId)
+        ).andExpect(status().isOk());
+    }
+
+    @WithMockUser(value = "test1@naver.com", password = "asdf123@")
+    @Test
+    public void getPostDetails_() throws Exception {
+        mvc.perform(get("/post/"+postId)
+        ).andExpect(status().isOk());
+    }
+
+    @WithMockUser(value = "test1234@gmail.com", password = "asdf123@")
+    @Test
+    public void getPosts_locationConfirmFalse() throws Exception {
+        mvc.perform(get("/post")
+        ).andExpect(status().isOk());
+    }
+
+    @WithMockUser(value = "test1@naver.com", password = "asdf123@")
+    @Test
+    public void getPosts_locationConfirmTrue() throws Exception {
+        mvc.perform(get("/post")
+        ).andExpect(status().isOk());
+    }
 
 }
