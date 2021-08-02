@@ -60,37 +60,40 @@ public class PostServiceImpl implements PostService {
         Account account = baseService.getLocalConfirmAccount();
         PostDto postDto = request.getPost();
         PetDto petDto = request.getPet();
+        String startDate = postDto.getProtectionStartDate();
+        String endDate = postDto.getProtectionEndDate();
 
         if (files.size() > 5) {
             throw new FileNumberExceedException();
         }
+        if (!startDateAfterEndDate(startDate, endDate)) {
+            Post post = postRepository.save(
+                    Post.builder()
+                            .title(postDto.getTitle())
+                            .description(postDto.getDescription())
+                            .account(account)
+                            .protectionStartDate(LocalDate.parse(startDate))
+                            .protectionEndDate(LocalDate.parse(endDate))
+                            .applicationEndDate(LocalDate.parse(postDto.getApplicationEndDate()))
+                            .isApplicationEnd(false)
+                            .isUpdated(false)
+                            .contactInfo(postDto.getContactInfo())
+                            .build()
+            );
 
-        Post post = postRepository.save(
-                Post.builder()
-                        .title(postDto.getTitle())
-                        .description(postDto.getDescription())
-                        .account(account)
-                        .protectionStartDate(LocalDate.parse(postDto.getProtectionStartDate()))
-                        .protectionEndDate(LocalDate.parse(postDto.getProtectionEndDate()))
-                        .applicationEndDate(LocalDate.parse(postDto.getApplicationEndDate()))
-                        .isApplicationEnd(false)
-                        .isUpdated(false)
-                        .contactInfo(postDto.getContactInfo())
-                        .build()
-        );
+            petInfoRepository.save(
+                    PetInfo.builder()
+                            .petName(petDto.getPetName())
+                            .petSpecies(petDto.getPetSpecies())
+                            .petSex(Sex.valueOf(petDto.getPetSex()))
+                            .post(post)
+                            .build()
+            );
 
-        petInfoRepository.save(
-                PetInfo.builder()
-                        .petName(petDto.getPetName())
-                        .petSpecies(petDto.getPetSpecies())
-                        .petSex(Sex.valueOf(petDto.getPetSex()))
-                        .post(post)
-                        .build()
-        );
-
-        saveFile(files, post);
-
-        return post.getId();
+            saveFile(files, post);
+            return post.getId();
+        }
+        return null;
     }
 
     @Override
@@ -100,14 +103,19 @@ public class PostServiceImpl implements PostService {
                 .filter(p -> p.getAccount().getId().equals(account.getId()))
                 .orElseThrow(PostNotFoundException::new);
 
-        post.update(request.getPost());
-        post.getPetInfo().update(request.getPet());
-        postRepository.save(post);
-        petInfoRepository.save(post.getPetInfo());
+        String startDate = request.getPost().getProtectionStartDate();
+        String endDate = request.getPost().getProtectionEndDate();
 
-        petImageRepository.deleteAllByPost(post);
-        saveFile(files, post);
+        if (!startDateAfterEndDate(startDate, endDate)) {
+            post.update(request.getPost());
+            post.getPetInfo().update(request.getPet());
+            postRepository.save(post);
+            petInfoRepository.save(post.getPetInfo());
 
+            petImageRepository.deleteAllByPost(post);
+            saveFile(files, post);
+            return post.getId();
+        }
         return null;
     }
 
@@ -167,6 +175,13 @@ public class PostServiceImpl implements PostService {
                         .createdAt(post.getCreatedAt())
                         .build()).collect(Collectors.toList())
         );
+    }
+
+    private boolean startDateAfterEndDate(String startDate, String endDate) {
+        if (LocalDate.parse(startDate).isAfter(LocalDate.parse(endDate))) {
+            throw new InvalidScheduleSettingException();
+        }
+        return false;
     }
 
     private void saveFile(List<MultipartFile> files, Post post) {
