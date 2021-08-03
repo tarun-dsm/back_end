@@ -49,13 +49,15 @@ public class Post extends BaseCreatedAtEntity {
     @Column(length = 100)
     private String contactInfo;
 
+    @Builder.Default
     @NotNull
     @Column(columnDefinition = "bit(1)")
-    private Boolean isApplicationEnd;
+    private Boolean isApplicationEnd = false;
 
+    @Builder.Default
     @NotNull
     @Column(columnDefinition = "bit(1)")
-    private Boolean isUpdated;
+    private Boolean isUpdated = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference

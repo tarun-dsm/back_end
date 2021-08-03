@@ -55,7 +55,6 @@ public class AccountServiceImpl implements AccountService{
                         .experience(request.getExperience())
                         .latitude(BigDecimal.ZERO)
                         .longitude(BigDecimal.ZERO)
-                        .isLocationConfirm(false)
                         .build()
         );
 

@@ -73,8 +73,6 @@ public class PostServiceImpl implements PostService {
                         .protectionStartDate(LocalDate.parse(startDate))
                         .protectionEndDate(LocalDate.parse(endDate))
                         .applicationEndDate(LocalDate.parse(postDto.getApplicationEndDate()))
-                        .isApplicationEnd(false)
-                        .isUpdated(false)
                         .contactInfo(postDto.getContactInfo())
                         .build()
         );

@@ -25,9 +25,10 @@ public class Application extends BaseCreatedAtEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Builder.Default
     @NotNull
     @Column(columnDefinition = "bit(1)")
-    private Boolean isAccepted;
+    private Boolean isAccepted = false;
 
     @ManyToOne
     @JsonBackReference

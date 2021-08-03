@@ -54,7 +54,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                Application.builder()
                        .account(account)
                        .post(post)
-                       .isAccepted(false)
                        .build()
         );
 
