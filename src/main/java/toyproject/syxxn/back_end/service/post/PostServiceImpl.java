@@ -8,10 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import toyproject.syxxn.back_end.dto.request.PetDto;
 import toyproject.syxxn.back_end.dto.request.PostDto;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
-import toyproject.syxxn.back_end.dto.response.PetDetailsDto;
-import toyproject.syxxn.back_end.dto.response.PostDetailsDto;
-import toyproject.syxxn.back_end.dto.response.PostDetailsResponse;
-import toyproject.syxxn.back_end.dto.response.PostResponse;
+import toyproject.syxxn.back_end.dto.response.*;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.pet.PetImage;
@@ -66,34 +63,33 @@ public class PostServiceImpl implements PostService {
         if (files.size() > 5) {
             throw new FileNumberExceedException();
         }
-        if (!startDateAfterEndDate(startDate, endDate)) {
-            Post post = postRepository.save(
-                    Post.builder()
-                            .title(postDto.getTitle())
-                            .description(postDto.getDescription())
-                            .account(account)
-                            .protectionStartDate(LocalDate.parse(startDate))
-                            .protectionEndDate(LocalDate.parse(endDate))
-                            .applicationEndDate(LocalDate.parse(postDto.getApplicationEndDate()))
-                            .isApplicationEnd(false)
-                            .isUpdated(false)
-                            .contactInfo(postDto.getContactInfo())
-                            .build()
-            );
 
-            petInfoRepository.save(
-                    PetInfo.builder()
-                            .petName(petDto.getPetName())
-                            .petSpecies(petDto.getPetSpecies())
-                            .petSex(Sex.valueOf(petDto.getPetSex()))
-                            .post(post)
-                            .build()
-            );
+        startDateAfterEndDate(startDate, endDate);
+        Post post = postRepository.save(
+                Post.builder()
+                        .title(postDto.getTitle())
+                        .description(postDto.getDescription())
+                        .account(account)
+                        .protectionStartDate(LocalDate.parse(startDate))
+                        .protectionEndDate(LocalDate.parse(endDate))
+                        .applicationEndDate(LocalDate.parse(postDto.getApplicationEndDate()))
+                        .isApplicationEnd(false)
+                        .isUpdated(false)
+                        .contactInfo(postDto.getContactInfo())
+                        .build()
+        );
 
-            saveFile(files, post);
-            return post.getId();
-        }
-        return null;
+        petInfoRepository.save(
+                PetInfo.builder()
+                        .petName(petDto.getPetName())
+                        .petSpecies(petDto.getPetSpecies())
+                        .petSex(Sex.valueOf(petDto.getPetSex()))
+                        .post(post)
+                        .build()
+        );
+
+        saveFile(files, post);
+        return post.getId();
     }
 
     @Override
@@ -101,22 +97,22 @@ public class PostServiceImpl implements PostService {
         Account account = baseService.getLocalConfirmAccount();
         Post post = postRepository.findById(postId)
                 .filter(p -> p.getAccount().getId().equals(account.getId()))
+                .filter(p -> !p.getIsApplicationEnd())
                 .orElseThrow(PostNotFoundException::new);
 
         String startDate = request.getPost().getProtectionStartDate();
         String endDate = request.getPost().getProtectionEndDate();
 
-        if (!startDateAfterEndDate(startDate, endDate)) {
-            post.update(request.getPost());
-            post.getPetInfo().update(request.getPet());
-            postRepository.save(post);
-            petInfoRepository.save(post.getPetInfo());
+        startDateAfterEndDate(startDate, endDate);
 
-            petImageRepository.deleteAllByPost(post);
-            saveFile(files, post);
-            return post.getId();
-        }
-        return null;
+        post.update(request.getPost());
+        post.getPetInfo().update(request.getPet());
+        postRepository.save(post);
+        petInfoRepository.save(post.getPetInfo());
+
+        petImageRepository.deleteAllByPost(post);
+        saveFile(files, post);
+        return post.getId();
     }
 
     @Override
@@ -167,7 +163,7 @@ public class PostServiceImpl implements PostService {
 
         return new PostResponse(posts.stream()
                 .filter(post -> account.getIsLocationConfirm() || distance(account, post.getAccount()) >= 1)
-                .map(post -> toyproject.syxxn.back_end.dto.response.PostDto.builder()
+                .map(post -> PostResponseDto.builder()
                         .id(post.getId())
                         .writer(post.getAccount().getNickname())
                         .title(post.getTitle())

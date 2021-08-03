@@ -36,17 +36,14 @@ public class ProfileServiceImpl implements ProfileService {
         List<Review> reviews = reviewRepository.findAllByTarget(account);
         BigDecimal avgGrade = getAvg(reviews);
 
-        String experience = account.getExperience() == null ? "": account.getExperience();
-        String sex = account.getSex().equals(Sex.MALE)?"남성":"여성";
-
         return ProfileResponse.builder()
                 .nickname(account.getNickname())
                 .age(account.getAge())
-                .sex(sex)
+                .sex(account.getSex().equals(Sex.MALE)?"남성":"여성")
                 .avgGrade(avgGrade)
                 .rating(getRating(avgGrade.doubleValue()))
                 .isExperienceRasingPet(account.getIsExperienceRasingPet())
-                .experience(experience)
+                .experience(account.getExperience() == null ? "": account.getExperience())
                 .isLocationConfirm(account.getIsLocationConfirm())
                 .build();
     }

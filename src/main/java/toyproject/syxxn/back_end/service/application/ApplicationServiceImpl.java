@@ -68,11 +68,9 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .filter(a -> a.getAccount().getId().equals(account.getId()))
                 .orElseThrow(ApplicationNotFoundException::new);
 
-        if (isApplicationClosed(application.getPost())) {
-            throw new AfterApplicationClosedException();
+        if (!isApplicationClosed(application.getPost())) {
+            applicationRepository.delete(application);
         }
-
-        applicationRepository.delete(application);
     }
 
     @Transactional
@@ -86,14 +84,13 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (!post.getAccount().getId().equals(account.getId())) {
             throw new UserNotAccessibleException();
         }
-        if (isApplicationClosed(post)) {
-            throw new AfterApplicationClosedException();
-        }
 
-        application.acceptApplication();
-        post.isEnd();
-        applicationRepository.save(application);
-        postRepository.save(post);
+        if (!isApplicationClosed(post)) {
+            application.acceptApplication();
+            post.isEnd();
+            applicationRepository.save(application);
+            postRepository.save(post);
+        }
     }
 
     @Override
@@ -139,7 +136,9 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private boolean isApplicationClosed(Post post) {
-        return (LocalDate.now().isAfter(post.getApplicationEndDate()) || post.getIsApplicationEnd());
+        if(LocalDate.now().isAfter(post.getApplicationEndDate()) || post.getIsApplicationEnd()) {
+            throw new AfterApplicationClosedException();
+        } else return false;
     }
 
 }

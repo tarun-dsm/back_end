@@ -9,5 +9,5 @@ import java.util.List;
 @AllArgsConstructor
 public class PostResponse {
 
-    List<PostDto> posts;
+    List<PostResponseDto> posts;
 }
