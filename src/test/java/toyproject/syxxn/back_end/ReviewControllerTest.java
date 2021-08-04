@@ -161,7 +161,7 @@ public class ReviewControllerTest extends BaseTest{
     public void updateReview() throws Exception {
         ReviewRequest request = createRequest();
 
-        mvc.perform(put("/review/"+review.getId())
+        mvc.perform(patch("/review/"+review.getId())
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andExpect(status().isNoContent());
@@ -172,7 +172,7 @@ public class ReviewControllerTest extends BaseTest{
     public void updateReview_401() throws Exception {
         ReviewRequest request = createRequest();
 
-        mvc.perform(put("/review/"+review.getId())
+        mvc.perform(patch("/review/"+review.getId())
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andExpect(status().isNotFound());
@@ -183,7 +183,7 @@ public class ReviewControllerTest extends BaseTest{
     public void updateReview_404() throws Exception {
         ReviewRequest request = createRequest();
 
-        mvc.perform(put("/review/4561")
+        mvc.perform(patch("/review/4561")
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andExpect(status().isNotFound());

@@ -69,7 +69,7 @@ public class PostControllerTest extends BaseTest {
     @Test
     public void updatePost_400() throws Exception {
         PostRequest request = createPostRequest();
-        mvc.perform(put("/post/" + postId)
+        mvc.perform(patch("/post/" + postId)
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .param("files", "abc.jpg")
                 .content(new ObjectMapper().writeValueAsString(request))

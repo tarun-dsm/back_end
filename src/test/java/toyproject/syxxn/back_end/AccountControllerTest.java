@@ -152,7 +152,7 @@ public class AccountControllerTest extends BaseTest{
     public void saveCoordinate() throws Exception {
         CoordinatesRequest request = new CoordinatesRequest(BigDecimal.valueOf(12.123456), BigDecimal.valueOf(32.12345));
 
-        mvc.perform(put("/account")
+        mvc.perform(patch("/account")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(request))
         ).andExpect(status().isNoContent());
@@ -165,7 +165,7 @@ public class AccountControllerTest extends BaseTest{
     public void saveCoordinate_404() throws Exception {
         CoordinatesRequest request = new CoordinatesRequest(BigDecimal.valueOf(12.123456), BigDecimal.valueOf(32.12345));
 
-        mvc.perform(put("/account")
+        mvc.perform(patch("/account")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(request))
         ).andExpect(status().isNotFound());
