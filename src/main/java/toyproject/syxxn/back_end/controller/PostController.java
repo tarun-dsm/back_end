@@ -30,7 +30,7 @@ public class PostController {
         return postService.writePost(files, request);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Integer updatePost(@PathVariable("id") Integer postId,
                               @RequestParam("files") List<MultipartFile> files,

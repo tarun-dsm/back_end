@@ -23,7 +23,7 @@ public class AuthController {
         return authService.login(request);
     }
 
-    @PutMapping
+    @PatchMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public AccessTokenResponse tokenRefresh(@RequestHeader("X-Refresh-Token") String receivedToken) {
         return authService.tokenRefresh(receivedToken);

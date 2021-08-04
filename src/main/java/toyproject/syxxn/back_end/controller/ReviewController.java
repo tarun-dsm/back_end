@@ -27,7 +27,7 @@ public class ReviewController {
         reviewService.deleteReview(reviewId);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateReview(@PathVariable("id") Integer reviewId,
                              @RequestBody @Valid ReviewRequest request) {

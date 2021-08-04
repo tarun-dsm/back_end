@@ -37,7 +37,7 @@ public class AccountController {
         accountService.confirmNickname(nickname);
     }
 
-    @PutMapping
+    @PatchMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void saveCoordinate(@RequestBody @Valid CoordinatesRequest request) {
         accountService.saveCoordinate(request);
