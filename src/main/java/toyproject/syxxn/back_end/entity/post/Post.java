@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import toyproject.syxxn.back_end.dto.request.PostDto;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
 import toyproject.syxxn.back_end.entity.BaseCreatedAtEntity;
 import toyproject.syxxn.back_end.entity.account.Account;
