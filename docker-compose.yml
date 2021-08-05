@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  ggosunnaefriends:
+    image: ggosunnaefriends
+    build: .
+    ports:
+      - "8888:8080"
+  redis:
+    image: redis
+    container_name: redis-server
+    ports:
+        - "6380:6379"
+    volumes:
+        - 
+    networks:
+        - redis-network
+    environment:
+      - DB_URL=${DB_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - FILE_PATH=${FILE_PATH}
