@@ -51,18 +51,22 @@ public class PostServiceImpl implements PostService {
         postRepository.delete(post);
     }
 
+    @Override
+    public void saveFiles(Integer postId, List<MultipartFile> files) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(PostNotFoundException::new);
+
+        saveFile(files, post);
+    }
+
     @Transactional
     @Override
-    public Integer writePost(List<MultipartFile> files, PostRequest request) {
+    public Integer writePost(PostRequest request) {
         Account account = baseService.getLocalConfirmAccount();
         PostDto postDto = request.getPost();
         PetDto petDto = request.getPet();
         String startDate = postDto.getProtectionStartDate();
         String endDate = postDto.getProtectionEndDate();
-
-        if (files.size() > 5) {
-            throw new FileNumberExceedException();
-        }
 
         startDateAfterEndDate(startDate, endDate);
         Post post = postRepository.save(
@@ -86,12 +90,11 @@ public class PostServiceImpl implements PostService {
                         .build()
         );
 
-        saveFile(files, post);
         return post.getId();
     }
 
     @Override
-    public Integer updatePost(Integer postId, List<MultipartFile> files, PostRequest request) {
+    public Integer updatePost(Integer postId, PostRequest request) {
         Account account = baseService.getLocalConfirmAccount();
         Post post = postRepository.findById(postId)
                 .filter(p -> p.getAccount().getId().equals(account.getId()))
@@ -109,7 +112,6 @@ public class PostServiceImpl implements PostService {
         petInfoRepository.save(post.getPetInfo());
 
         petImageRepository.deleteAllByPost(post);
-        saveFile(files, post);
         return post.getId();
     }
 
@@ -171,15 +173,18 @@ public class PostServiceImpl implements PostService {
         );
     }
 
-    private boolean startDateAfterEndDate(String startDate, String endDate) {
+    private void startDateAfterEndDate(String startDate, String endDate) {
         if (LocalDate.parse(startDate).isAfter(LocalDate.parse(endDate))) {
             throw new InvalidScheduleSettingException();
         }
-        return false;
     }
 
     private void saveFile(List<MultipartFile> files, Post post) {
         try {
+            if (files.size() > 5) {
+                throw new FileNumberExceedException();
+            }
+
             for (MultipartFile file : files) {
                 if (file.getOriginalFilename() == null) {
                     throw new FileNotFoundException();
@@ -199,7 +204,8 @@ public class PostServiceImpl implements PostService {
                                 .build()
                 );
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
+            postRepository.delete(post);
             e.printStackTrace();
             throw new FileSaveFailedException();
         }

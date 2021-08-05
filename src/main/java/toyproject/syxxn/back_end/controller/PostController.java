@@ -25,17 +25,22 @@ public class PostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Integer writePost(@RequestParam("files") List<MultipartFile> files,
-                             @RequestBody PostRequest request) {
-        return postService.writePost(files, request);
+    public Integer writePost(@RequestBody PostRequest request) {
+        return postService.writePost(request);
+    }
+
+    @PostMapping("/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void saveFiles(@PathVariable("id") Integer postId,
+            @RequestParam("files") List<MultipartFile> files) {
+        postService.saveFiles(postId, files);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Integer updatePost(@PathVariable("id") Integer postId,
-                              @RequestParam("files") List<MultipartFile> files,
                              @RequestBody PostRequest request) {
-        return postService.updatePost(postId, files, request);
+        return postService.updatePost(postId, request);
     }
 
     @GetMapping("/{id}")
