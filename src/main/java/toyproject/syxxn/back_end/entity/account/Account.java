@@ -56,10 +56,9 @@ public class Account {
     @NotNull
     private BigDecimal latitude;
 
-    @Builder.Default
     @NotNull
     @Column(columnDefinition = "bit(1)")
-    private Boolean isLocationConfirm = false;
+    private Boolean isLocationConfirm;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
     @JsonManagedReference
