@@ -32,16 +32,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .formLogin().disable()
+                .csrf().disable().cors().disable()
                 .sessionManagement().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/account").permitAll()
-                .antMatchers(HttpMethod.GET, "/account/email/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/account/email").permitAll()
                 .antMatchers(HttpMethod.GET, "/account/nickname").permitAll()
-                .antMatchers(HttpMethod.POST,"/email").permitAll()
+                .antMatchers("/email").permitAll()
                 .antMatchers("/auth").permitAll()
                 .anyRequest().authenticated()
-                .and()
-                    .apply(new JwtConfigure(jwtTokenProvider));
+                .and().apply(new JwtConfigure(jwtTokenProvider));
     }
 
     @Override

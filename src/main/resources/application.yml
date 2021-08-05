@@ -3,26 +3,26 @@ spring:
     property-naming-strategy: SNAKE_CASE
   datasource:
     driver-class-name:
-    url: jdbc:h2:mem:test
-    username: test
-    password: 1234
+    url: jdbc:mysql://${DB_URL}?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: ${DE_USERNAME}
+    password: ${DB_PASSWORD}
   servlet:
     multipart:
       max-file-size: 512MB
       max-request-size: 512MB
   jpa:
-    database: h2
     generate-ddl: true
     hibernate:
       ddl-auto: create
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   redis:
     host: localhost
     port: 6380
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${ACCOUNT_EMAIL}
-    password: ${ACCOUNT_PASSWORD}
+    username: ${MALE_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -31,12 +31,15 @@ spring:
           starttls:
             enable: true
 
+server:
+  port: 8888
+
 auth:
   jwt:
-    secret: asdf1234
+    secret: ${JWT_SECRET}
     exp:
-      access: 2021
-      refresh: 20210629
+      access: 210805
+      refresh: 20210805
 
 file:
   path: ${FILE_PATH}
