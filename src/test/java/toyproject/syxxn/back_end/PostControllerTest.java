@@ -6,16 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import toyproject.syxxn.back_end.dto.request.PetDto;
-import toyproject.syxxn.back_end.dto.request.PostDto;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
-import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
-import toyproject.syxxn.back_end.entity.pet.PetInfo;
-import toyproject.syxxn.back_end.entity.post.Post;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -73,8 +65,7 @@ public class PostControllerTest extends BaseTest {
         mvc.perform(patch("/post/" + postId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(request))
-        ).andDo(print())
-                .andExpect(status().isNoContent());
+        ).andDo(print()).andExpect(status().isNoContent());
     }
 
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
@@ -84,8 +75,7 @@ public class PostControllerTest extends BaseTest {
         mvc.perform(patch("/post/" + 123456)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(request))
-        ).andDo(print())
-                .andExpect(status().isNotFound());
+        ).andExpect(status().isNotFound());
     }
 
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
@@ -96,8 +86,7 @@ public class PostControllerTest extends BaseTest {
         mvc.perform(post("/post")
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-        ).andDo(print())
-                .andExpect(status().isCreated());
+        ).andExpect(status().isCreated());
     }
 
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
@@ -126,33 +115,6 @@ public class PostControllerTest extends BaseTest {
     public void getPosts_locationConfirmTrue() throws Exception {
         mvc.perform(get("/post")
         ).andExpect(status().isOk());
-    }
-
-    @Test
-    public void petEntity() {
-        PetInfo petInfo = createPetInfo(account);
-        petInfo.update(PetDto.builder()
-                .petSex("MALE")
-                .petSpecies("울랄라종")
-                .petName("울랄라")
-                .build());
-
-        assertNotNull(petInfo.getPost());
-    }
-
-    @Test
-    public void postEntity() {
-        Post post = createPost(account, false, "2021-09-07");
-        post.update(PostDto.builder()
-                .title("글")
-                .protectionStartDate("2021-05-08")
-                .applicationEndDate("2021-09-08")
-                .protectionEndDate("2021-06-08")
-                .contactInfo("연락처")
-                .description("설명")
-                .build());
-
-        assertNull(post.getApplications());
     }
 
 }

@@ -1,6 +1,5 @@
 package toyproject.syxxn.back_end.controller;
 
-import io.lettuce.core.ScriptOutputType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +26,7 @@ public class PostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Integer writePost(@RequestBody PostRequest request) {
+    public Integer writePost(@RequestBody @Valid PostRequest request) {
         return postService.writePost(request);
     }
 

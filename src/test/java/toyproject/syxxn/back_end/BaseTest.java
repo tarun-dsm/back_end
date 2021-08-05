@@ -6,14 +6,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import toyproject.syxxn.back_end.dto.request.PetDto;
-import toyproject.syxxn.back_end.dto.request.PostDto;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
@@ -224,20 +221,17 @@ public class BaseTest {
     }
 
     public PostRequest createPostRequest() {
-        PostDto post = PostDto.builder()
+        return PostRequest.builder()
                 .title("이것은 제목")
                 .description("이것은 설명")
-                .protectionStartDate("2021-08-05")
-                .protectionEndDate("2021-08-06")
-                .applicationEndDate("2021-08-04")
-                .contactInfo("010-0000-0000")
+                .protectionstartdate("2021-08-05")
+                .protectionenddate("2021-08-06")
+                .applicationenddate("2021-08-04")
+                .contactinfo("010-0000-0000")
+                .petname("또로")
+                .petspecies("코리안숏헤어")
+                .petsex(Sex.MALE.toString())
                 .build();
-        PetDto pet = PetDto.builder()
-                .petName("또로")
-                .petSpecies("코리안숏헤어")
-                .petSex(Sex.MALE.toString())
-                .build();
-        return new PostRequest(post, pet);
     }
 
     public PetInfo createPetInfo(Account account) {

@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import toyproject.syxxn.back_end.dto.request.PetDto;
-import toyproject.syxxn.back_end.dto.request.PostDto;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
 import toyproject.syxxn.back_end.dto.response.*;
 import toyproject.syxxn.back_end.entity.Sex;
@@ -68,29 +66,27 @@ public class PostServiceImpl implements PostService {
     @Override
     public Integer writePost(PostRequest request) {
         Account account = baseService.getLocalConfirmAccount();
-        PostDto postDto = request.getPost();
-        PetDto petDto = request.getPet();
-        String startDate = postDto.getProtectionStartDate();
-        String endDate = postDto.getProtectionEndDate();
+        String startDate = request.getProtectionstartdate();
+        String endDate = request.getProtectionenddate();
 
         startDateAfterEndDate(startDate, endDate);
         Post post = postRepository.save(
                 Post.builder()
-                        .title(postDto.getTitle())
-                        .description(postDto.getDescription())
+                        .title(request.getTitle())
+                        .description(request.getDescription())
                         .account(account)
                         .protectionStartDate(LocalDate.parse(startDate))
                         .protectionEndDate(LocalDate.parse(endDate))
-                        .applicationEndDate(LocalDate.parse(postDto.getApplicationEndDate()))
-                        .contactInfo(postDto.getContactInfo())
+                        .applicationEndDate(LocalDate.parse(request.getApplicationenddate()))
+                        .contactInfo(request.getContactinfo())
                         .build()
         );
 
         petInfoRepository.save(
                 PetInfo.builder()
-                        .petName(petDto.getPetName())
-                        .petSpecies(petDto.getPetSpecies())
-                        .petSex(Sex.valueOf(petDto.getPetSex()))
+                        .petName(request.getPetname())
+                        .petSpecies(request.getPetspecies())
+                        .petSex(Sex.valueOf(request.getPetsex()))
                         .post(post)
                         .build()
         );
@@ -106,13 +102,13 @@ public class PostServiceImpl implements PostService {
                 .filter(p -> !p.getIsApplicationEnd())
                 .orElseThrow(PostNotFoundException::new);
 
-        String startDate = request.getPost().getProtectionStartDate();
-        String endDate = request.getPost().getProtectionEndDate();
+        String startDate = request.getProtectionstartdate();
+        String endDate = request.getProtectionenddate();
 
         startDateAfterEndDate(startDate, endDate);
 
-        post.update(request.getPost());
-        post.getPetInfo().update(request.getPet());
+        post.update(request);
+        post.getPetInfo().update(request);
         postRepository.save(post);
         petInfoRepository.save(post.getPetInfo());
 

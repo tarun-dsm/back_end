@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import toyproject.syxxn.back_end.dto.request.PetDto;
+import toyproject.syxxn.back_end.dto.request.PostRequest;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.post.Post;
 
@@ -38,10 +38,10 @@ public class PetInfo {
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    public void update(PetDto pet) {
-        this.petName = pet.getPetName();
-        this.petSpecies = pet.getPetSpecies();
-        this.petSex = Sex.valueOf(pet.getPetSex());
+    public void update(PostRequest pet) {
+        this.petName = pet.getPetname();
+        this.petSpecies = pet.getPetspecies();
+        this.petSex = Sex.valueOf(pet.getPetsex());
     }
 
 }
