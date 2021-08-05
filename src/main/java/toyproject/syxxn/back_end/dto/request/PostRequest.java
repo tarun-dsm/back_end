@@ -1,6 +1,7 @@
 package toyproject.syxxn.back_end.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,34 +24,34 @@ public class PostRequest {
     @Length(min = 2, max = 255)
     private String description;
 
-    @JsonFormat(pattern = "protection_start_date")
+    @JsonProperty("protection_start_date")
     @NotNull
     private String protectionstartdate;
 
-    @JsonFormat(pattern = "protection_end_date")
+    @JsonProperty("protection_end_date")
     @NotNull
     private String protectionenddate;
 
-    @JsonFormat(pattern = "application_end_date")
+    @JsonProperty("application_end_date")
     @NotNull
     private String applicationenddate;
 
-    @JsonFormat(pattern = "contactinfo")
+    @JsonProperty("contact_info")
     @NotNull
     @Length(min = 5, max = 100)
     private String contactinfo;
 
-    @JsonFormat(pattern = "pet_name")
+    @JsonProperty("pet_name")
     @NotNull
     @Length(max = 30)
     private String petname;
 
-    @JsonFormat(pattern = "pet_species")
+    @JsonProperty("pet_species")
     @NotNull
     @Length(max = 30)
     private String petspecies;
 
-    @JsonFormat(pattern = "pet_sex")
+    @JsonProperty("pet_sex")
     @NotNull
     private String petsex;
 

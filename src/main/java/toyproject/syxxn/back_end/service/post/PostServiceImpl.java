@@ -51,6 +51,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public void saveFiles(Integer postId, List<MultipartFile> files) {
         Post post = postRepository.findById(postId)
+                .filter(p -> p.getAccount().getId().equals(baseService.getLocalConfirmAccount().getId()))
                 .orElseThrow(PostNotFoundException::new);
 
         for (PetImage petImage : post.getPetImages()) {

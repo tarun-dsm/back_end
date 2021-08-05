@@ -4,16 +4,16 @@ spring:
   datasource:
     driver-class-name:
     url: jdbc:mysql://${DB_URL}?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-    username: ${DE_USERNAME}
+    username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   servlet:
     multipart:
       max-file-size: 512MB
       max-request-size: 512MB
   jpa:
-    generate-ddl: true
+    generate-ddl: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   redis:
     host: localhost
@@ -21,7 +21,7 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MALE_USERNAME}
+    username: ${MAIL_USERNAME}
     password: ${MAIL_PASSWORD}
     properties:
       mail:
