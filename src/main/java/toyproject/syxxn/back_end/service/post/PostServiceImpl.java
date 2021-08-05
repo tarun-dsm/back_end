@@ -21,7 +21,6 @@ import toyproject.syxxn.back_end.exception.*;
 import toyproject.syxxn.back_end.service.BaseService;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +54,12 @@ public class PostServiceImpl implements PostService {
     public void saveFiles(Integer postId, List<MultipartFile> files) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
+
+        for (PetImage petImage : post.getPetImages()) {
+            File file = new File(petImage.getPath());
+            file.delete();
+            petImageRepository.delete(petImage);
+        }
 
         saveFile(files, post);
     }
@@ -111,7 +116,6 @@ public class PostServiceImpl implements PostService {
         postRepository.save(post);
         petInfoRepository.save(post.getPetInfo());
 
-        petImageRepository.deleteAllByPost(post);
         return post.getId();
     }
 
