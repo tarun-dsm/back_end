@@ -7,8 +7,8 @@ spring:
     username: test
     password: 1234
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
     database: h2
-    generate-ddl: true
     hibernate:
       ddl-auto: create
   redis:

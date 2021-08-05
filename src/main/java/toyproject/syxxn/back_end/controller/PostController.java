@@ -1,5 +1,6 @@
 package toyproject.syxxn.back_end.controller;
 
+import io.lettuce.core.ScriptOutputType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import toyproject.syxxn.back_end.dto.response.PostDetailsResponse;
 import toyproject.syxxn.back_end.dto.response.PostResponse;
 import toyproject.syxxn.back_end.service.post.PostService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("/post")
@@ -39,7 +41,7 @@ public class PostController {
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Integer updatePost(@PathVariable("id") Integer postId,
-                             @RequestBody PostRequest request) {
+                             @RequestBody @Valid PostRequest request) {
         return postService.updatePost(postId, request);
     }
 

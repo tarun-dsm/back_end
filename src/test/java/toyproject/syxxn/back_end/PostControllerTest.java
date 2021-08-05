@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import toyproject.syxxn.back_end.dto.request.PetDto;
 import toyproject.syxxn.back_end.dto.request.PostDto;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
+import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.pet.PetInfo;
 import toyproject.syxxn.back_end.entity.post.Post;
@@ -67,26 +68,36 @@ public class PostControllerTest extends BaseTest {
 
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
     @Test
-    public void updatePost_400() throws Exception {
+    public void updatePost() throws Exception {
         PostRequest request = createPostRequest();
         mvc.perform(patch("/post/" + postId)
-                .contentType(MediaType.MULTIPART_FORM_DATA)
-                .param("files", "abc.jpg")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(request))
         ).andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNoContent());
+    }
+
+    @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
+    @Test
+    public void updatePost_404() throws Exception {
+        PostRequest request = createPostRequest();
+        mvc.perform(patch("/post/" + 123456)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(request))
+        ).andDo(print())
+                .andExpect(status().isNotFound());
     }
 
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
     @Test
     public void writePost() throws Exception {
         PostRequest request = createPostRequest();
+
         mvc.perform(post("/post")
-                .contentType(MediaType.MULTIPART_FORM_DATA)
-                .param("files", "맹구.jpg")
                 .content(new ObjectMapper().writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isCreated());
     }
 
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")

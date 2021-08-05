@@ -11,10 +11,8 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class PostRequest {
 
-    @NotNull
     private PostDto post;
 
-    @NotNull
     private PetDto pet;
 
 }

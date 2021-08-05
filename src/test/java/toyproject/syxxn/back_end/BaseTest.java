@@ -224,21 +224,20 @@ public class BaseTest {
     }
 
     public PostRequest createPostRequest() {
-        return new PostRequest(
-                PostDto.builder()
-                        .title("이것은 제목")
-                        .description("이것은 설명")
-                        .protectionStartDate("2021-08-06")
-                        .protectionEndDate("2021-08-09")
-                        .applicationEndDate("2021-08-04")
-                        .contactInfo("010-0000-0000")
-                        .build(),
-                PetDto.builder()
-                        .petName("또로")
-                        .petSpecies("코리안숏헤어")
-                        .petSex(Sex.MALE.toString())
-                        .build()
-        );
+        PostDto post = PostDto.builder()
+                .title("이것은 제목")
+                .description("이것은 설명")
+                .protectionStartDate("2021-08-05")
+                .protectionEndDate("2021-08-06")
+                .applicationEndDate("2021-08-04")
+                .contactInfo("010-0000-0000")
+                .build();
+        PetDto pet = PetDto.builder()
+                .petName("또로")
+                .petSpecies("코리안숏헤어")
+                .petSex(Sex.MALE.toString())
+                .build();
+        return new PostRequest(post, pet);
     }
 
     public PetInfo createPetInfo(Account account) {
