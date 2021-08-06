@@ -56,8 +56,8 @@ public class PostServiceImpl implements PostService {
 
         for (PetImage petImage : post.getPetImages()) {
             File file = new File(petImage.getPath());
-            file.delete();
-            petImageRepository.delete(petImage);
+            if (file.exists() && file.delete())
+                petImageRepository.delete(petImage);
         }
 
         saveFile(files, post);
