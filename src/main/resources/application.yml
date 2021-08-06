@@ -38,8 +38,8 @@ auth:
   jwt:
     secret: ${JWT_SECRET}
     exp:
-      access: 210805
-      refresh: 20210805
+      access: ${JWT_ACCESS_EXP}
+      refresh: ${JWT_REFRESH_EXP}
 
 file:
   path: ${FILE_PATH}
