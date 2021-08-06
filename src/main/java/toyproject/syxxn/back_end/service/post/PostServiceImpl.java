@@ -51,7 +51,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public void saveFiles(Integer postId, List<MultipartFile> files) {
         Post post = postRepository.findById(postId)
-                .filter(p -> p.getAccount().getId().equals(baseService.getLocalConfirmAccount().getId()))
+                .filter(p -> p.getAccount().equals(baseService.getLocalConfirmAccount()))
                 .orElseThrow(PostNotFoundException::new);
 
         for (PetImage petImage : post.getPetImages()) {
@@ -99,7 +99,7 @@ public class PostServiceImpl implements PostService {
     public Integer updatePost(Integer postId, PostRequest request) {
         Account account = baseService.getLocalConfirmAccount();
         Post post = postRepository.findById(postId)
-                .filter(p -> p.getAccount().getId().equals(account.getId()))
+                .filter(p -> p.getAccount().equals(account))
                 .filter(p -> !p.getIsApplicationEnd())
                 .orElseThrow(PostNotFoundException::new);
 
@@ -207,6 +207,7 @@ public class PostServiceImpl implements PostService {
             }
         } catch (Exception e) {
             postRepository.delete(post);
+            petInfoRepository.delete(post.getPetInfo());
             e.printStackTrace();
             throw new FileSaveFailedException();
         }

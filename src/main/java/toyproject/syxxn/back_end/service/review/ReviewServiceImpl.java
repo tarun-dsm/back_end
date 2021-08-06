@@ -44,7 +44,7 @@ public class ReviewServiceImpl implements ReviewService {
         Account target;
         if (writer.getId().equals(application.getAccount().getId())) {
             target = application.getPost().getAccount();
-        } else if(writer.getId().equals(application.getPost().getAccount().getId())) {
+        } else if(writer.equals(application.getPost().getAccount())) {
             target = application.getAccount();
         } else {
             throw new UserNotAccessibleException();
@@ -64,7 +64,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void deleteReview(Integer reviewId) {
         Review review = reviewRepository.findById(reviewId)
-                .filter(r -> r.getWriter().getId().equals(baseService.getLocalConfirmAccount().getId()))
+                .filter(r -> r.getWriter().equals(baseService.getLocalConfirmAccount()))
                 .orElseThrow(ReviewNotFoundException::new);
 
         reviewRepository.delete(review);
@@ -73,7 +73,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void updateReview(Integer reviewId, ReviewRequest request) {
         Review review = reviewRepository.findById(reviewId)
-                .filter(r -> r.getWriter().getId().equals(baseService.getLocalConfirmAccount().getId()))
+                .filter(r -> r.getWriter().equals(baseService.getLocalConfirmAccount()))
                 .orElseThrow(ReviewNotFoundException::new);
 
         review.update(request.getGrade(), request.getComment());

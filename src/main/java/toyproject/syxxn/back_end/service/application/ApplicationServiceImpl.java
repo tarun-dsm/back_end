@@ -38,7 +38,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
 
-        if (account.getId().equals(post.getAccount().getId())) {
+        if (account.equals(post.getAccount())) {
             throw new UserIsWriterException();
         }
         if (isApplicationClosed(post)) {
@@ -64,7 +64,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Account account = baseService.getLocalConfirmAccount();
 
         Application application = applicationRepository.findById(applicationId)
-                .filter(a -> a.getAccount().getId().equals(account.getId()))
+                .filter(a -> a.getAccount().equals(account))
                 .orElseThrow(ApplicationNotFoundException::new);
 
         if (!isApplicationClosed(application.getPost())) {
@@ -80,7 +80,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .orElseThrow(ApplicationNotFoundException::new);
         Post post = application.getPost();
 
-        if (!post.getAccount().getId().equals(account.getId())) {
+        if (!post.getAccount().equals(account)) {
             throw new UserNotAccessibleException();
         }
 
@@ -113,7 +113,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ApplicationResponse getApplications(Integer postId) {
         Account account = baseService.getLocalConfirmAccount();
         Post post = postRepository.findById(postId)
-                .filter(p -> p.getAccount().getId().equals(account.getId()))
+                .filter(p -> p.getAccount().equals(account))
                 .filter(p -> !p.getIsApplicationEnd())
                 .orElseThrow(PostNotFoundException::new);
 
