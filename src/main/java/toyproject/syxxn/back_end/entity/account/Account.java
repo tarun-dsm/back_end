@@ -36,7 +36,6 @@ public class Account {
     private String nickname;
 
     @NotNull
-    @Column(columnDefinition = "int(3)")
     private Integer age;
 
     @NotNull
@@ -47,7 +46,6 @@ public class Account {
     @Column(columnDefinition = "bit(1)")
     private Boolean isExperienceRasingPet;
 
-    @Column(length = 100)
     private String experience;
 
     @NotNull
