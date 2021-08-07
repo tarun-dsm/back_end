@@ -5,7 +5,7 @@ services:
     image: ggosunnaefriends
     build: .
     ports:
-      - "8888:8080"
+      - "8888:8888"
     networks:
       - redis-network
     environment:
@@ -15,14 +15,18 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - MAIL_USERNAME=${MAIL_USERNAME}
       - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - JWT_ACCESS_EXP=${JWT_ACCESS_EXP}
+      - JWT_REFRESH_EXP=${JWT_REFRESH_EXP}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
       - FILE_PATH=${FILE_PATH}
   redis:
     image: redis
     container_name: redis-server
     ports:
-        - "6380:6379"
+        - "6379:6379"
     volumes:
-        -
+        - /home/ubuntu/Tarun/redis_data
     networks:
         - redis-network
 networks:
