@@ -16,8 +16,8 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6380}
   mail:
     host: smtp.gmail.com
     port: 587
@@ -37,10 +37,10 @@ server:
 
 auth:
   jwt:
-    secret: ${JWT_SECRET}
+    secret: ${JWT_SECRET:asdf1234}
     exp:
-      access: ${JWT_ACCESS_EXP}
-      refresh: ${JWT_REFRESH_EXP}
+      access: ${JWT_ACCESS_EXP:12345}
+      refresh: ${JWT_REFRESH_EXP:2345678}
 
 file:
   path: ${FILE_PATH}
