@@ -14,7 +14,7 @@ spring:
     generate-ddl: false
     hibernate:
       ddl-auto: update
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   redis:
     host: ${REDIS_HOST}
     port: ${REDIS_PORT}
@@ -31,7 +31,7 @@ spring:
           starttls:
             enable: true
 
-# 내부 포트를 설정하는 것이다.
+# 내부 포트 설정
 server:
   port: 8888
 
