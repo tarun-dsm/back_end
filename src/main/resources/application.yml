@@ -14,7 +14,7 @@ spring:
     generate-ddl: false
     hibernate:
       ddl-auto: update
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
   redis:
     host: ${REDIS_HOST}
     port: ${REDIS_PORT}
