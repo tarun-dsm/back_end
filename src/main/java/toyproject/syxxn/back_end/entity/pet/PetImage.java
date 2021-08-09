@@ -1,6 +1,5 @@
 package toyproject.syxxn.back_end.entity.pet;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +20,6 @@ public class PetImage extends BaseIdEntity {
     @NotNull
     private String path;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;

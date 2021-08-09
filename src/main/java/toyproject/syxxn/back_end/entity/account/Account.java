@@ -1,6 +1,5 @@
 package toyproject.syxxn.back_end.entity.account;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import toyproject.syxxn.back_end.entity.BaseIdEntity;
 import toyproject.syxxn.back_end.entity.Sex;
@@ -56,19 +55,15 @@ public class Account extends BaseIdEntity {
     @Column(columnDefinition = "bit(1)")
     private Boolean isLocationConfirm;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
     private List<Post> posts;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Application> applications;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "writer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Review> writtenReview;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "target", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Review> reviews;
 

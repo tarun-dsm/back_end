@@ -1,7 +1,5 @@
 package toyproject.syxxn.back_end.entity.application;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,17 +25,14 @@ public class Application extends BaseCreatedAtEntity {
     @Column(columnDefinition = "bit(1)")
     private Boolean isAccepted = false;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Review> reviews;
 

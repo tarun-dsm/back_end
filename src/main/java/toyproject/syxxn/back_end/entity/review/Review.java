@@ -1,6 +1,5 @@
 package toyproject.syxxn.back_end.entity.review;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,17 +25,14 @@ public class Review extends BaseCreatedAtEntity {
     @NotNull
     private String comment;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "writer_id", nullable = false)
     private Account writer;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "target_id", nullable = false)
     private Account target;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "application_id", nullable = false)
     private Application application;
