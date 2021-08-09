@@ -2,6 +2,7 @@ package toyproject.syxxn.back_end.entity.account;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+import toyproject.syxxn.back_end.entity.BaseIdEntity;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.application.Application;
 import toyproject.syxxn.back_end.entity.post.Post;
@@ -18,10 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"email","nickname"})})
-public class Account {
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Account extends BaseIdEntity {
 
     @NotNull
     @Column(length = 45)
@@ -58,20 +56,20 @@ public class Account {
     @Column(columnDefinition = "bit(1)")
     private Boolean isLocationConfirm;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
     @JsonManagedReference
+    @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JsonManagedReference
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Application> applications;
 
-    @OneToMany(mappedBy = "writer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JsonManagedReference
+    @OneToMany(mappedBy = "writer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Review> writtenReview;
 
-    @OneToMany(mappedBy = "target", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JsonManagedReference
+    @OneToMany(mappedBy = "target", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Review> reviews;
 
     public void updateLocation(BigDecimal longitude, BigDecimal latitude) {

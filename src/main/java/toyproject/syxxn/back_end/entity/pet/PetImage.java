@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import toyproject.syxxn.back_end.entity.BaseIdEntity;
 import toyproject.syxxn.back_end.entity.post.Post;
 
 import javax.persistence.*;
@@ -15,16 +16,13 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class PetImage {
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class PetImage extends BaseIdEntity {
 
     @NotNull
     private String path;
 
-    @ManyToOne
     @JsonBackReference
+    @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 

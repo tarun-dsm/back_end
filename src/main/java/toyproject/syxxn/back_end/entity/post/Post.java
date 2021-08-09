@@ -25,9 +25,6 @@ import java.util.List;
 @Entity
 public class Post extends BaseCreatedAtEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
     @NotNull
     @Column(length = 30)
     private String title;
@@ -58,21 +55,21 @@ public class Post extends BaseCreatedAtEntity {
     @Column(columnDefinition = "bit(1)")
     private Boolean isUpdated = false;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @OneToOne(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JsonManagedReference
+    @OneToOne(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private PetInfo petInfo;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     @JsonManagedReference
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<PetImage> petImages;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     @JsonManagedReference
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Application> applications;
 
     public void isEnd() {

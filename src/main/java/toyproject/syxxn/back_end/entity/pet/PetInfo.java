@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
+import toyproject.syxxn.back_end.entity.BaseIdEntity;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.post.Post;
 
@@ -17,10 +18,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class PetInfo {
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class PetInfo extends BaseIdEntity {
 
     @NotNull
     @Column(length = 30)
@@ -33,8 +31,8 @@ public class PetInfo {
     @NotNull
     private Sex petSex;
 
-    @OneToOne
     @JsonBackReference
+    @OneToOne
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 

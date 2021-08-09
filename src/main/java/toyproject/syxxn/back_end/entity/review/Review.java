@@ -20,27 +20,24 @@ import java.math.BigDecimal;
 @Entity
 public class Review extends BaseCreatedAtEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
     @NotNull
     private BigDecimal grade;
 
     @NotNull
     private String comment;
 
-    @ManyToOne
     @JsonBackReference
+    @ManyToOne
     @JoinColumn(name = "writer_id", nullable = false)
     private Account writer;
 
-    @ManyToOne
     @JsonBackReference
+    @ManyToOne
     @JoinColumn(name = "target_id", nullable = false)
     private Account target;
 
-    @ManyToOne
     @JsonBackReference
+    @ManyToOne
     @JoinColumn(name = "application_id", nullable = false)
     private Application application;
 

@@ -22,26 +22,23 @@ import java.util.List;
 @Entity
 public class Application extends BaseCreatedAtEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
     @Builder.Default
     @NotNull
     @Column(columnDefinition = "bit(1)")
     private Boolean isAccepted = false;
 
-    @ManyToOne
     @JsonBackReference
+    @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @ManyToOne
     @JsonBackReference
+    @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JsonManagedReference
+    @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Review> reviews;
 
     public void acceptApplication() {
