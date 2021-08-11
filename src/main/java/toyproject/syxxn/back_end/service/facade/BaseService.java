@@ -1,11 +1,10 @@
-package toyproject.syxxn.back_end.service;
+package toyproject.syxxn.back_end.service.facade;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.exception.UserNotUnauthenticatedException;
-import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
 
 @RequiredArgsConstructor
 @Component

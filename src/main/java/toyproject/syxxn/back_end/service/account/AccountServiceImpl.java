@@ -16,7 +16,7 @@ import toyproject.syxxn.back_end.entity.refreshtoken.RefreshTokenRepository;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumber;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumberRepository;
 import toyproject.syxxn.back_end.exception.*;
-import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
+import toyproject.syxxn.back_end.service.facade.AuthenticationFacade;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 
 import java.math.BigDecimal;

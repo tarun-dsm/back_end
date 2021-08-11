@@ -17,8 +17,8 @@ import toyproject.syxxn.back_end.entity.pet.PetInfoRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.exception.*;
-import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
-import toyproject.syxxn.back_end.service.BaseService;
+import toyproject.syxxn.back_end.service.facade.AuthenticationFacade;
+import toyproject.syxxn.back_end.service.facade.BaseService;
 
 import java.io.File;
 import java.time.LocalDate;

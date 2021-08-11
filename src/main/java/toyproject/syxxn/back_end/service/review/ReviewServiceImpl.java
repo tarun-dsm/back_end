@@ -4,15 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import toyproject.syxxn.back_end.dto.request.ReviewRequest;
 import toyproject.syxxn.back_end.entity.account.Account;
-import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.application.Application;
 import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.review.Review;
 import toyproject.syxxn.back_end.entity.review.ReviewRepository;
 import toyproject.syxxn.back_end.exception.*;
-import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
-import toyproject.syxxn.back_end.service.BaseService;
+import toyproject.syxxn.back_end.service.facade.BaseService;
 
 import java.time.LocalDate;
 

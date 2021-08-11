@@ -1,4 +1,4 @@
-package toyproject.syxxn.back_end.security.auth;
+package toyproject.syxxn.back_end.service.facade;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

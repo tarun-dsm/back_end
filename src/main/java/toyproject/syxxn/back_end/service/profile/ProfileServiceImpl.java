@@ -12,7 +12,7 @@ import toyproject.syxxn.back_end.entity.review.Review;
 import toyproject.syxxn.back_end.entity.review.ReviewRepository;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
 import toyproject.syxxn.back_end.exception.UserNotUnauthenticatedException;
-import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
+import toyproject.syxxn.back_end.service.facade.AuthenticationFacade;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
