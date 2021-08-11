@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
+import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -87,6 +88,27 @@ public class PostControllerTest extends BaseTest {
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andExpect(status().isCreated());
+    }
+
+    @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
+    @Test
+    public void writePost_400() throws Exception {
+        PostRequest request = PostRequest.builder()
+                .title("이것은 제목")
+                .description("이것은 설명")
+                .protectionstartdate("2021-08-06")
+                .protectionenddate("2021-08-05")
+                .applicationenddate("2021-08-04")
+                .contactinfo("010-0000-0000")
+                .petname("또로")
+                .petspecies("코리안숏헤어")
+                .petsex(Sex.MALE.toString())
+                .build();
+
+        mvc.perform(post("/post")
+                .content(new ObjectMapper().writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        ).andExpect(status().isBadRequest());
     }
 
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
