@@ -3,7 +3,6 @@ package toyproject.syxxn.back_end.service.profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import toyproject.syxxn.back_end.dto.response.*;
-import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
@@ -16,7 +15,6 @@ import toyproject.syxxn.back_end.service.facade.AuthenticationFacade;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,10 +66,6 @@ public class ProfileServiceImpl implements ProfileService {
     public ProfilePostResponse getPosts(Integer accountId) {
         Account account = getAccount(accountId);
         List<Post> posts = postRepository.findAllByAccountAndPetImagesNotNullOrderByCreatedAtDesc(account);
-
-        if (posts.size() == 0) {
-            return new ProfilePostResponse(new ArrayList<>());
-        }
 
         return new ProfilePostResponse(posts.stream().map(
                 post ->
