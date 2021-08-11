@@ -80,10 +80,6 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     private boolean isReviewablePeriod(Post post) {
-        System.out.println((LocalDate.now()));
-        System.out.println(post.getApplicationEndDate());
-        System.out.println(LocalDate.now().isAfter(post.getApplicationEndDate()));
-        System.out.println(post.getIsApplicationEnd());
         return (LocalDate.now().isAfter(post.getApplicationEndDate()) && post.getIsApplicationEnd());
     }
 
