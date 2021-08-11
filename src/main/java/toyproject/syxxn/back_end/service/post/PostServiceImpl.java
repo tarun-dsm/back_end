@@ -9,6 +9,7 @@ import toyproject.syxxn.back_end.dto.request.PostRequest;
 import toyproject.syxxn.back_end.dto.response.*;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
+import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.pet.PetImage;
 import toyproject.syxxn.back_end.entity.pet.PetImageRepository;
 import toyproject.syxxn.back_end.entity.pet.PetInfo;
@@ -16,6 +17,7 @@ import toyproject.syxxn.back_end.entity.pet.PetInfoRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.exception.*;
+import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
 import toyproject.syxxn.back_end.service.BaseService;
 
 import java.io.File;
@@ -28,9 +30,12 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImpl implements PostService {
 
+    private final AccountRepository accountRepository;
     private final PostRepository postRepository;
     private final PetInfoRepository petInfoRepository;
     private final PetImageRepository  petImageRepository;
+
+    private final AuthenticationFacade authenticationFacade;
 
     private final BaseService baseService;
 
@@ -159,7 +164,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse getPosts() {
-        Account account = baseService.getAccount();
+        Account account = getAccount();
         List<Post> posts = postRepository.findAllByIsApplicationEndFalseOrderByCreatedAtDesc();
 
         return new PostResponse(posts.stream()
@@ -172,6 +177,11 @@ public class PostServiceImpl implements PostService {
                         .createdAt(post.getCreatedAt())
                         .build()).collect(Collectors.toList())
         );
+    }
+
+    public Account getAccount() {
+        return accountRepository.findByEmail(authenticationFacade.getUserEmail())
+                .orElseThrow(UserNotFoundException::new);
     }
 
     private void startDateAfterEndDate(String startDate, String endDate) {

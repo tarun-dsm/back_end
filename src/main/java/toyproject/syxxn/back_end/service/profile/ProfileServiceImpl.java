@@ -11,7 +11,8 @@ import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.entity.review.Review;
 import toyproject.syxxn.back_end.entity.review.ReviewRepository;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
-import toyproject.syxxn.back_end.service.BaseService;
+import toyproject.syxxn.back_end.exception.UserNotUnauthenticatedException;
+import toyproject.syxxn.back_end.security.auth.AuthenticationFacade;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -27,12 +28,11 @@ public class ProfileServiceImpl implements ProfileService {
     private final ReviewRepository reviewRepository;
     private final PostRepository postRepository;
 
-    private final BaseService baseService;
+    private final AuthenticationFacade authenticationFacade;
 
     @Override
     public ProfileResponse getProfile(Integer accountId) {
         Account account = getAccount(accountId);
-
         List<Review> reviews = reviewRepository.findAllByTarget(account);
         BigDecimal avgGrade = getAvg(reviews);
 
@@ -51,7 +51,6 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ProfileReviewResponse getReviews(Integer accountId) {
         Account account = getAccount(accountId);
-
         List<Review> reviews = reviewRepository.findAllByTarget(account);
 
         return new ProfileReviewResponse(reviews.stream().map(
@@ -68,7 +67,6 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ProfilePostResponse getPosts(Integer accountId) {
         Account account = getAccount(accountId);
-        System.out.println(account.getEmail());
         List<Post> posts = postRepository.findAllByAccountAndPetImagesNotNullOrderByCreatedAtDesc(account);
 
         if (posts.size() == 0) {
@@ -90,7 +88,8 @@ public class ProfileServiceImpl implements ProfileService {
 
     private Account getAccount(Integer accountId) {
         if (accountId == null) {
-            return baseService.getAccount();
+            return accountRepository.findByEmail(authenticationFacade.getUserEmail())
+                    .orElseThrow(UserNotUnauthenticatedException::new);
         } else {
             return accountRepository.findById(accountId)
                     .orElseThrow(UserNotFoundException::new);

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
 import toyproject.syxxn.back_end.dto.response.PostDetailsResponse;
+import toyproject.syxxn.back_end.dto.response.PostIdResponse;
 import toyproject.syxxn.back_end.dto.response.PostResponse;
 import toyproject.syxxn.back_end.service.post.PostService;
 
@@ -26,8 +27,8 @@ public class PostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Integer writePost(@RequestBody @Valid PostRequest request) {
-        return postService.writePost(request);
+    public PostIdResponse writePost(@RequestBody @Valid PostRequest request) {
+        return new PostIdResponse(postService.writePost(request));
     }
 
     @PostMapping("/{id}")
@@ -39,9 +40,9 @@ public class PostController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Integer updatePost(@PathVariable("id") Integer postId,
+    public PostIdResponse updatePost(@PathVariable("id") Integer postId,
                              @RequestBody @Valid PostRequest request) {
-        return postService.updatePost(postId, request);
+        return new PostIdResponse(postService.updatePost(postId, request));
     }
 
     @GetMapping("/{id}")
