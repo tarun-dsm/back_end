@@ -39,7 +39,7 @@ public class ProfileServiceImpl implements ProfileService {
         return ProfileResponse.builder()
                 .nickname(account.getNickname())
                 .age(account.getAge())
-                .sex(account.getSex().equals(Sex.MALE)?"남성":"여성")
+                .sex(account.getSex().getKorean())
                 .avgGrade(avgGrade)
                 .rating(getRating(avgGrade.doubleValue()))
                 .isExperienceRasingPet(account.getIsExperienceRasingPet())
