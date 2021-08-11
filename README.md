@@ -1,5 +1,3 @@
-# back_end
-<a href="https://codecov.io/gh/tarun-dsm/back_end">
-   <img src="https://codecov.io/gh/tarun-dsm/back_end/branch/main/graph/badge.svg?token=guyT1Z9i31"/>
-</a>
-    
+# back_end <a href="https://codecov.io/gh/tarun-dsm/back_end">
+   <img src="https://codecov.io/gh/tarun-dsm/back_end/branch/main/graph/badge.svg?token=guyT1Z9i31"/></a>
+#### DB SQL : [ggosunnaefriends.sql](https://github.com/tarun-dsm/back_end/blob/main/ggosunnaefriends.sql)
