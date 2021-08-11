@@ -223,7 +223,7 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    private static double distance(Account account, Account writer) {
+    private double distance(Account account, Account writer) {
         double writerLon = writer.getLongitude().doubleValue();
         double writerLat = writer.getLatitude().doubleValue();
         double myLon = account.getLongitude().doubleValue();
@@ -239,11 +239,11 @@ public class PostServiceImpl implements PostService {
         return distance;
     }
 
-    private static double degreeToRadion(double deg) {
+    private double degreeToRadion(double deg) {
         return (deg * Math.PI / 180);
     }
 
-    private static double radionToDegrees(double rad) {
+    private double radionToDegrees(double rad) {
         return (rad * 180 / Math.PI);
     }
 
