@@ -1,6 +1,7 @@
 package toyproject.syxxn.back_end.security.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,7 @@ public class JwtTokenProvider {
 
     public boolean isRefreshToken(String token) {
         try {
-            return getBody(token).get("type").equals("refresh_token");
+            return getHeader(token).get("typ").equals("refresh_token");
         } catch (Exception e) {
             throw new InvalidTokenException();
         }
@@ -102,7 +103,15 @@ public class JwtTokenProvider {
         }
     }
 
+    private JwsHeader getHeader(String token) {
+        return Jwts.parser().setSigningKey(secretKey)
+                .parseClaimsJws(token).getHeader();
+    }
+
     private Claims getBody(String token) {
+        System.out.println(Jwts.parser().setSigningKey(secretKey)
+                .parseClaimsJws(token).getHeader());
+
         return Jwts.parser().setSigningKey(secretKey)
                 .parseClaimsJws(token).getBody();
     }
