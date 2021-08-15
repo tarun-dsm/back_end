@@ -39,9 +39,9 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiration * 1000))
                 .setIssuedAt(new Date())
+                .setHeaderParam("typ", "access_token")
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .setSubject(id.toString())
-                .claim("type", "access_token")
                 .compact();
     }
 
@@ -49,9 +49,9 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpiration * 1000))
                 .setIssuedAt(new Date())
+                .setHeaderParam("typ", "refresh_token")
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .setSubject(id.toString())
-                .claim("type", "refresh_token")
                 .compact();
     }
 
