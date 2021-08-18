@@ -44,3 +44,6 @@ auth:
 
 file:
   path: ${FILE_PATH}
+
+kakao:
+  rest-api-key: ${REST_API_KEY}

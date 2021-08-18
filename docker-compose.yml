@@ -20,6 +20,7 @@ services:
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
       - FILE_PATH=${FILE_PATH}
+      - REST_API_KEY=${REST_API_KEY}
   redis:
     image: redis
     container_name: redis-server

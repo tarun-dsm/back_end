@@ -71,10 +71,11 @@ public class Account extends BaseIdEntity {
     @OneToMany(mappedBy = "target", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Review> reviews;
 
-    public void updateLocation(BigDecimal longitude, BigDecimal latitude) {
+    public void updateLocation(BigDecimal longitude, BigDecimal latitude, String administrationDivision) {
         this.isLocationConfirm = true;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.administrationDivision = administrationDivision;
     }
 
     public String getRating() {

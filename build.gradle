@@ -50,6 +50,9 @@ dependencies {
 	//mail
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+	//kakao
+	implementation group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
+
 	//test
 	implementation 'com.h2database:h2'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
