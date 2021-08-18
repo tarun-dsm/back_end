@@ -21,6 +21,8 @@ public class ProfileResponse {
 
     private boolean isExperienceRasingPet;
 
+    private String administrationDivision;
+
     private String experience;
 
     private boolean isLocationConfirm;

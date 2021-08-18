@@ -38,6 +38,7 @@ public class ProfileServiceImpl implements ProfileService {
                 .sex(account.getSex().getKorean())
                 .avgGrade(account.getAvg())
                 .rating(account.getRating())
+                .administrationDivision(account.getAdministrationDivision())
                 .isExperienceRasingPet(account.getIsExperienceRasingPet())
                 .experience(account.getExperience() == null ? "": account.getExperience())
                 .isLocationConfirm(account.getIsLocationConfirm())

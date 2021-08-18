@@ -17,6 +17,8 @@ public class PostResponseDto {
 
     private String title;
 
+    private String administrationDivision;
+
     private String writer;
 
     private String firstImagePath;

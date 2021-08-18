@@ -53,7 +53,7 @@ public class Account extends BaseIdEntity {
     private BigDecimal latitude;
 
     @Column(length = 10)
-    private String administration_division;
+    private String administrationDivision;
 
     @NotNull
     @Column(columnDefinition = "bit(1)")

@@ -175,6 +175,7 @@ public class PostServiceImpl implements PostService {
                         .id(post.getId())
                         .writer(post.getAccount().getNickname())
                         .title(post.getTitle())
+                        .administrationDivision(post.getAccount().getAdministrationDivision())
                         .firstImagePath(post.getPetImages().get(0).getPath())
                         .createdAt(post.getCreatedAt())
                         .build()).collect(Collectors.toList())
