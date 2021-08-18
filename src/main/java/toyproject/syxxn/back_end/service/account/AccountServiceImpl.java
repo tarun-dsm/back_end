@@ -44,7 +44,7 @@ public class AccountServiceImpl implements AccountService{
     @Value("${auth.jwt.exp.refresh}")
     private Long refreshExp;
 
-    @Value("${kakao.rest-api-key}")
+    @Value("${kakao.api-key}")
     private String restApiKey;
 
     private static final String KAKAO_API_URL = "https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=";
