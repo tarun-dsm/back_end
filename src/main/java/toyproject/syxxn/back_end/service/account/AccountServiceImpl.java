@@ -1,7 +1,14 @@
 package toyproject.syxxn.back_end.service.account;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +43,11 @@ public class AccountServiceImpl implements AccountService{
 
     @Value("${auth.jwt.exp.refresh}")
     private Long refreshExp;
+
+    @Value("${kakao.rest-api-key}")
+    private String restApiKey;
+
+    private static final String KAKAO_API_URL = "https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=";
 
     @Transactional
     @Override
@@ -86,12 +98,41 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public void saveCoordinate(CoordinatesRequest request) {
+    public void saveCoordinate(CoordinatesRequest request) throws JsonProcessingException, UnirestException {
         Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .orElseThrow(UserNotFoundException::new);
+        BigDecimal x = request.getLongitude();
+        BigDecimal y = request.getLatitude();
 
-        account.updateLocation(request.getLongitude(), request.getLatitude());
+        System.out.println(getAdministrationDivision(x.doubleValue(), y.doubleValue()));
+        account.updateLocation(request.getLongitude(), request.getLatitude(), getAdministrationDivision(x.doubleValue(),y.doubleValue()));
         accountRepository.save(account);
+    }
+
+    private String getAdministrationDivision(Double x, Double y) throws JsonProcessingException, UnirestException {
+        ObjectMapper mapper = new ObjectMapper();
+        String administrationDivision = "";
+
+        HttpResponse<com.mashape.unirest.http.JsonNode> response = Unirest.get(KAKAO_API_URL + x + "&y=" + y)
+                .header("Authorization", "KakaoAK " + restApiKey)
+                .header("Accept", MediaType.APPLICATION_JSON_VALUE)
+                .header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8")
+                .asJson();
+
+        String json = response.getBody().toString();
+
+        for (int i = 0; i < 1; i++) {
+            JsonNode document = mapper.readTree(json).path("documents").get(i);
+
+            if (!document.path("region_4depth_name").toString().equals("\"\"")) {
+                administrationDivision = document.path("region_4depth_name").toString();
+                break;
+            } else {
+                administrationDivision = document.path("region_3depth_name").toString();
+            }
+        }
+
+        return administrationDivision;
     }
 
 }
