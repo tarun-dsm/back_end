@@ -10,6 +10,7 @@ CREATE TABLE `account` (
   `longitude` DECIMAL(19,2) NOT NULL,
   `nickname` VARCHAR(10) NOT NULL,
   `sex` VARCHAR(6) NOT NULL,
+  `administration_division` VARCHAR(10),
   PRIMARY KEY(`id`),
   UNIQUE(`email`, `nickname`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
