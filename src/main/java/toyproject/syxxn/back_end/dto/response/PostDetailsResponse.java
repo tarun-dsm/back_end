@@ -13,6 +13,8 @@ public class PostDetailsResponse {
 
     private Integer writerId;
 
+    private String rating;
+
     private String nickname;
 
     private PostDetailsDto post;

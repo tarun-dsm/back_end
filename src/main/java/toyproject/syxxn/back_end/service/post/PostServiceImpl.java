@@ -125,6 +125,7 @@ public class PostServiceImpl implements PostService {
     public PostDetailsResponse getPostDetails(Integer postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
+        Account account = post.getAccount();
 
         PetInfo petInfo = post.getPetInfo();
 
@@ -155,7 +156,8 @@ public class PostServiceImpl implements PostService {
                 .build();
 
         return PostDetailsResponse.builder()
-                .writerId(post.getAccount().getId())
+                .writerId(account.getId())
+                .rating(account.getRating())
                 .nickname(post.getAccount().getNickname())
                 .pet(petDetailsDto)
                 .post(postDetailsDto)
