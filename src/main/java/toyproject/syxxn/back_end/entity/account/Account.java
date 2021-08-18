@@ -10,6 +10,7 @@ import toyproject.syxxn.back_end.entity.review.Review;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.List;
 
 @Getter
@@ -51,6 +52,9 @@ public class Account extends BaseIdEntity {
     @NotNull
     private BigDecimal latitude;
 
+    @Column(length = 10)
+    private String administration_division;
+
     @NotNull
     @Column(columnDefinition = "bit(1)")
     private Boolean isLocationConfirm;
@@ -71,6 +75,33 @@ public class Account extends BaseIdEntity {
         this.isLocationConfirm = true;
         this.longitude = longitude;
         this.latitude = latitude;
+    }
+
+    public String getRating() {
+        Double avgGrade = getAvg().doubleValue();
+
+        if (avgGrade.compareTo(4.5) > 0) {
+            return "1등급";
+        } else if (avgGrade.compareTo(3.5) > 0) {
+            return "2등급";
+        } else if (avgGrade.compareTo(2.5) > 0) {
+            return "3등급";
+        } else if (avgGrade.compareTo(1.5) > 0) {
+            return "4등급";
+        } else {
+            return "5등급";
+        }
+    }
+
+    public BigDecimal getAvg() {
+        if (this.reviews.size() == 0) {
+            return BigDecimal.ZERO;
+        }
+        BigDecimal sumData = BigDecimal.ZERO;
+        for (int i = 0; i < this.reviews.size(); i++){
+            sumData = sumData.add(reviews.get(i).getGrade());
+        }
+        return sumData.divide(BigDecimal.valueOf(this.reviews.size()), MathContext.DECIMAL64);
     }
 
 }

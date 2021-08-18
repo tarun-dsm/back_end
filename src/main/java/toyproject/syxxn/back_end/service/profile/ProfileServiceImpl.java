@@ -31,15 +31,13 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ProfileResponse getProfile(Integer accountId) {
         Account account = getAccount(accountId);
-        List<Review> reviews = reviewRepository.findAllByTarget(account);
-        BigDecimal avgGrade = getAvg(reviews);
 
         return ProfileResponse.builder()
                 .nickname(account.getNickname())
                 .age(account.getAge())
                 .sex(account.getSex().getKorean())
-                .avgGrade(avgGrade)
-                .rating(getRating(avgGrade.doubleValue()))
+                .avgGrade(account.getAvg())
+                .rating(account.getRating())
                 .isExperienceRasingPet(account.getIsExperienceRasingPet())
                 .experience(account.getExperience() == null ? "": account.getExperience())
                 .isLocationConfirm(account.getIsLocationConfirm())
@@ -87,31 +85,6 @@ public class ProfileServiceImpl implements ProfileService {
         } else {
             return accountRepository.findById(accountId)
                     .orElseThrow(UserNotFoundException::new);
-        }
-    }
-
-    private BigDecimal getAvg(List<Review> reviews) {
-        if (reviews.size() == 0) {
-            return BigDecimal.ZERO;
-        }
-        BigDecimal sumData = BigDecimal.ZERO;
-        for (int i = 0; i < reviews.size(); i++){
-            sumData = sumData.add(reviews.get(i).getGrade());
-        }
-        return sumData.divide(BigDecimal.valueOf(reviews.size()), MathContext.DECIMAL64);
-    }
-
-    private String getRating(Double avgGrade) {
-        if (avgGrade.compareTo(4.5) > 0) {
-            return "1등급";
-        } else if (avgGrade.compareTo(3.5) > 0) {
-            return "2등급";
-        } else if (avgGrade.compareTo(2.5) > 0) {
-            return "3등급";
-        } else if (avgGrade.compareTo(1.5) > 0) {
-            return "4등급";
-        } else {
-            return "5등급";
         }
     }
 
