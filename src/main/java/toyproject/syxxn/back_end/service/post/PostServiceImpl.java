@@ -173,11 +173,11 @@ public class PostServiceImpl implements PostService {
                 .filter(post -> account.getIsLocationConfirm() || distance(account, post.getAccount()) >= 1)
                 .map(post -> PostResponseDto.builder()
                         .id(post.getId())
-                        .writer(post.getAccount().getNickname())
                         .title(post.getTitle())
                         .administrationDivision(post.getAccount().getAdministrationDivision())
                         .firstImagePath(post.getPetImages().get(0).getPath())
-                        .createdAt(post.getCreatedAt())
+                        .protectionStartDate(post.getProtectionStartDate())
+                        .protectionEndDate(post.getProtectionEndDate())
                         .build()).collect(Collectors.toList())
         );
     }

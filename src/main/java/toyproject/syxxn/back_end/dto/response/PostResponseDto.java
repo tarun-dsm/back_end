@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -19,10 +20,10 @@ public class PostResponseDto {
 
     private String administrationDivision;
 
-    private String writer;
-
     private String firstImagePath;
 
-    private LocalDateTime createdAt;
+    private LocalDate protectionStartDate;
+
+    private LocalDate protectionEndDate;
 
 }
