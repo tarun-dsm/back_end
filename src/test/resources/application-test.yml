@@ -36,3 +36,6 @@ auth:
 
 file:
   path: D://
+
+kakao:
+  api-key: asdf1234

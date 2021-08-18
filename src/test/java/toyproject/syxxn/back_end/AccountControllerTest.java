@@ -147,7 +147,7 @@ public class AccountControllerTest extends BaseTest {
         ).andExpect(status().isUnauthorized());
     }
 
-    @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
+    /*@WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
     @Test
     public void saveCoordinate() throws Exception {
         CoordinatesRequest request = new CoordinatesRequest(BigDecimal.valueOf(12.123456), BigDecimal.valueOf(32.12345));
@@ -158,7 +158,7 @@ public class AccountControllerTest extends BaseTest {
         ).andExpect(status().isNoContent());
 
         assertTrue(account.getIsLocationConfirm());
-    }
+    }*/
 
     @WithMockUser(value = "23@naver.com", password = "asdf123@")
     @Test
