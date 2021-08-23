@@ -116,20 +116,16 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .orElseThrow(PostNotFoundException::new);
 
         List<Application> applications = applicationRepository.findAllByPost(post);
-        List<ApplicationDto> applicationList = new ArrayList<>();
 
-        for (Application application: applications) {
-            applicationList.add(
-                    ApplicationDto.builder()
-                            .applicationId(application.getId())
-                            .applicationDate(application.getCreatedAt())
-                            .applicantId(application.getAccount().getId())
-                            .applicantNickname(application.getAccount().getNickname())
-                            .build()
-            );
-        }
-
-        return new ApplicationResponse(applicationList);
+        return new ApplicationResponse(applications.stream().map(application ->
+            ApplicationDto.builder()
+                    .applicationId(application.getId())
+                    .applicationDate(application.getCreatedAt())
+                    .applicantId(application.getAccount().getId())
+                    .isAccepted(application.getIsAccepted())
+                    .applicantNickname(application.getAccount().getNickname())
+                    .build()
+        ).collect(Collectors.toList()));
     }
 
     private boolean isApplicationClosed(Post post) {

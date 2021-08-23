@@ -19,6 +19,8 @@ public class ApplicationDto {
 
     private String applicantNickname;
 
+    private Boolean isAccepted;
+
     private LocalDateTime applicationDate;
 
 }
