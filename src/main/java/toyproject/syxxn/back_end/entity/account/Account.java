@@ -81,16 +81,18 @@ public class Account extends BaseIdEntity {
     public String getRating() {
         Double avgGrade = getAvg().doubleValue();
 
-        if (avgGrade.compareTo(4.5) > 0) {
-            return "1등급";
-        } else if (avgGrade.compareTo(3.5) > 0) {
-            return "2등급";
-        } else if (avgGrade.compareTo(2.5) > 0) {
-            return "3등급";
-        } else if (avgGrade.compareTo(1.5) > 0) {
-            return "4등급";
+        if (avgGrade.compareTo(5.0) >= 0) {
+            return "펫 마스터";
+        } else if (avgGrade.compareTo(4.0) >= 0) {
+            return "능숙한";
+        } else if (avgGrade.compareTo(3.0) >= 0) {
+            return "실수";
+        } else if (avgGrade.compareTo(2.0) >= 0) {
+            return "우왕좌왕";
+        } else if(avgGrade.compareTo(1.0) >= 0) {
+            return "차가운";
         } else {
-            return "5등급";
+            return "신규";
         }
     }
 
