@@ -109,9 +109,6 @@ public class JwtTokenProvider {
     }
 
     private Claims getBody(String token) {
-        System.out.println(Jwts.parser().setSigningKey(secretKey)
-                .parseClaimsJws(token).getHeader());
-
         return Jwts.parser().setSigningKey(secretKey)
                 .parseClaimsJws(token).getBody();
     }
