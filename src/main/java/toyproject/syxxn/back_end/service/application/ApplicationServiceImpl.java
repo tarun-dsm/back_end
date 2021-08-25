@@ -16,7 +16,6 @@ import toyproject.syxxn.back_end.exception.*;
 import toyproject.syxxn.back_end.service.facade.BaseService;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -124,6 +123,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                     .applicantId(application.getAccount().getId())
                     .isAccepted(application.getIsAccepted())
                     .applicantNickname(application.getAccount().getNickname())
+                    .administrationDivision(application.getAccount().getAdministrationDivision())
                     .build()
         ).collect(Collectors.toList()));
     }

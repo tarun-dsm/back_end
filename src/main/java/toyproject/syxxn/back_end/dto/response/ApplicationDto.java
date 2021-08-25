@@ -23,4 +23,6 @@ public class ApplicationDto {
 
     private LocalDateTime applicationDate;
 
+    private String administrationDivision;
+
 }
