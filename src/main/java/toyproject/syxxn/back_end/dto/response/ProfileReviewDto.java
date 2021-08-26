@@ -24,4 +24,6 @@ public class ProfileReviewDto {
 
     private LocalDateTime createdAt;
 
+    private Boolean isMyReview;
+
 }
