@@ -1,6 +1,5 @@
 package toyproject.syxxn.back_end.entity.post;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Post extends BaseCreatedAtEntity {
 
@@ -43,15 +40,13 @@ public class Post extends BaseCreatedAtEntity {
     @Column(length = 100)
     private String contactInfo;
 
-    @Builder.Default
     @NotNull
     @Column(columnDefinition = "bit(1)")
-    private Boolean isApplicationEnd = false;
+    private Boolean isApplicationEnd;
 
-    @Builder.Default
     @NotNull
     @Column(columnDefinition = "bit(1)")
-    private Boolean isUpdated = false;
+    private Boolean isUpdated;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
@@ -65,6 +60,19 @@ public class Post extends BaseCreatedAtEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Application> applications;
+
+    @Builder
+    public Post(String title, String description, Account account, LocalDate protectionStartDate, LocalDate protectionEndDate, LocalDate applicationEndDate, String contactInfo, Boolean isApplicationEnd, Boolean isUpdated) {
+        this.title = title;
+        this.description = description;
+        this.account = account;
+        this.protectionStartDate = protectionStartDate;
+        this.protectionEndDate = protectionEndDate;
+        this.applicationEndDate = applicationEndDate;
+        this.contactInfo = contactInfo;
+        this.isApplicationEnd = isApplicationEnd;
+        this.isUpdated = isUpdated;
+    }
 
     public void isEnd() {
         this.isApplicationEnd = true;

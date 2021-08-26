@@ -1,7 +1,5 @@
 package toyproject.syxxn.back_end.entity.pet;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.syxxn.back_end.entity.BaseIdEntity;
@@ -11,9 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class PetImage extends BaseIdEntity {
 
@@ -23,5 +19,10 @@ public class PetImage extends BaseIdEntity {
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
+
+    public PetImage(Post post, String path) {
+        this.post = post;
+        this.path = path;
+    }
 
 }

@@ -49,6 +49,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         applicationRepository.save(
                Application.builder()
+                       .isAccepted(false)
                        .account(account)
                        .post(post)
                        .build()

@@ -85,6 +85,8 @@ public class PostServiceImpl implements PostService {
                         .protectionEndDate(LocalDate.parse(endDate))
                         .applicationEndDate(LocalDate.parse(request.getApplicationenddate()))
                         .contactInfo(request.getContactinfo())
+                        .isApplicationEnd(false)
+                        .isUpdated(false)
                         .build()
         );
 
@@ -211,12 +213,7 @@ public class PostServiceImpl implements PostService {
                 }
 
                 file.transferTo(new File(filePath));
-                petImageRepository.save(
-                        PetImage.builder()
-                                .post(post)
-                                .path(filePath)
-                                .build()
-                );
+                petImageRepository.save(new PetImage(post, filePath));
             }
         } catch (Exception e) {
             postRepository.delete(post);

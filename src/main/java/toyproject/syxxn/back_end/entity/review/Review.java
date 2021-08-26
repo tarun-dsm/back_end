@@ -1,6 +1,5 @@
 package toyproject.syxxn.back_end.entity.review;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Review extends BaseCreatedAtEntity {
 
@@ -36,6 +33,15 @@ public class Review extends BaseCreatedAtEntity {
     @ManyToOne
     @JoinColumn(name = "application_id", nullable = false)
     private Application application;
+
+    @Builder
+    public Review(Application application, Account target, Account writer, BigDecimal grade, String comment) {
+        this.application = application;
+        this.target = target;
+        this.writer = writer;
+        this.grade = grade;
+        this.comment = comment;
+    }
 
     public void update(BigDecimal grade, String comment) {
         this.grade = grade;

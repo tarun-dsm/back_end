@@ -14,9 +14,7 @@ import java.math.MathContext;
 import java.util.List;
 
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"email","nickname"})})
 public class Account extends BaseIdEntity {
@@ -71,6 +69,20 @@ public class Account extends BaseIdEntity {
     @OneToMany(mappedBy = "target", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Review> reviews;
 
+    @Builder
+    public Account(String email, String password, String nickname, Integer age, Sex sex, Boolean isExperienceRasingPet, String experience, Boolean isLocationConfirm, BigDecimal latitude, BigDecimal longitude) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.age = age;
+        this.sex = sex;
+        this.isExperienceRasingPet = isExperienceRasingPet;
+        this.experience = experience;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.isLocationConfirm = isLocationConfirm;
+    }
+
     public void updateLocation(BigDecimal longitude, BigDecimal latitude, String administrationDivision) {
         this.isLocationConfirm = true;
         this.longitude = longitude;
@@ -86,11 +98,11 @@ public class Account extends BaseIdEntity {
         } else if (avgGrade.compareTo(4.0) >= 0) {
             return "능숙한";
         } else if (avgGrade.compareTo(3.0) >= 0) {
-            return "실수";
+            return "평범한";
         } else if (avgGrade.compareTo(2.0) >= 0) {
             return "우왕좌왕";
         } else if(avgGrade.compareTo(1.0) >= 0) {
-            return "차가운";
+            return "우당탕탕";
         } else {
             return "신규";
         }

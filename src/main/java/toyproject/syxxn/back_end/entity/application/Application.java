@@ -1,6 +1,5 @@
 package toyproject.syxxn.back_end.entity.application;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,16 +13,13 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Application extends BaseCreatedAtEntity {
 
-    @Builder.Default
     @NotNull
     @Column(columnDefinition = "bit(1)")
-    private Boolean isAccepted = false;
+    private Boolean isAccepted;
 
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
@@ -35,6 +31,13 @@ public class Application extends BaseCreatedAtEntity {
 
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Review> reviews;
+
+    @Builder
+    public Application(Boolean isAccepted, Account account, Post post) {
+        this.isAccepted = isAccepted;
+        this.account = account;
+        this.post = post;
+    }
 
     public void acceptApplication() {
         isAccepted = true;

@@ -1,6 +1,5 @@
 package toyproject.syxxn.back_end.entity.pet;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class PetInfo extends BaseIdEntity {
 
@@ -33,6 +30,14 @@ public class PetInfo extends BaseIdEntity {
     @OneToOne
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
+
+    @Builder
+    public PetInfo(Post post, String petName, String petSpecies, Sex petSex) {
+        this.post = post;
+        this.petName = petName;
+        this.petSpecies = petSpecies;
+        this.petSex = petSex;
+    }
 
     public void update(PostRequest pet) {
         this.petName = pet.getPetname();
