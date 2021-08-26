@@ -169,10 +169,23 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse getPosts() {
         Account account = getAccount();
-        List<Post> posts = postRepository.findAllByIsApplicationEndFalseOrderByCreatedAtDesc();
+        if (!account.getIsLocationConfirm()) {
+            List<Post> latelyPost = postRepository.findAllByOrderByCreatedAtDesc();
+            return new PostResponse(latelyPost.stream()
+                .map(post -> PostResponseDto.builder()
+                    .id(post.getId())
+                    .title(post.getTitle())
+                    .administrationDivision(post.getAccount().getAdministrationDivision())
+                    .firstImagePath(post.getPetImages().get(0).getPath())
+                    .protectionStartDate(post.getProtectionStartDate())
+                    .protectionEndDate(post.getProtectionEndDate())
+                    .build()).collect(Collectors.toList())
+            );
+        }
 
+        List<Post> posts = postRepository.findAllByIsApplicationEndFalseOrderByCreatedAtDesc();
         return new PostResponse(posts.stream()
-                .filter(post -> account.getIsLocationConfirm() || distance(account, post.getAccount()) >= 1)
+                .filter(post -> distance(account, post.getAccount()) >= 1)
                 .map(post -> PostResponseDto.builder()
                         .id(post.getId())
                         .title(post.getTitle())
