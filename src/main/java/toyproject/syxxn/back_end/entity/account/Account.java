@@ -94,7 +94,7 @@ public class Account extends BaseIdEntity {
         Double avgGrade = getAvg().doubleValue();
 
         if (avgGrade.compareTo(5.0) >= 0) {
-            return "펫 마스터";
+            return "굉장히 엄청난";
         } else if (avgGrade.compareTo(4.0) >= 0) {
             return "능숙한";
         } else if (avgGrade.compareTo(3.0) >= 0) {
@@ -104,7 +104,7 @@ public class Account extends BaseIdEntity {
         } else if(avgGrade.compareTo(1.0) >= 0) {
             return "우당탕탕";
         } else {
-            return "신규";
+            return "처음처럼";
         }
     }
 
