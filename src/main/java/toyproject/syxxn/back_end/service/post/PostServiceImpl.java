@@ -168,7 +168,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse getPosts() {
-        Account account = getAccount();
+        Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
+                .orElseThrow(UserNotFoundException::new);
         if (!account.getIsLocationConfirm()) {
             List<Post> latelyPost = postRepository.findAllByOrderByCreatedAtDesc();
             return new PostResponse(latelyPost.stream()
@@ -195,11 +196,6 @@ public class PostServiceImpl implements PostService {
                         .protectionEndDate(post.getProtectionEndDate())
                         .build()).collect(Collectors.toList())
         );
-    }
-
-    public Account getAccount() {
-        return accountRepository.findByEmail(authenticationFacade.getUserEmail())
-                .orElseThrow(UserNotFoundException::new);
     }
 
     private void startDateAfterEndDate(String startDate, String endDate) {
