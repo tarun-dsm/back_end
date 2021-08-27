@@ -75,9 +75,16 @@ public class ApplicationControllerTest extends BaseTest {
                 .andExpect(status().isNotFound());
     }
 
-    @WithMockUser(value = "test3@naver.com", password = "asdf123@")
+    @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void protectionApplication_409() throws Exception {
+        mvc.perform(post("/application/"+ application.getPost().getId()))
+                .andExpect(status().isConflict());
+    }
+
+    @WithMockUser(value = "test3@naver.com", password = "asdf123@")
+    @Test
+    public void protectionApplication_409_2() throws Exception {
         mvc.perform(post("/application/"+ application.getPost().getId()))
                 .andExpect(status().isConflict());
     }
