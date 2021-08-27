@@ -19,7 +19,7 @@ public class ProfileResponse {
 
     private String sex;
 
-    private boolean isExperienceRasingPet;
+    private boolean isExperienceRaisingPet;
 
     private String administrationDivision;
 

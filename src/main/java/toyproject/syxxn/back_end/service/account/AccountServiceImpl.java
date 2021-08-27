@@ -63,7 +63,7 @@ public class AccountServiceImpl implements AccountService{
                         .nickname(request.getNickname())
                         .age(request.getAge())
                         .sex(Sex.valueOf(request.getSex()))
-                        .isExperienceRasingPet(request.isExperienceRasingPet())
+                        .isExperienceRaisingPet(request.isExperienceRasingPet())
                         .experience(request.getExperience())
                         .isLocationConfirm(false)
                         .latitude(BigDecimal.ZERO)

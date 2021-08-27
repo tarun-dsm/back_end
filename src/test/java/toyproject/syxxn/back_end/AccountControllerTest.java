@@ -174,7 +174,7 @@ public class AccountControllerTest extends BaseTest {
     @Test
     public void accountTest() {
         assertEquals(18, (int) account.getAge());
-        assertFalse(account.getIsExperienceRasingPet());
+        assertFalse(account.getIsExperienceRaisingPet());
         assertNotNull(account.getSex());
         assertNull(account.getExperience());
         assertNull(account.getPosts());

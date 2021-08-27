@@ -1,5 +1,6 @@
 package toyproject.syxxn.back_end.entity.account;
 
+import com.querydsl.core.annotations.QueryEntity;
 import lombok.*;
 import toyproject.syxxn.back_end.entity.BaseIdEntity;
 import toyproject.syxxn.back_end.entity.Sex;
@@ -16,6 +17,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
+@QueryEntity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"email","nickname"})})
 public class Account extends BaseIdEntity {
 
@@ -40,7 +42,7 @@ public class Account extends BaseIdEntity {
 
     @NotNull
     @Column(columnDefinition = "bit(1)")
-    private Boolean isExperienceRasingPet;
+    private Boolean isExperienceRaisingPet;
 
     private String experience;
 
@@ -70,13 +72,13 @@ public class Account extends BaseIdEntity {
     private List<Review> reviews;
 
     @Builder
-    public Account(String email, String password, String nickname, Integer age, Sex sex, Boolean isExperienceRasingPet, String experience, Boolean isLocationConfirm, BigDecimal latitude, BigDecimal longitude) {
+    public Account(String email, String password, String nickname, Integer age, Sex sex, Boolean isExperienceRaisingPet, String experience, Boolean isLocationConfirm, BigDecimal latitude, BigDecimal longitude) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.age = age;
         this.sex = sex;
-        this.isExperienceRasingPet = isExperienceRasingPet;
+        this.isExperienceRaisingPet = isExperienceRaisingPet;
         this.experience = experience;
         this.latitude = latitude;
         this.longitude = longitude;

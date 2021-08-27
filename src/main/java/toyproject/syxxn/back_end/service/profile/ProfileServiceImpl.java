@@ -39,7 +39,7 @@ public class ProfileServiceImpl implements ProfileService {
                 .avgGrade(account.getAvg())
                 .rating(account.getRating())
                 .administrationDivision(account.getAdministrationDivision())
-                .isExperienceRasingPet(account.getIsExperienceRasingPet())
+                .isExperienceRaisingPet(account.getIsExperienceRaisingPet())
                 .experience(account.getExperience() == null ? "": account.getExperience())
                 .isLocationConfirm(account.getIsLocationConfirm())
                 .build();
