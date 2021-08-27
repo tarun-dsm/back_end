@@ -1,5 +1,6 @@
 package toyproject.syxxn.back_end.entity.application;
 
+import com.querydsl.core.annotations.QueryEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
+@QueryEntity
 public class Application extends BaseCreatedAtEntity {
 
     @NotNull
