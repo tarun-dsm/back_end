@@ -11,6 +11,7 @@ spring:
     database: h2
     hibernate:
       ddl-auto: create
+    show-sql: true
   redis:
     host: localhost
     port: 6380

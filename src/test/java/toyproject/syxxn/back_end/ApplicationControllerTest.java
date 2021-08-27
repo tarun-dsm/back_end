@@ -18,6 +18,7 @@ public class ApplicationControllerTest extends BaseTest {
     Integer postId;
     Account account1;
     Account account2;
+    Account account3;
     Application application;
 
     @BeforeEach
@@ -26,13 +27,14 @@ public class ApplicationControllerTest extends BaseTest {
 
         account1 = createAccount("test1@naver.com", true, "Tarun");
         account2 = createAccount("test2@naver.com", true, "Tarun");
-        createAccount("test3@naver.com", true, "Tarun");
+        account3 = createAccount("test3@naver.com", true, "Tarun");
         createAccount("test4@naver.com", false, "Tarun");
 
         Post post = createPost(account1, false, "2021-10-10");
         postId = post.getId();
 
         application = createApplication(account1, account2,false, false, "2021-10-10");
+        createApplication(account1, account3,false, true, "2021-10-10");
         createApplication(account1, account2,false, false, "2021-08-10");
     }
 
