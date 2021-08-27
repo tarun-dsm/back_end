@@ -29,6 +29,7 @@ public class ApplicationControllerTest extends BaseTest {
         account2 = createAccount("test2@naver.com", true, "Tarun");
         account3 = createAccount("test3@naver.com", true, "Tarun");
         createAccount("test4@naver.com", false, "Tarun");
+        createAccount("test5@naver.com", true, "Tarun");
 
         Post post = createPost(account1, false, "2021-10-10");
         postId = post.getId();
@@ -38,7 +39,7 @@ public class ApplicationControllerTest extends BaseTest {
         createApplication(account1, account2,false, false, "2021-08-10");
     }
 
-    @WithMockUser(value = "test3@naver.com", password = "asdf123@")
+    @WithMockUser(value = "test5@naver.com", password = "asdf123@")
     @Test
     public void protectionApplication() throws Exception {
         mvc.perform(post("/application/"+postId))
@@ -74,7 +75,7 @@ public class ApplicationControllerTest extends BaseTest {
                 .andExpect(status().isNotFound());
     }
 
-    @WithMockUser(value = "test2@naver.com", password = "asdf123@")
+    @WithMockUser(value = "test3@naver.com", password = "asdf123@")
     @Test
     public void protectionApplication_409() throws Exception {
         mvc.perform(post("/application/"+ application.getPost().getId()))

@@ -9,6 +9,7 @@ import toyproject.syxxn.back_end.dto.response.MyApplicationDto;
 import toyproject.syxxn.back_end.dto.response.MyApplicationResponse;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.application.Application;
+import toyproject.syxxn.back_end.entity.application.ApplicationCustomRepository;
 import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
@@ -16,6 +17,7 @@ import toyproject.syxxn.back_end.exception.*;
 import toyproject.syxxn.back_end.service.facade.BaseService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 public class ApplicationServiceImpl implements ApplicationService {
 
     private final ApplicationRepository applicationRepository;
+    private final ApplicationCustomRepository applicationCustomRepository;
     private final PostRepository postRepository;
 
     private final BaseService baseService;
@@ -42,10 +45,9 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new AfterApplicationClosedException();
         }
 
-        applicationRepository.findByAccountAndPost(account, post)
-                .ifPresent(application -> {
-                    throw new UserAlreadyApplicationException();
-                });
+        if (applicationCustomRepository.existsNotEndApplication(account)) {
+            throw new UserAlreadyApplicationException();
+        }
 
         applicationRepository.save(
                Application.builder()
