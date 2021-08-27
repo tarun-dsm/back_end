@@ -3,7 +3,7 @@ CREATE TABLE `account` (
   `email` VARCHAR(45) NOT NULL,
   `password` CHAR(60) NOT NULL,
   `age` INT NOT NULL,
-  `is_experience_rasing_pet` BIT(1) NOT NULL,
+  `is_experience_raising_pet` BIT(1) NOT NULL,
   `experience` VARCHAR(255),
   `is_location_confirm` BIT(1) NOT NULL,
   `latitude` DECIMAL(19,2) NOT NULL,
