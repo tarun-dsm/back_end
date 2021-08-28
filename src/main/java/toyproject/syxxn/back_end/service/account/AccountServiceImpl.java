@@ -104,7 +104,6 @@ public class AccountServiceImpl implements AccountService{
         BigDecimal x = request.getLongitude();
         BigDecimal y = request.getLatitude();
 
-        System.out.println(getAdministrationDivision(x.doubleValue(), y.doubleValue()));
         account.updateLocation(request.getLongitude(), request.getLatitude(), getAdministrationDivision(x.doubleValue(),y.doubleValue()));
         accountRepository.save(account);
     }

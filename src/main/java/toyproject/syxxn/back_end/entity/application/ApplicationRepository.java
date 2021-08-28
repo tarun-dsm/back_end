@@ -9,7 +9,6 @@ import java.util.List;
 
 @Repository
 public interface ApplicationRepository extends CrudRepository<Application, Integer> {
-    Boolean existsByAccountAndPost(Account account, Post post);
     List<Application> findAllByAccount(Account account);
     List<Application> findAllByPost(Post post);
 }

@@ -33,7 +33,7 @@ public class PostServiceImpl implements PostService {
     private final AccountRepository accountRepository;
     private final PostRepository postRepository;
     private final PetInfoRepository petInfoRepository;
-    private final PetImageRepository  petImageRepository;
+    private final PetImageRepository petImageRepository;
 
     private final AuthenticationFacade authenticationFacade;
 
@@ -173,14 +173,14 @@ public class PostServiceImpl implements PostService {
         if (!account.getIsLocationConfirm()) {
             List<Post> latelyPost = postRepository.findAllByOrderByCreatedAtDesc();
             return new PostResponse(latelyPost.stream()
-                .map(post -> PostResponseDto.builder()
-                    .id(post.getId())
-                    .title(post.getTitle())
-                    .administrationDivision(post.getAccount().getAdministrationDivision())
-                    .firstImagePath(post.getPetImages().get(0).getPath())
-                    .protectionStartDate(post.getProtectionStartDate())
-                    .protectionEndDate(post.getProtectionEndDate())
-                    .build()).collect(Collectors.toList())
+                    .map(post -> PostResponseDto.builder()
+                            .id(post.getId())
+                            .title(post.getTitle())
+                            .administrationDivision(post.getAccount().getAdministrationDivision())
+                            .firstImagePath(post.getPetImages().get(0).getPath())
+                            .protectionStartDate(post.getProtectionStartDate())
+                            .protectionEndDate(post.getProtectionEndDate())
+                            .build()).collect(Collectors.toList())
             );
         }
 

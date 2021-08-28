@@ -17,7 +17,6 @@ import toyproject.syxxn.back_end.exception.*;
 import toyproject.syxxn.back_end.service.facade.BaseService;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,11 +49,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         applicationRepository.save(
-               Application.builder()
-                       .isAccepted(false)
-                       .account(account)
-                       .post(post)
-                       .build()
+                Application.builder()
+                        .isAccepted(false)
+                        .account(account)
+                        .post(post)
+                        .build()
         );
 
     }
@@ -120,19 +119,19 @@ public class ApplicationServiceImpl implements ApplicationService {
         List<Application> applications = applicationRepository.findAllByPost(post);
 
         return new ApplicationResponse(applications.stream().map(application ->
-            ApplicationDto.builder()
-                    .applicationId(application.getId())
-                    .applicationDate(application.getCreatedAt())
-                    .applicantId(application.getAccount().getId())
-                    .isAccepted(application.getIsAccepted())
-                    .applicantNickname(application.getAccount().getNickname())
-                    .administrationDivision(application.getAccount().getAdministrationDivision())
-                    .build()
+                ApplicationDto.builder()
+                        .applicationId(application.getId())
+                        .applicationDate(application.getCreatedAt())
+                        .applicantId(application.getAccount().getId())
+                        .isAccepted(application.getIsAccepted())
+                        .applicantNickname(application.getAccount().getNickname())
+                        .administrationDivision(application.getAccount().getAdministrationDivision())
+                        .build()
         ).collect(Collectors.toList()));
     }
 
     private boolean isApplicationClosed(Post post) {
-        if(LocalDate.now().isAfter(post.getApplicationEndDate()) || post.getIsApplicationEnd()) {
+        if (LocalDate.now().isAfter(post.getApplicationEndDate()) || post.getIsApplicationEnd()) {
             throw new AfterApplicationClosedException();
         } else return false;
     }

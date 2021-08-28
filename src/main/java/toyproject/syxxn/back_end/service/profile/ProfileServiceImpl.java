@@ -13,8 +13,6 @@ import toyproject.syxxn.back_end.exception.UserNotFoundException;
 import toyproject.syxxn.back_end.exception.UserNotUnauthenticatedException;
 import toyproject.syxxn.back_end.service.facade.AuthenticationFacade;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +38,7 @@ public class ProfileServiceImpl implements ProfileService {
                 .rating(account.getRating())
                 .administrationDivision(account.getAdministrationDivision())
                 .isExperienceRaisingPet(account.getIsExperienceRaisingPet())
-                .experience(account.getExperience() == null ? "": account.getExperience())
+                .experience(account.getExperience() == null ? "" : account.getExperience())
                 .isLocationConfirm(account.getIsLocationConfirm())
                 .build();
     }
@@ -72,13 +70,13 @@ public class ProfileServiceImpl implements ProfileService {
 
         return new ProfilePostResponse(posts.stream().map(
                 post ->
-                    ProfilePostDto.builder()
-                            .id(post.getId())
-                            .title(post.getTitle())
-                            .firstImagePath(post.getPetImages().get(0).getPath())
-                            .createdAt(post.getCreatedAt())
-                            .isApplicationEnd(post.getIsApplicationEnd())
-                            .build()
+                        ProfilePostDto.builder()
+                                .id(post.getId())
+                                .title(post.getTitle())
+                                .firstImagePath(post.getPetImages().get(0).getPath())
+                                .createdAt(post.getCreatedAt())
+                                .isApplicationEnd(post.getIsApplicationEnd())
+                                .build()
 
         ).collect(Collectors.toList()));
     }

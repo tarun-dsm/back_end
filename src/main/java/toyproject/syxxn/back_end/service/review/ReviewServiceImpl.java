@@ -42,7 +42,7 @@ public class ReviewServiceImpl implements ReviewService {
         Account target;
         if (writer.getId().equals(application.getAccount().getId())) {
             target = application.getPost().getAccount();
-        } else if(writer.equals(application.getPost().getAccount())) {
+        } else if (writer.equals(application.getPost().getAccount())) {
             target = application.getAccount();
         } else {
             throw new UserNotAccessibleException();
