@@ -44,6 +44,7 @@ public class Account extends BaseIdEntity {
     @Column(columnDefinition = "bit(1)")
     private Boolean isExperienceRaisingPet;
 
+    @Column(length = 100)
     private String experience;
 
     @NotNull
