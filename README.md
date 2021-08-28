@@ -1,4 +1,4 @@
-# back_end <a href="https://codecov.io/gh/tarun-dsm/back_end">
+# back_end
  장기간 여행자들의 부담을 덜어줄 수 있는 위탁 매칭 시스템입니다.
 
 ### Technical Stacks
@@ -15,3 +15,4 @@
 
 + API : JavaMail, Kakao map
 
+<a href="https://codecov.io/gh/tarun-dsm/back_end"><img src="https://codecov.io/gh/tarun-dsm/back_end/branch/main/graph/badge.svg?token=guyT1Z9i31"/></a>
