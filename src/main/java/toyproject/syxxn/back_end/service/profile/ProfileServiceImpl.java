@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import toyproject.syxxn.back_end.dto.response.*;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
+import toyproject.syxxn.back_end.entity.application.Application;
+import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.entity.review.Review;
@@ -15,6 +17,7 @@ import toyproject.syxxn.back_end.exception.UserNotUnauthenticatedException;
 import toyproject.syxxn.back_end.service.facade.AuthenticationFacade;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -22,6 +25,7 @@ import java.util.stream.Collectors;
 public class ProfileServiceImpl implements ProfileService {
 
     private final AccountRepository accountRepository;
+    private final ApplicationRepository applicationRepository;
     private final ReviewRepository reviewRepository;
     private final PostRepository postRepository;
 
@@ -70,15 +74,18 @@ public class ProfileServiceImpl implements ProfileService {
         List<Post> posts = postRepository.findAllByAccountAndPetImagesNotNullOrderByCreatedAtDesc(account);
 
         return new ProfilePostResponse(posts.stream().map(
-                post ->
-                        ProfilePostDto.builder()
-                                .id(post.getId())
-                                .title(post.getTitle())
-                                .firstImagePath(post.getPetImages().get(0).getPath())
-                                .createdAt(post.getCreatedAt())
-                                .isApplicationEnd(post.getIsApplicationEnd())
-                                .build()
-
+                post -> {
+                    Optional<Application> application = applicationRepository.findByPostAndIsAcceptedTrue(post);
+                    return ProfilePostDto.builder()
+                            .id(post.getId())
+                            .title(post.getTitle())
+                            .firstImagePath(post.getPetImages().get(0).getPath())
+                            .createdAt(post.getCreatedAt())
+                            .isApplicationEnd(post.getIsApplicationEnd())
+                            .protectorId(application.isEmpty() ? "" : application.get().getAccount().getId().toString())
+                            .protectorNickname(application.isEmpty() ? "" : application.get().getAccount().getNickname())
+                            .build();
+                }
         ).collect(Collectors.toList()));
     }
 

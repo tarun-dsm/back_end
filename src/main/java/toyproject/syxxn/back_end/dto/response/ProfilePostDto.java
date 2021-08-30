@@ -23,4 +23,8 @@ public class ProfilePostDto {
 
     private Boolean isApplicationEnd;
 
+    private String protectorId;
+
+    private String protectorNickname;
+
 }
