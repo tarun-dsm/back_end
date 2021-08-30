@@ -39,12 +39,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         if (account.equals(post.getAccount())) {
             throw new UserIsWriterException();
-        }
-        if (isApplicationClosed(post)) {
+        } if (isApplicationClosed(post)) {
             throw new AfterApplicationClosedException();
-        }
-
-        if (applicationCustomRepository.existsNotEndApplication(account)) {
+        } if (applicationCustomRepository.existsNotEndApplication(account)) {
             throw new UserAlreadyApplicationException();
         }
 
