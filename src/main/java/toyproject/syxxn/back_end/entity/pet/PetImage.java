@@ -1,5 +1,6 @@
 package toyproject.syxxn.back_end.entity.pet;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.syxxn.back_end.entity.BaseIdEntity;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class PetImage extends BaseIdEntity {
 

@@ -1,6 +1,7 @@
 package toyproject.syxxn.back_end.entity.post;
 
 import com.querydsl.core.annotations.QueryEntity;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @QueryEntity
 public class Post extends BaseCreatedAtEntity {

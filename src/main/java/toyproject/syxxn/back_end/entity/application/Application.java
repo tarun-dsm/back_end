@@ -1,6 +1,7 @@
 package toyproject.syxxn.back_end.entity.application;
 
 import com.querydsl.core.annotations.QueryEntity;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @QueryEntity
 public class Application extends BaseCreatedAtEntity {

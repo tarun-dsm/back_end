@@ -16,7 +16,7 @@ import java.math.MathContext;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @QueryEntity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"email","nickname"})})
