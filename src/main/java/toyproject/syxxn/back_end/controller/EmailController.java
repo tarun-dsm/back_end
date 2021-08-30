@@ -20,7 +20,7 @@ public class EmailController {
         emailService.sendVerifyNumberEmail(request.getEmail());
     }
 
-    @PatchMapping
+    @GetMapping
     public void verify(@RequestBody @Valid VerifyRequest request) {
         emailService.verify(request);
     }
