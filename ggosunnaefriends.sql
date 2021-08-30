@@ -77,7 +77,11 @@ CREATE TABLE `review` (
 
 CREATE TABLE `report` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `comment` VARCHAR(255) NOT NULL,
+  `created_at` DATETIME NOT NULL,
+  `target_id` INT NOT NULL,
+  `reporter_id` INT NOT NULL,
   PRIMARY KEY(`id`),
-  FOREIGN KEY(`reporter_id`) REFERENCES `account`(`id`),
   FOREIGN KEY(`target_id`) REFERENCES `account`(`id`),
+  FOREIGN KEY(`reporter_id`) REFERENCES `account`(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
