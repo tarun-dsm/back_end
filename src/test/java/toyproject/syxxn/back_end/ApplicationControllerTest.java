@@ -129,7 +129,7 @@ public class ApplicationControllerTest extends BaseTest {
     @Test
     public void acceptApplication() throws Exception {
 
-        mvc.perform(patch("/application/"+application.getId()))
+        mvc.perform(get("/application/"+application.getId()))
                 .andExpect(status().isNoContent()).andDo(print());
     }
 
@@ -137,14 +137,14 @@ public class ApplicationControllerTest extends BaseTest {
     @Test
     public void acceptApplication_400() throws Exception {
         Integer id = createApplication(account1, account2,true, false,"2021-10-10").getId();
-        mvc.perform(patch("/application/"+id))
+        mvc.perform(get("/application/"+id))
                 .andExpect(status().isBadRequest());
     }
 
     @WithMockUser(value = "test3@naver.com", password = "asdf123@")
     @Test
     public void acceptApplication_401() throws Exception {
-        mvc.perform(patch("/application/"+application.getId()))
+        mvc.perform(get("/application/"+application.getId()))
                 .andExpect(status().isUnauthorized());
     }
 

@@ -9,6 +9,7 @@ import toyproject.syxxn.back_end.dto.request.EmailRequest;
 import toyproject.syxxn.back_end.dto.request.VerifyRequest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -66,7 +67,7 @@ public class EmailControllerTest extends BaseTest {
 
     @Test
     public void verify() throws Exception {
-        mvc.perform(patch("/email")
+        mvc.perform(get("/email")
                 .content(new ObjectMapper().writeValueAsString(new VerifyRequest("2000ls@gmail.com","123456")))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
@@ -74,7 +75,7 @@ public class EmailControllerTest extends BaseTest {
 
     @Test
     public void verify_400() throws Exception {
-        mvc.perform(patch("/email")
+        mvc.perform(get("/email")
                 .content(new ObjectMapper().writeValueAsString(new VerifyRequest("test2","123456")))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isBadRequest());
@@ -82,7 +83,7 @@ public class EmailControllerTest extends BaseTest {
 
     @Test
     public void verify_400_2() throws Exception {
-        mvc.perform(patch("/email")
+        mvc.perform(get("/email")
                 .content(new ObjectMapper().writeValueAsString(new VerifyRequest("test2@dsm.hs.kr","123856")))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isBadRequest());
