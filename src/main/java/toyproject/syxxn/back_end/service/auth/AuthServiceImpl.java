@@ -11,9 +11,12 @@ import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshToken;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshTokenRepository;
+import toyproject.syxxn.back_end.exception.BlockedUserException;
 import toyproject.syxxn.back_end.exception.InvalidTokenException;
+import toyproject.syxxn.back_end.exception.UserNotAccessibleException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
+import toyproject.syxxn.back_end.service.facade.BaseService;
 
 
 @RequiredArgsConstructor
@@ -30,11 +33,18 @@ public class AuthServiceImpl implements AuthService {
     @Value("${auth.jwt.exp.refresh}")
     private Long refreshExp;
 
+    private final BaseService baseService;
+
     @Override
     public TokenResponse login(SignInRequest request) {
         Account account = accountRepository.findByEmail(request.getEmail())
                 .filter(user -> encoder.matches(request.getPassword(), user.getPassword()))
+                .map(baseService::isBlocked)
                 .orElseThrow(UserNotFoundException::new);
+
+        if (account.getIsBlocked()) {
+            throw new BlockedUserException();
+        }
 
         RefreshToken refreshToken = refreshTokenRepository.save(
                 RefreshToken.builder()
