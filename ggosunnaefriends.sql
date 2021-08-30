@@ -11,6 +11,7 @@ CREATE TABLE `account` (
   `nickname` VARCHAR(10) NOT NULL,
   `sex` VARCHAR(6) NOT NULL,
   `administration_division` VARCHAR(10),
+  `is_blocked` BIT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY(`id`),
   UNIQUE(`email`, `nickname`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -72,4 +73,11 @@ CREATE TABLE `review` (
   FOREIGN KEY(`application_id`) REFERENCES `application`(`id`),
   FOREIGN KEY(`target_id`) REFERENCES `account`(`id`),
   FOREIGN KEY(`writer_id`) REFERENCES `account`(`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+CREATE TABLE `report` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY(`id`),
+  FOREIGN KEY(`reporter_id`) REFERENCES `account`(`id`),
+  FOREIGN KEY(`target_id`) REFERENCES `account`(`id`),
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
