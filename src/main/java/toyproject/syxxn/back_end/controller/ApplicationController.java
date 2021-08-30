@@ -24,7 +24,7 @@ public class ApplicationController {
         applicationService.cancelApplication(applicationId);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void acceptApplication(@PathVariable("id") Integer applicationId) {
         applicationService.acceptApplication(applicationId);

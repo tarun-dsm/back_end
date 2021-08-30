@@ -106,7 +106,7 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public void saveCoordinate(CoordinatesRequest request) throws JsonProcessingException, UnirestException {
         Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
-                .map(baseService::isBlocked)
+                .map(account1 -> baseService.isBlocked(account1))
                 .orElseThrow(UserNotFoundException::new);
         BigDecimal x = request.getLongitude();
         BigDecimal y = request.getLatitude();
