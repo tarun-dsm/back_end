@@ -20,11 +20,14 @@ import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshToken;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshTokenRepository;
+import toyproject.syxxn.back_end.entity.report.Report;
+import toyproject.syxxn.back_end.entity.report.ReportRepository;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumber;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumberRepository;
 import toyproject.syxxn.back_end.exception.*;
 import toyproject.syxxn.back_end.service.facade.AuthenticationFacade;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
+import toyproject.syxxn.back_end.service.facade.BaseService;
 
 import java.math.BigDecimal;
 
@@ -34,6 +37,7 @@ public class AccountServiceImpl implements AccountService{
 
     private final AccountRepository accountRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final ReportRepository reportRepository;
     private final VerifyNumberRepository verifyNumberRepository;
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -48,6 +52,8 @@ public class AccountServiceImpl implements AccountService{
     private String restApiKey;
 
     private static final String KAKAO_API_URL = "https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=";
+
+    private BaseService baseService;
 
     @Transactional
     @Override
@@ -100,12 +106,28 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public void saveCoordinate(CoordinatesRequest request) throws JsonProcessingException, UnirestException {
         Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
+                .map(baseService::isBlocked)
                 .orElseThrow(UserNotFoundException::new);
         BigDecimal x = request.getLongitude();
         BigDecimal y = request.getLatitude();
 
         account.updateLocation(request.getLongitude(), request.getLatitude(), getAdministrationDivision(x.doubleValue(),y.doubleValue()));
         accountRepository.save(account);
+    }
+
+    @Override
+    public void makeReport(String comment, Integer id) {
+        Account reporter = baseService.getLocalConfirmAccount();
+        Account target = accountRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
+
+        reportRepository.save(
+                Report.builder()
+                        .comment(comment)
+                        .reporter(reporter)
+                        .target(target)
+                        .build()
+        );
     }
 
     private String getAdministrationDivision(Double x, Double y) throws JsonProcessingException, UnirestException {

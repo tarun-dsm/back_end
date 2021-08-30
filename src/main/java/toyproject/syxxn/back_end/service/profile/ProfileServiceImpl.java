@@ -9,6 +9,7 @@ import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.entity.review.Review;
 import toyproject.syxxn.back_end.entity.review.ReviewRepository;
+import toyproject.syxxn.back_end.exception.BlockedUserException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
 import toyproject.syxxn.back_end.exception.UserNotUnauthenticatedException;
 import toyproject.syxxn.back_end.service.facade.AuthenticationFacade;
@@ -84,11 +85,20 @@ public class ProfileServiceImpl implements ProfileService {
     private Account getAccount(Integer accountId) {
         if (accountId == null) {
             return accountRepository.findByEmail(authenticationFacade.getUserEmail())
+                    .map(this::isBlocked)
                     .orElseThrow(UserNotUnauthenticatedException::new);
         } else {
             return accountRepository.findById(accountId)
+                    .map(this::isBlocked)
                     .orElseThrow(UserNotFoundException::new);
         }
+    }
+
+    private Account isBlocked(Account account) {
+        if (account.getIsBlocked()) {
+            throw new BlockedUserException();
+        }
+        return account;
     }
 
 }

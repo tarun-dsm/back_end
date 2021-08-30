@@ -6,6 +6,7 @@ import toyproject.syxxn.back_end.entity.BaseIdEntity;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.application.Application;
 import toyproject.syxxn.back_end.entity.post.Post;
+import toyproject.syxxn.back_end.entity.report.Report;
 import toyproject.syxxn.back_end.entity.review.Review;
 
 import javax.persistence.*;
@@ -60,6 +61,9 @@ public class Account extends BaseIdEntity {
     @Column(columnDefinition = "bit(1)")
     private Boolean isLocationConfirm;
 
+    @Column(columnDefinition = "bit(1)")
+    private Boolean isBlocked;
+
     @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
     private List<Post> posts;
 
@@ -71,6 +75,12 @@ public class Account extends BaseIdEntity {
 
     @OneToMany(mappedBy = "target", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Review> reviews;
+
+    @OneToMany(mappedBy = "reporter", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Report> writtenReports;
+
+    @OneToMany(mappedBy = "target", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Report> reports;
 
     @Builder
     public Account(String email, String password, String nickname, Integer age, Sex sex, Boolean isExperienceRaisingPet, String experience, Boolean isLocationConfirm, BigDecimal latitude, BigDecimal longitude) {
@@ -84,6 +94,7 @@ public class Account extends BaseIdEntity {
         this.latitude = latitude;
         this.longitude = longitude;
         this.isLocationConfirm = isLocationConfirm;
+        this.isBlocked = false;
     }
 
     public void updateLocation(BigDecimal longitude, BigDecimal latitude, String administrationDivision) {
