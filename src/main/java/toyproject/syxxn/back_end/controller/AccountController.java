@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import toyproject.syxxn.back_end.dto.request.CoordinatesRequest;
+import toyproject.syxxn.back_end.dto.request.ReportRequest;
 import toyproject.syxxn.back_end.dto.request.SignUpRequest;
 import toyproject.syxxn.back_end.dto.response.TokenResponse;
 import toyproject.syxxn.back_end.service.account.AccountService;
@@ -43,6 +44,12 @@ public class AccountController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void saveCoordinate(@RequestBody @Valid CoordinatesRequest request) throws JsonProcessingException, UnirestException {
         accountService.saveCoordinate(request);
+    }
+
+    @PostMapping("/report/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void makeReport(@PathVariable Integer id, @RequestBody @Valid ReportRequest request) {
+        accountService.makeReport(request.getComment(), id);
     }
 
 }

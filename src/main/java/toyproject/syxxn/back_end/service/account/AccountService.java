@@ -11,4 +11,5 @@ public interface AccountService {
     void confirmEmail(String email);
     void confirmNickname(String nickname);
     void saveCoordinate(CoordinatesRequest request) throws JsonProcessingException, UnirestException;
+    void makeReport(String comment, Integer id);
 }
