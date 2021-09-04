@@ -1,0 +1,17 @@
+# 해당 파일은 최 상단에 위치해야 함
+version: 0.0
+os: linux      # 운영체제. windows 아니면 linux로 해야한다.
+files:
+  - source:  /      # 이 위치의 파일들이
+    destination: /home/ubuntu/build/  # 이 위치로 복사됨. 즉 S3의 zip 파일이 여기로 옴
+permissions:    # 권한
+  - object: /
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+
+hooks:
+  AfterInstall:     # 설치 받아온 후 실행할 명령어
+    - location: start.sh    # start.sh 라는 파일을 실행
+      timeout: 60           # timeout 설정
+      runas: ubuntu       # run as
