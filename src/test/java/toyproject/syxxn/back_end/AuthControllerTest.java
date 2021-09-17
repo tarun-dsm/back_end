@@ -63,7 +63,7 @@ public class AuthControllerTest extends BaseTest {
     public void tokenRefresh() throws Exception {
         mvc.perform(put("/auth")
                 .header("X-Refresh-Token",refreshToken.getRefreshToken())
-        ).andExpect(status().isNoContent()).andDo(print());
+        ).andExpect(status().isOk()).andDo(print());
     }
 
     @Test

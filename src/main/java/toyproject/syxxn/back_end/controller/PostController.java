@@ -39,7 +39,6 @@ public class PostController {
     }
 
     @PatchMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public PostIdResponse updatePost(@PathVariable("id") Integer postId,
                              @RequestBody @Valid PostRequest request) {
         return new PostIdResponse(postService.updatePost(postId, request));

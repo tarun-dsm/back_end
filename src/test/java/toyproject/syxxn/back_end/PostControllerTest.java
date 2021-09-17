@@ -66,7 +66,7 @@ public class PostControllerTest extends BaseTest {
         mvc.perform(patch("/post/" + postId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(request))
-        ).andDo(print()).andExpect(status().isNoContent());
+        ).andDo(print()).andExpect(status().isOk());
     }
 
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
