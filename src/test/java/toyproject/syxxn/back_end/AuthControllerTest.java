@@ -10,6 +10,7 @@ import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshToken;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -60,14 +61,14 @@ public class AuthControllerTest extends BaseTest {
 
     @Test
     public void tokenRefresh() throws Exception {
-        mvc.perform(patch("/auth")
+        mvc.perform(put("/auth")
                 .header("X-Refresh-Token",refreshToken.getRefreshToken())
-        ).andExpect(status().isNoContent());
+        ).andExpect(status().isNoContent()).andDo(print());
     }
 
     @Test
     public void tokenRefresh_401() throws Exception {
-        mvc.perform(patch("/auth")
+        mvc.perform(put("/auth")
                 .header("X-Refresh-Token","asdf.asdf.asdf")
         ).andExpect(status().isUnauthorized());
     }

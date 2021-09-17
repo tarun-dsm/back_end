@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import toyproject.syxxn.back_end.dto.request.SignInRequest;
-import toyproject.syxxn.back_end.dto.response.AccessTokenResponse;
 import toyproject.syxxn.back_end.dto.response.TokenResponse;
 import toyproject.syxxn.back_end.service.auth.AuthService;
 
@@ -23,9 +22,9 @@ public class AuthController {
         return authService.login(request);
     }
 
-    @PatchMapping
+    @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public AccessTokenResponse tokenRefresh(@RequestHeader("X-Refresh-Token") String receivedToken) {
+    public TokenResponse tokenRefresh(@RequestHeader("X-Refresh-Token") String receivedToken) {
         return authService.tokenRefresh(receivedToken);
     }
 

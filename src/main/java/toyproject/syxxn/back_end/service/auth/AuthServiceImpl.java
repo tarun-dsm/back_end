@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import toyproject.syxxn.back_end.dto.request.SignInRequest;
-import toyproject.syxxn.back_end.dto.response.AccessTokenResponse;
 import toyproject.syxxn.back_end.dto.response.TokenResponse;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
@@ -13,7 +12,6 @@ import toyproject.syxxn.back_end.entity.refreshtoken.RefreshToken;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshTokenRepository;
 import toyproject.syxxn.back_end.exception.BlockedUserException;
 import toyproject.syxxn.back_end.exception.InvalidTokenException;
-import toyproject.syxxn.back_end.exception.UserNotAccessibleException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 import toyproject.syxxn.back_end.service.facade.BaseService;
@@ -61,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AccessTokenResponse tokenRefresh(String receivedToken) {
+    public TokenResponse tokenRefresh(String receivedToken) {
         if(!jwtTokenProvider.isRefreshToken(receivedToken)) {
             throw new InvalidTokenException();
         }
@@ -70,7 +68,7 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(UserNotFoundException::new);
         refreshTokenRepository.save(refreshToken);
 
-        return new AccessTokenResponse(jwtTokenProvider.generateAccessToken(refreshToken.getAccountId()));
+        return new TokenResponse(jwtTokenProvider.generateAccessToken(refreshToken.getAccountId()), refreshToken.getRefreshToken());
     }
 
 }
