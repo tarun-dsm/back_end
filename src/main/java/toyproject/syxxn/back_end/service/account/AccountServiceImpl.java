@@ -108,10 +108,10 @@ public class AccountServiceImpl implements AccountService{
         Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .map(account1 -> baseService.isBlocked(account1))
                 .orElseThrow(UserNotFoundException::new);
-        BigDecimal x = request.getLongitude();
-        BigDecimal y = request.getLatitude();
+        BigDecimal x = BigDecimal.valueOf(request.getLongitude());
+        BigDecimal y = BigDecimal.valueOf(request.getLatitude());
 
-        account.updateLocation(request.getLongitude(), request.getLatitude(), getAdministrationDivision(x.doubleValue(),y.doubleValue()));
+        account.updateLocation(x, y, getAdministrationDivision(x.doubleValue(),y.doubleValue()));
         accountRepository.save(account);
     }
 

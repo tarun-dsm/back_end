@@ -15,9 +15,9 @@ import java.math.BigDecimal;
 public class CoordinatesRequest {
 
     @NotNull
-    private BigDecimal longitude;
+    private Double longitude;
 
     @NotNull
-    private BigDecimal latitude;
+    private Double latitude;
 
 }
