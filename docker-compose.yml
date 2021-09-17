@@ -21,14 +21,13 @@ services:
       - REDIS_PORT=${REDIS_PORT}
       - FILE_PATH=${FILE_PATH}
       - REST_API_KEY=${REST_API_KEY}
+    volumes:
+      - "/home/ubuntu/Tarun/image:/home/ubuntu/Tarun/image"
   redis:
     image: redis
     container_name: redis-server
     ports:
         - "6379:6379"
-    volumes:
-        - /home/ubuntu/Tarun/redis_data
-        - /home/ubuntu/Tarun/image
     networks:
         - redis-network
 networks:
