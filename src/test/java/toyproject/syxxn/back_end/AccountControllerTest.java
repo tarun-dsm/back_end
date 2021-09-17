@@ -163,7 +163,7 @@ public class AccountControllerTest extends BaseTest {
     @WithMockUser(value = "23@naver.com", password = "asdf123@")
     @Test
     public void saveCoordinate_404() throws Exception {
-        CoordinatesRequest request = new CoordinatesRequest(BigDecimal.valueOf(12.123456), BigDecimal.valueOf(32.12345));
+        CoordinatesRequest request = new CoordinatesRequest(12.123456, 32.12345);
 
         mvc.perform(patch("/account")
                 .contentType(MediaType.APPLICATION_JSON)
