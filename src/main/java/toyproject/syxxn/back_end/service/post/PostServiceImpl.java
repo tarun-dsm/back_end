@@ -217,7 +217,7 @@ public class PostServiceImpl implements PostService {
                 String filePath = path + file.getOriginalFilename();
 
                 String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
-                if (!(extension.contains("jpg") || extension.contains("jpeg") || extension.contains("png"))) {
+                if (!(extension.contains("JPG") || extension.contains("jpg") || extension.contains("jpeg") || extension.contains("JPEG") || extension.contains("png") || extension.contains("PNG"))) {
                     throw new InvalidFileTypeException();
                 }
 
