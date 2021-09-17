@@ -37,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
     public TokenResponse login(SignInRequest request) {
         Account account = accountRepository.findByEmail(request.getEmail())
                 .filter(user -> encoder.matches(request.getPassword(), user.getPassword()))
-                .map(baseService::isBlocked)
+                .filter(baseService::isNotBlocked)
                 .orElseThrow(UserNotFoundException::new);
 
         if (account.getIsBlocked()) {

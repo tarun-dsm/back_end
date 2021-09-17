@@ -53,7 +53,7 @@ public class AccountServiceImpl implements AccountService{
 
     private static final String KAKAO_API_URL = "https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=";
 
-    private BaseService baseService;
+    private final BaseService baseService;
 
     @Transactional
     @Override
@@ -106,7 +106,7 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public void saveCoordinate(CoordinatesRequest request) throws JsonProcessingException, UnirestException {
         Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
-                .map(account1 -> baseService.isBlocked(account1))
+                .filter(baseService::isNotBlocked)
                 .orElseThrow(UserNotFoundException::new);
         BigDecimal x = BigDecimal.valueOf(request.getLongitude());
         BigDecimal y = BigDecimal.valueOf(request.getLatitude());
@@ -133,7 +133,6 @@ public class AccountServiceImpl implements AccountService{
     private String getAdministrationDivision(Double x, Double y) throws JsonProcessingException, UnirestException {
         ObjectMapper mapper = new ObjectMapper();
         String administrationDivision = "";
-
         HttpResponse<com.mashape.unirest.http.JsonNode> response = Unirest.get(KAKAO_API_URL + x + "&y=" + y)
                 .header("Authorization", "KakaoAK " + restApiKey)
                 .header("Accept", MediaType.APPLICATION_JSON_VALUE)

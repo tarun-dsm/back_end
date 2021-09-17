@@ -17,15 +17,17 @@ public class BaseService {
     public Account getLocalConfirmAccount() {
         return accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .filter(Account::getIsLocationConfirm)
-                .map(this::isBlocked)
+                .filter(this::isNotBlocked)
                 .orElseThrow(UserNotUnauthenticatedException::new);
     }
 
-    public Account isBlocked(Account account) {
+    public Boolean isNotBlocked(Account account) {
+        System.out.println(account.getEmail());
+        System.out.println(account.getIsBlocked());
         if (account.getIsBlocked()) {
             throw new BlockedUserException();
         }
-        return account;
+        return true;
     }
 
 }
