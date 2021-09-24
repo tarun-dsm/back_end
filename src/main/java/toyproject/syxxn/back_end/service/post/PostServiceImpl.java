@@ -209,12 +209,12 @@ public class PostServiceImpl implements PostService {
             if (files.size() > 5) {
                 throw new FileNumberExceedException();
             }
-
+            int i = 1;
             for (MultipartFile file : files) {
                 if (file.getOriginalFilename() == null) {
                     throw new FileNotFoundException();
                 }
-                String filePath = path + file.getOriginalFilename();
+                String filePath = path + post.getId() + file.getOriginalFilename() + i++;
 
                 String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
                 if (!(extension.contains("JPG") || extension.contains("jpg") || extension.contains("jpeg") || extension.contains("JPEG") || extension.contains("png") || extension.contains("PNG"))) {
