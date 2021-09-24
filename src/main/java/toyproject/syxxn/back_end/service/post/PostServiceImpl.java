@@ -22,6 +22,7 @@ import toyproject.syxxn.back_end.service.facade.BaseService;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -214,7 +215,7 @@ public class PostServiceImpl implements PostService {
                 if (file.getOriginalFilename() == null) {
                     throw new FileNotFoundException();
                 }
-                String filePath = path + post.getId() + file.getOriginalFilename() + i++;
+                String filePath = path + post.getId() + file.getOriginalFilename() + LocalDateTime.now();
 
                 String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
                 if (!(extension.contains("JPG") || extension.contains("jpg") || extension.contains("jpeg") || extension.contains("JPEG") || extension.contains("png") || extension.contains("PNG"))) {
