@@ -18,6 +18,8 @@ public class PostResponseDto {
 
     private String title;
 
+    private String animalType;
+
     private String administrationDivision;
 
     private String firstImagePath;

@@ -83,11 +83,11 @@ public class Post extends BaseCreatedAtEntity {
 
     public void update(PostRequest post) {
         this.title = post.getTitle();
-        this.protectionStartDate = LocalDate.parse(post.getProtectionstartdate());
-        this.protectionEndDate = LocalDate.parse(post.getProtectionenddate());
-        this.applicationEndDate = LocalDate.parse(post.getApplicationenddate());
+        this.protectionStartDate = LocalDate.parse(post.getProtectionStartDate());
+        this.protectionEndDate = LocalDate.parse(post.getProtectionEndDate());
+        this.applicationEndDate = LocalDate.parse(post.getApplicationEndDate());
         this.description = post.getDescription();
-        this.contactInfo = post.getContactinfo();
+        this.contactInfo = post.getContactInfo();
         this.isUpdated = true;
     }
 

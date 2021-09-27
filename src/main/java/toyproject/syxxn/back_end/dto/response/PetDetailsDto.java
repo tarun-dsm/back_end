@@ -19,6 +19,8 @@ public class PetDetailsDto {
 
     private String petSex;
 
+    private String animalType;
+
     private List<String> filePaths;
 
 }

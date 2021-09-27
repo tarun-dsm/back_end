@@ -10,10 +10,7 @@ import toyproject.syxxn.back_end.dto.response.*;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
-import toyproject.syxxn.back_end.entity.pet.PetImage;
-import toyproject.syxxn.back_end.entity.pet.PetImageRepository;
-import toyproject.syxxn.back_end.entity.pet.PetInfo;
-import toyproject.syxxn.back_end.entity.pet.PetInfoRepository;
+import toyproject.syxxn.back_end.entity.pet.*;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.exception.*;
@@ -73,8 +70,8 @@ public class PostServiceImpl implements PostService {
     @Override
     public Integer writePost(PostRequest request) {
         Account account = baseService.getLocalConfirmAccount();
-        String startDate = request.getProtectionstartdate();
-        String endDate = request.getProtectionenddate();
+        String startDate = request.getProtectionStartDate();
+        String endDate = request.getProtectionEndDate();
 
         startDateAfterEndDate(startDate, endDate);
         Post post = postRepository.save(
@@ -84,8 +81,8 @@ public class PostServiceImpl implements PostService {
                         .account(account)
                         .protectionStartDate(LocalDate.parse(startDate))
                         .protectionEndDate(LocalDate.parse(endDate))
-                        .applicationEndDate(LocalDate.parse(request.getApplicationenddate()))
-                        .contactInfo(request.getContactinfo())
+                        .applicationEndDate(LocalDate.parse(request.getApplicationEndDate()))
+                        .contactInfo(request.getContactInfo())
                         .isApplicationEnd(false)
                         .isUpdated(false)
                         .build()
@@ -93,10 +90,11 @@ public class PostServiceImpl implements PostService {
 
         petInfoRepository.save(
                 PetInfo.builder()
-                        .petName(request.getPetname())
-                        .petSpecies(request.getPetspecies())
-                        .petSex(Sex.valueOf(request.getPetsex()))
+                        .petName(request.getPetName())
+                        .petSpecies(request.getPetSpecies())
+                        .petSex(Sex.valueOf(request.getPetSex()))
                         .post(post)
+                        .animalType(AnimalType.valueOf(request.getAnimalType()))
                         .build()
         );
 
@@ -111,8 +109,8 @@ public class PostServiceImpl implements PostService {
                 .filter(p -> !p.getIsApplicationEnd())
                 .orElseThrow(PostNotFoundException::new);
 
-        String startDate = request.getProtectionstartdate();
-        String endDate = request.getProtectionenddate();
+        String startDate = request.getProtectionStartDate();
+        String endDate = request.getProtectionEndDate();
 
         startDateAfterEndDate(startDate, endDate);
 
@@ -155,6 +153,7 @@ public class PostServiceImpl implements PostService {
                 .petName(petInfo.getPetName())
                 .petSpecies(petInfo.getPetSpecies())
                 .petSex(petInfo.getPetSex().toString())
+                .animalType(petInfo.getAnimalType().toString())
                 .filePaths(filePaths)
                 .build();
 
@@ -174,28 +173,14 @@ public class PostServiceImpl implements PostService {
         if (!account.getIsLocationConfirm()) {
             List<Post> latelyPost = postRepository.findAllByOrderByCreatedAtDesc();
             return new PostResponse(latelyPost.stream()
-                    .map(post -> PostResponseDto.builder()
-                            .id(post.getId())
-                            .title(post.getTitle())
-                            .administrationDivision(post.getAccount().getAdministrationDivision())
-                            .firstImagePath(post.getPetImages().get(0).getPath())
-                            .protectionStartDate(post.getProtectionStartDate())
-                            .protectionEndDate(post.getProtectionEndDate())
-                            .build()).collect(Collectors.toList())
+                    .map(this::getPost).collect(Collectors.toList())
             );
         }
 
         List<Post> posts = postRepository.findAllByIsApplicationEndFalseOrderByCreatedAtDesc();
         return new PostResponse(posts.stream()
                 .filter(post -> distance(account, post.getAccount()) >= 1)
-                .map(post -> PostResponseDto.builder()
-                        .id(post.getId())
-                        .title(post.getTitle())
-                        .administrationDivision(post.getAccount().getAdministrationDivision())
-                        .firstImagePath(post.getPetImages().get(0).getPath())
-                        .protectionStartDate(post.getProtectionStartDate())
-                        .protectionEndDate(post.getProtectionEndDate())
-                        .build()).collect(Collectors.toList())
+                .map(this::getPost).collect(Collectors.toList())
         );
     }
 
@@ -240,21 +225,33 @@ public class PostServiceImpl implements PostService {
         double myLat = account.getLatitude().doubleValue();
 
         double theta = Math.abs(writerLon - myLon);
-        double distance = Math.sin(degreeToRadion(myLat)) * Math.sin(degreeToRadion(writerLat)) + Math.cos(degreeToRadion(myLat)) * Math.cos(degreeToRadion(writerLat)) * Math.cos(degreeToRadion(theta));
+        double distance = Math.sin(degreeToRadian(myLat)) * Math.sin(degreeToRadian(writerLat)) + Math.cos(degreeToRadian(myLat)) * Math.cos(degreeToRadian(writerLat)) * Math.cos(degreeToRadian(theta));
 
         distance = Math.acos(distance);
-        distance = radionToDegrees(distance);
+        distance = radianToDegrees(distance);
         distance = distance * 60 * 1.1515 * 1.609344;
 
         return distance;
     }
 
-    private double degreeToRadion(double deg) {
+    private double degreeToRadian(double deg) {
         return (deg * Math.PI / 180);
     }
 
-    private double radionToDegrees(double rad) {
+    private double radianToDegrees(double rad) {
         return (rad * 180 / Math.PI);
+    }
+    
+    private PostResponseDto getPost(Post post) {
+        return PostResponseDto.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .animalType(post.getPetInfo().getAnimalType().toString())
+                .administrationDivision(post.getAccount().getAdministrationDivision())
+                .firstImagePath(post.getPetImages().get(0).getPath())
+                .protectionStartDate(post.getProtectionStartDate())
+                .protectionEndDate(post.getProtectionEndDate())
+                .build();
     }
 
 }

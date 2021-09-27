@@ -24,35 +24,31 @@ public class PostRequest {
     @Length(min = 2, max = 255)
     private String description;
 
-    @JsonProperty("protection_start_date")
     @NotNull
-    private String protectionstartdate;
+    private String protectionStartDate;
 
-    @JsonProperty("protection_end_date")
     @NotNull
-    private String protectionenddate;
+    private String protectionEndDate;
 
-    @JsonProperty("application_end_date")
     @NotNull
-    private String applicationenddate;
+    private String applicationEndDate;
 
-    @JsonProperty("contact_info")
     @NotNull
     @Length(min = 5, max = 100)
-    private String contactinfo;
+    private String contactInfo;
 
-    @JsonProperty("pet_name")
     @NotNull
     @Length(max = 30)
-    private String petname;
+    private String petName;
 
-    @JsonProperty("pet_species")
     @NotNull
     @Length(max = 30)
-    private String petspecies;
+    private String petSpecies;
 
-    @JsonProperty("pet_sex")
     @NotNull
-    private String petsex;
+    private String petSex;
+
+    @NotNull
+    private String animalType;
 
 }

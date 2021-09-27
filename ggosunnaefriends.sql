@@ -52,12 +52,12 @@ CREATE TABLE `pet_image` (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE `pet_info` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `post_id` INT NOT NULL,
   `pet_name` VARCHAR(30) NOT NULL,
   `pet_sex` VARCHAR(6) NOT NULL,
   `pet_species` VARCHAR(30) NOT NULL,
-  `post_id` INT NOT NULL,
-  PRIMARY KEY(`id`),
+  'animal_type' VARCHAR(10) NOT NULL,
+  PRIMARY KEY(`post_id`),
   FOREIGN KEY(`post_id`) REFERENCES `post`(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 

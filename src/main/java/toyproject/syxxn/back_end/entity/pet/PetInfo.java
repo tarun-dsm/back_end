@@ -15,35 +15,44 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class PetInfo extends BaseIdEntity {
+public class PetInfo {
+
+    @Id
+    private Integer postId;
 
     @NotNull
-    @Column(length = 30)
+    @Column(length = 30, nullable = false)
     private String petName;
 
     @NotNull
-    @Column(length = 30)
+    @Column(length = 30, nullable = false)
     private String petSpecies;
 
-    @NotNull
+    @Column(length = 6, nullable = false)
     private Sex petSex;
 
+    @Column()
+    private AnimalType animalType;
+
+    @MapsId
     @OneToOne
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     @Builder
-    public PetInfo(Post post, String petName, String petSpecies, Sex petSex) {
+    public PetInfo(Post post, String petName, String petSpecies, Sex petSex, AnimalType animalType) {
         this.post = post;
         this.petName = petName;
         this.petSpecies = petSpecies;
         this.petSex = petSex;
+        this.animalType = animalType;
     }
 
     public void update(PostRequest pet) {
-        this.petName = pet.getPetname();
-        this.petSpecies = pet.getPetspecies();
-        this.petSex = Sex.valueOf(pet.getPetsex());
+        this.petName = pet.getPetName();
+        this.petSpecies = pet.getPetSpecies();
+        this.petSex = Sex.valueOf(pet.getPetSex());
+        this.animalType = AnimalType.valueOf(pet.getAnimalType());
     }
 
 }
