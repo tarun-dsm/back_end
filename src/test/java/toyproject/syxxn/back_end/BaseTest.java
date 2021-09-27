@@ -218,13 +218,13 @@ public class BaseTest {
         return PostRequest.builder()
                 .title("이것은 제목")
                 .description("이것은 설명")
-                .protectionstartdate("2021-08-05")
-                .protectionenddate("2021-08-06")
-                .applicationenddate("2021-08-04")
-                .contactinfo("010-0000-0000")
-                .petname("또로")
-                .petspecies("코리안숏헤어")
-                .petsex(Sex.MALE.toString())
+                .protectionStartDate("2021-08-05")
+                .protectionEndDate("2021-08-06")
+                .applicationEndDate("2021-08-04")
+                .contactInfo("010-0000-0000")
+                .petName("또로")
+                .petSpecies("코리안숏헤어")
+                .petSex(Sex.MALE.toString())
                 .build();
     }
 
