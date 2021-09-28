@@ -16,6 +16,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"account_id", "post_id"}))
 @QueryEntity
 public class Application extends BaseCreatedAtEntity {
 

@@ -33,10 +33,12 @@ public class ReviewControllerTest extends BaseTest{
     public void setUp() {
         mvc = setMvc();
 
-        account1 = createAccount("test1@naver.com", true, "Tarun1");
-        account2 = createAccount("test2@naver.com", true, "Tarun2");
-        createAccount("test3@naver.com", true, "Tarun3");
-        createAccount("test4@naver.com", false, "Tarun4");
+        account1 = createAccount("test1@naver.com", "Tarun1");
+        account2 = createAccount("test2@naver.com", "Tarun2");
+        accountRepository.save(account1.updateLocation(BigDecimal.valueOf(13.25), BigDecimal.valueOf(13.25), "대덕동"));
+        accountRepository.save(account2.updateLocation(BigDecimal.valueOf(13.25), BigDecimal.valueOf(13.25), "대덕동"));
+        accountRepository.save(createAccount("test3@naver.com", "Tarun3").updateLocation(BigDecimal.valueOf(13.25), BigDecimal.valueOf(13.25), "대덕동"));
+        createAccount("test4@naver.com", "Tarun4");
 
         notDoneApplication = createApplication(account1, account2,true, true, "2021-10-22");
         application = createApplication(account1, account2,true, true, "2021-05-22");
@@ -133,13 +135,13 @@ public class ReviewControllerTest extends BaseTest{
         ).andExpect(status().isConflict());
     }
 
-    @WithMockUser(value = "test2@naver.com", password = "asdf123@")
+    @WithMockUser(value = "test2@naver.com")
     @Test
     public void deleteReview() throws Exception {
         Integer id = createReview(account1, account2, BigDecimal.valueOf(3.2)).getId();
 
         mvc.perform(delete("/review/"+id)
-        ).andExpect(status().isOk());
+        ).andExpect(status().isOk()).andDo(print());
     }
 
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")

@@ -95,6 +95,7 @@ public class ProfileServiceImpl implements ProfileService {
                     .map(this::isBlocked)
                     .orElseThrow(UserNotUnauthenticatedException::new);
         } else {
+
             return accountRepository.findById(accountId)
                     .map(this::isBlocked)
                     .orElseThrow(UserNotFoundException::new);

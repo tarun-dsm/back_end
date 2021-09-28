@@ -90,11 +90,13 @@ public class Account extends BaseIdEntity {
         this.isBlocked = false;
     }
 
-    public void updateLocation(BigDecimal longitude, BigDecimal latitude, String administrationDivision) {
+    public Account updateLocation(BigDecimal longitude, BigDecimal latitude, String administrationDivision) {
         this.isLocationConfirm = true;
         this.longitude = longitude;
         this.latitude = latitude;
         this.administrationDivision = administrationDivision;
+
+        return this;
     }
 
     public String getRating() {

@@ -14,13 +14,11 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class ReviewRequest {
 
-    @NotBlank
     @DecimalMin(value = "0.0")
     @DecimalMax(value = "5.0")
     @Digits(integer = 1, fraction = 1)
     private BigDecimal grade;
 
-    @NotBlank
     private String comment;
 
 }

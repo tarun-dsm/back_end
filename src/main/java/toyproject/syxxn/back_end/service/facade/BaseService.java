@@ -15,6 +15,8 @@ public class BaseService {
     private final AuthenticationFacade authenticationFacade;
 
     public Account getLocalConfirmAccount() {
+        System.out.println(authenticationFacade.getUserEmail());
+
         return accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .filter(Account::getIsLocationConfirm)
                 .filter(this::isNotBlocked)

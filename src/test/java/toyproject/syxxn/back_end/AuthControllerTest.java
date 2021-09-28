@@ -25,7 +25,7 @@ public class AuthControllerTest extends BaseTest {
     public void setUp() {
         mvc = setMvc();
 
-        Account account = createAccount("test1@naver.com", true, "Tarun");
+        Account account = createAccount("test1@naver.com", "Tarun");
         refreshToken = createRefreshToken(account);
     }
 

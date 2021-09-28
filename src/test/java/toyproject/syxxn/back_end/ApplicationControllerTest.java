@@ -7,6 +7,8 @@ import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.application.Application;
 import toyproject.syxxn.back_end.entity.post.Post;
 
+import java.math.BigDecimal;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -25,21 +27,24 @@ public class ApplicationControllerTest extends BaseTest {
     public void setUp() {
         mvc = setMvc();
 
-        account1 = createAccount("test1@naver.com", true, "Tarun");
-        account2 = createAccount("test2@naver.com", true, "Tarun");
-        account3 = createAccount("test3@naver.com", true, "Tarun");
-        createAccount("test4@naver.com", false, "Tarun");
-        createAccount("test5@naver.com", true, "Tarun");
+        account1 = createAccount("test1@naver.com", "Tarun1");
+        account2 = createAccount("test2@naver.com", "Tarun2");
+        account3 = createAccount("test3@naver.com", "Tarun3");
+        accountRepository.save(account1.updateLocation(BigDecimal.valueOf(12.5), BigDecimal.valueOf(12.5), "동동동"));
+        accountRepository.save(account2.updateLocation(BigDecimal.valueOf(12.5), BigDecimal.valueOf(12.5), "동동동"));
+        accountRepository.save(account3.updateLocation(BigDecimal.valueOf(12.5), BigDecimal.valueOf(12.5), "동동동"));
+        createAccount("test4@naver.com", "Tarun4");
+        createAccount("test5@naver.com", "Tarun5");
 
         Post post = createPost(account1, false, "2021-10-10");
         postId = post.getId();
 
         application = createApplication(account1, account2,false, false, "2021-10-10");
-        createApplication(account1, account3,false, true, "2021-10-10");
+        //createApplication(account1, account3,false, true, "2021-10-10");
         createApplication(account1, account2,false, false, "2021-08-10");
     }
 
-    @WithMockUser(value = "test5@naver.com", password = "asdf123@")
+    @WithMockUser(value = "test3@naver.com", password = "asdf123@")
     @Test
     public void protectionApplication() throws Exception {
         mvc.perform(post("/application/"+postId))
@@ -78,13 +83,6 @@ public class ApplicationControllerTest extends BaseTest {
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void protectionApplication_409() throws Exception {
-        mvc.perform(post("/application/"+ application.getPost().getId()))
-                .andExpect(status().isConflict());
-    }
-
-    @WithMockUser(value = "test3@naver.com", password = "asdf123@")
-    @Test
-    public void protectionApplication_409_2() throws Exception {
         mvc.perform(post("/application/"+ application.getPost().getId()))
                 .andExpect(status().isConflict());
     }

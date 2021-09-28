@@ -12,6 +12,7 @@ spring:
     hibernate:
       ddl-auto: create
     show-sql: true
+    generate-ddl: true
   redis:
     host: localhost
     port: 6380

@@ -9,6 +9,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
+
+import java.math.BigDecimal;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -24,9 +27,10 @@ public class PostControllerTest extends BaseTest {
     public void setUp() {
         mvc = setMvc();
 
-        account = createAccount("adsf1234@naver.com", true, "Tarun");
-        createAccount("test1@naver.com", true);
-        createAccount("test1234@gmail.com", false, "ggosunnae");
+        account = createAccount("adsf1234@naver.com", "Tarun");
+        accountRepository.save(account.updateLocation(BigDecimal.ONE, BigDecimal.ONE, "동그라미"));
+        createAccount("test1@naver.com", "true");
+        createAccount("test1234@gmail.com", "ggosunnae");
 
         postId = createPetInfo(account).getPost().getId();
     }

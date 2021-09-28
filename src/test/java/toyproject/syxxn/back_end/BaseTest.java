@@ -16,10 +16,7 @@ import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.application.Application;
 import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
-import toyproject.syxxn.back_end.entity.pet.PetImage;
-import toyproject.syxxn.back_end.entity.pet.PetImageRepository;
-import toyproject.syxxn.back_end.entity.pet.PetInfo;
-import toyproject.syxxn.back_end.entity.pet.PetInfoRepository;
+import toyproject.syxxn.back_end.entity.pet.*;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshToken;
@@ -43,7 +40,7 @@ public class BaseTest {
     private WebApplicationContext context;
 
     @Autowired
-    private AccountRepository accountRepository;
+    protected AccountRepository accountRepository;
 
     @Autowired
     private ApplicationRepository applicationRepository;
@@ -90,7 +87,7 @@ public class BaseTest {
                 .build();
     }
 
-    public Account createAccount(String email, boolean isLocationConfirm, String nickname) {
+    public Account createAccount(String email, String nickname) {
         return accountRepository.save(
                 Account.builder()
                         .email(email)
@@ -100,20 +97,6 @@ public class BaseTest {
                         .age(18)
                         .isExperienceRaisingPet(false)
                         .experience(null)
-                        .build()
-        );
-    }
-
-    public Account createAccount(String email, boolean isLocationConfirm) {
-        return accountRepository.save(
-                Account.builder()
-                        .email(email)
-                        .password(encoder.encode("asdf123@"))
-                        .sex(Sex.FEMALE)
-                        .nickname("nickname")
-                        .age(18)
-                        .isExperienceRaisingPet(true)
-                        .experience("지금 또로랑 같이 산지 6년째입니당")
                         .build()
         );
     }
@@ -147,7 +130,7 @@ public class BaseTest {
     public Application createApplication(Account account1, Account account2, boolean isAccepted) {
         return applicationRepository.save(
                 Application.builder()
-                        .post(createPost(account1))
+                        .post(createPost(account1, false, "2021-09-08"))
                         .account(account2)
                         .isAccepted(isAccepted)
                         .build()
@@ -155,7 +138,8 @@ public class BaseTest {
     }
 
     public Post createPost(Account account, boolean isEnd, String endDate) {
-        return postRepository.save(
+        System.out.println("hello..");
+        Post post = postRepository.save(
                 Post.builder()
                         .account(account)
                         .title("제목을 까먹었지 뭐야..")
@@ -166,33 +150,24 @@ public class BaseTest {
                         .description("랄랄라")
                         .isUpdated(false)
                         .isApplicationEnd(isEnd)
-                .build());
-    }
-
-    public Post createPost(Account account) {
-        Post post = postRepository.save(
-                Post.builder()
-                        .account(account)
-                        .title("제목을 까먹었지 뭐야..")
-                        .applicationEndDate(LocalDate.parse("2021-09-08"))
-                        .protectionStartDate(LocalDate.of(2021,10,29))
-                        .protectionEndDate(LocalDate.of(2021,10,30))
-                        .contactInfo("010-0000-0000")
-                        .description("랄랄라")
-                        .isUpdated(false)
-                        .isApplicationEnd(false)
                         .build()
         );
+        System.out.println(post.getId());
+        System.out.println("hello...");
         petInfoRepository.save(
                 PetInfo.builder()
                         .petSex(Sex.MALE)
                         .petName("아몰랑고양이")
+                        .animalType(AnimalType.AMPHIBIANS)
                         .petSpecies("코리안숏헤어인줄알았죠")
                         .post(post)
                         .build()
         );
+        System.out.println(post.getPetInfo().getPetName());
+        System.out.println(post.getPetInfo().getAnimalType());
+        System.out.println("hello....");
         petImageRepository.save(new PetImage(post, "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMDA5MDhfMjI3%2FMDAxNTk5NTE0MTg2ODc2.XR5pv2EMxtHWqPvmQiKzdDehiQx_ocJmGYeQdg__1wgg.pws149iHO28YsC3jXUc25tJwkGPB8Cfzu7NjrOF2YxEg.JPEG.byb0111%2F1599514185873.jpg&type=a340"));
-
+        System.out.println("bye.");
         return post;
     }
 

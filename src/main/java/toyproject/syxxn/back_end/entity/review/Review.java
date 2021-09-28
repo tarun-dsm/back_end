@@ -17,10 +17,10 @@ import java.math.BigDecimal;
 @Entity
 public class Review extends BaseCreatedAtEntity {
 
-    @NotNull
+    @Column(columnDefinition = "decimal(2,1)", nullable = false)
     private BigDecimal grade;
 
-    @NotNull
+    @Column(nullable = false)
     private String comment;
 
     @ManyToOne

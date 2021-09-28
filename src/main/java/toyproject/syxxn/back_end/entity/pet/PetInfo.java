@@ -1,23 +1,17 @@
 package toyproject.syxxn.back_end.entity.pet;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
+import toyproject.syxxn.back_end.entity.BaseIdEntity;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.post.Post;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class PetInfo {
-
-    @Id
-    private Integer postId;
+public class PetInfo extends BaseIdEntity {
 
     @Column(length = 30, nullable = false)
     private String petName;
@@ -28,10 +22,10 @@ public class PetInfo {
     @Column(length = 6, nullable = false)
     private Sex petSex;
 
+    @Enumerated(EnumType.STRING)
     @Column(length = 10, nullable = false)
     private AnimalType animalType;
 
-    @MapsId
     @OneToOne
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
