@@ -82,8 +82,8 @@ public class ProfileServiceImpl implements ProfileService {
                             .firstImagePath(post.getPetImages().get(0).getPath())
                             .createdAt(post.getCreatedAt())
                             .isApplicationEnd(post.getIsApplicationEnd())
-                            .protectorId(application.isEmpty() ? "" : application.get().getAccount().getId().toString())
-                            .protectorNickname(application.isEmpty() ? "" : application.get().getAccount().getNickname())
+                            .protectorId(application.isEmpty() ? null : application.get().getAccount().getId().toString())
+                            .protectorNickname(application.isEmpty() ? null : application.get().getAccount().getNickname())
                             .build();
                 }
         ).collect(Collectors.toList()));

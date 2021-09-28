@@ -45,7 +45,7 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
 
-        if (!baseService.getLocalConfirmAccount().getEmail().equals(post.getAccount().getEmail())) {
+        if (!baseService.getLocalConfirmAccount().equals(post.getAccount())) {
             throw new UserNotAccessibleException();
         }
         postRepository.delete(post);
@@ -124,10 +124,11 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDetailsResponse getPostDetails(Integer postId) {
+        baseService.getLocalConfirmAccount();
+
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
         Account account = post.getAccount();
-
         PetInfo petInfo = post.getPetInfo();
 
         List<PetImage> petImages = petImageRepository.findAllByPost(post);

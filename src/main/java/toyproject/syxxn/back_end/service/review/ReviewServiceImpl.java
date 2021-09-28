@@ -61,19 +61,13 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void deleteReview(Integer reviewId) {
-        Review review = reviewRepository.findById(reviewId)
-                .filter(r -> r.getWriter().equals(baseService.getLocalConfirmAccount()))
-                .orElseThrow(ReviewNotFoundException::new);
-
+        Review review = getReview(reviewId);
         reviewRepository.delete(review);
     }
 
     @Override
     public void updateReview(Integer reviewId, ReviewRequest request) {
-        Review review = reviewRepository.findById(reviewId)
-                .filter(r -> r.getWriter().equals(baseService.getLocalConfirmAccount()))
-                .orElseThrow(ReviewNotFoundException::new);
-
+        Review review = getReview(reviewId);
         review.update(request.getGrade(), request.getComment());
 
         reviewRepository.save(review);
@@ -81,6 +75,12 @@ public class ReviewServiceImpl implements ReviewService {
 
     private boolean isReviewablePeriod(Post post) {
         return (LocalDate.now().isAfter(post.getApplicationEndDate()) && post.getIsApplicationEnd());
+    }
+
+    private Review getReview(Integer reviewId) {
+        return reviewRepository.findById(reviewId)
+                .filter(r -> r.getWriter().equals(baseService.getLocalConfirmAccount()))
+                .orElseThrow(ReviewNotFoundException::new);
     }
 
 }
