@@ -20,16 +20,16 @@ import java.util.List;
 @QueryEntity
 public class Account extends BaseIdEntity {
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 45, nullable = false, unique = true)
     private String email;
 
     @Column(columnDefinition = "char(60)", nullable = false)
     private String password;
 
-    @Column(length = 10, nullable = false)
+    @Column(length = 10, nullable = false, unique = true)
     private String nickname;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private Integer age;
 
     @Enumerated(EnumType.STRING)
@@ -76,7 +76,7 @@ public class Account extends BaseIdEntity {
     private List<Report> reports;
 
     @Builder
-    public Account(String email, String password, String nickname, Integer age, Sex sex, Boolean isExperienceRaisingPet, String experience, Boolean isLocationConfirm, BigDecimal latitude, BigDecimal longitude) {
+    public Account(String email, String password, String nickname, Integer age, Sex sex, Boolean isExperienceRaisingPet, String experience) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -84,9 +84,9 @@ public class Account extends BaseIdEntity {
         this.sex = sex;
         this.isExperienceRaisingPet = isExperienceRaisingPet;
         this.experience = experience;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.isLocationConfirm = isLocationConfirm;
+        this.longitude = BigDecimal.ZERO;
+        this.latitude = BigDecimal.ZERO;
+        this.isLocationConfirm = false;
         this.isBlocked = false;
     }
 

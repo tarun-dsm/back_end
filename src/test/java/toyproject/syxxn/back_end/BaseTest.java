@@ -100,9 +100,6 @@ public class BaseTest {
                         .age(18)
                         .isExperienceRaisingPet(false)
                         .experience(null)
-                        .latitude(BigDecimal.ZERO)
-                        .longitude(BigDecimal.ZERO)
-                        .isLocationConfirm(isLocationConfirm)
                         .build()
         );
     }
@@ -117,9 +114,6 @@ public class BaseTest {
                         .age(18)
                         .isExperienceRaisingPet(true)
                         .experience("지금 또로랑 같이 산지 6년째입니당")
-                        .latitude(BigDecimal.ZERO)
-                        .longitude(BigDecimal.ZERO)
-                        .isLocationConfirm(isLocationConfirm)
                         .build()
         );
     }

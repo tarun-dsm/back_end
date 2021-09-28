@@ -71,9 +71,6 @@ public class AccountServiceImpl implements AccountService{
                         .sex(Sex.valueOf(request.getSex()))
                         .isExperienceRaisingPet(request.isExperienceRasingPet())
                         .experience(request.getExperience())
-                        .isLocationConfirm(false)
-                        .latitude(BigDecimal.ZERO)
-                        .longitude(BigDecimal.ZERO)
                         .build()
         );
 
