@@ -11,7 +11,6 @@ import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.review.Review;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -20,8 +19,7 @@ import java.util.List;
 @QueryEntity
 public class Application extends BaseCreatedAtEntity {
 
-    @NotNull
-    @Column(columnDefinition = "bit(1)")
+    @Column(columnDefinition = "bit(1)", nullable = false)
     private Boolean isAccepted;
 
     @ManyToOne

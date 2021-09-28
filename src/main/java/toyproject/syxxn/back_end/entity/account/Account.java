@@ -10,7 +10,6 @@ import toyproject.syxxn.back_end.entity.report.Report;
 import toyproject.syxxn.back_end.entity.review.Review;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.List;
@@ -19,49 +18,43 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @QueryEntity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"email","nickname"})})
 public class Account extends BaseIdEntity {
 
-    @NotNull
-    @Column(length = 45)
+    @Column(length = 45, nullable = false)
     private String email;
 
-    @NotNull
-    @Column(columnDefinition = "char(60)")
+    @Column(columnDefinition = "char(60)", nullable = false)
     private String password;
 
-    @NotNull
-    @Column(length = 10)
+    @Column(length = 10, nullable = false)
     private String nickname;
 
-    @NotNull
+    @Column(unique = true, nullable = false)
     private Integer age;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(length = 6, nullable = false)
     private Sex sex;
 
-    @NotNull
-    @Column(columnDefinition = "bit(1)")
+    @Column(columnDefinition = "bit(1)", nullable = false)
     private Boolean isExperienceRaisingPet;
 
     @Column(length = 100)
     private String experience;
 
-    @NotNull
+    @Column(columnDefinition = "decimal(15,10)", nullable = false)
     private BigDecimal longitude;
 
-    @NotNull
+    @Column(columnDefinition = "decimal(15,10)", nullable = false)
     private BigDecimal latitude;
 
     @Column(length = 10)
     private String administrationDivision;
 
-    @NotNull
-    @Column(columnDefinition = "bit(1)")
+    @Column(columnDefinition = "bit(1)", nullable = false)
     private Boolean isLocationConfirm;
 
-    @Column(columnDefinition = "bit(1)")
+    @Column(columnDefinition = "bit(1)", nullable = false)
     private Boolean isBlocked;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)

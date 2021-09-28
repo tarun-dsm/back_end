@@ -64,12 +64,11 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidTokenException();
         }
         RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(receivedToken)
-                .map(refreshToken1 -> refreshToken1.update(refreshExp))
                 .orElseThrow(UserNotFoundException::new);
         refreshTokenRepository.save(refreshToken);
 
         return TokenResponse.builder()
-                .refreshToken(refreshToken.getRefreshToken())
+                .refreshToken(jwtTokenProvider.generateRefreshToken(refreshToken.getAccountId()))
                 .accessToken(jwtTokenProvider.generateAccessToken(refreshToken.getAccountId()))
                 .build();
     }

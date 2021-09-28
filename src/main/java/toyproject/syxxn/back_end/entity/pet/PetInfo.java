@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
-import toyproject.syxxn.back_end.entity.BaseIdEntity;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.post.Post;
 
@@ -20,18 +19,16 @@ public class PetInfo {
     @Id
     private Integer postId;
 
-    @NotNull
     @Column(length = 30, nullable = false)
     private String petName;
 
-    @NotNull
     @Column(length = 30, nullable = false)
     private String petSpecies;
 
     @Column(length = 6, nullable = false)
     private Sex petSex;
 
-    @Column()
+    @Column(length = 10, nullable = false)
     private AnimalType animalType;
 
     @MapsId

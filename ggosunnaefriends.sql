@@ -6,8 +6,8 @@ CREATE TABLE `account` (
   `is_experience_raising_pet` BIT(1) NOT NULL,
   `experience` VARCHAR(100),
   `is_location_confirm` BIT(1) NOT NULL,
-  `latitude` DECIMAL(19,2) NOT NULL,
-  `longitude` DECIMAL(19,2) NOT NULL,
+  `latitude` DECIMAL(15,10) NOT NULL,
+  `longitude` DECIMAL(15,10) NOT NULL,
   `nickname` VARCHAR(10) NOT NULL,
   `sex` VARCHAR(6) NOT NULL,
   `administration_division` VARCHAR(10),
@@ -56,7 +56,7 @@ CREATE TABLE `pet_info` (
   `pet_name` VARCHAR(30) NOT NULL,
   `pet_sex` VARCHAR(6) NOT NULL,
   `pet_species` VARCHAR(30) NOT NULL,
-  'animal_type' VARCHAR(10) NOT NULL,
+  `animal_type` VARCHAR(10) NOT NULL,
   PRIMARY KEY(`post_id`),
   FOREIGN KEY(`post_id`) REFERENCES `post`(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

@@ -13,7 +13,6 @@ import toyproject.syxxn.back_end.entity.pet.PetImage;
 import toyproject.syxxn.back_end.entity.pet.PetInfo;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,32 +22,28 @@ import java.util.List;
 @QueryEntity
 public class Post extends BaseCreatedAtEntity {
 
-    @NotNull
-    @Column(length = 30)
+    @Column(length = 30, nullable = false)
     private String title;
 
-    @NotNull
+    @Column(nullable = false)
     private LocalDate protectionStartDate;
 
-    @NotNull
+    @Column(nullable = false)
     private LocalDate protectionEndDate;
 
-    @NotNull
+    @Column(nullable = false)
     private LocalDate applicationEndDate;
 
-    @NotNull
+    @Column(nullable = false)
     private String description;
 
-    @NotNull
-    @Column(length = 100)
+    @Column(length = 100, nullable = false)
     private String contactInfo;
 
-    @NotNull
-    @Column(columnDefinition = "bit(1)")
+    @Column(columnDefinition = "bit(1)", nullable = false)
     private Boolean isApplicationEnd;
 
-    @NotNull
-    @Column(columnDefinition = "bit(1)")
+    @Column(columnDefinition = "bit(1)", nullable = false)
     private Boolean isUpdated;
 
     @ManyToOne(fetch = FetchType.LAZY)

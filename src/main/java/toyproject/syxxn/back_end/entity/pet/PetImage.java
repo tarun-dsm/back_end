@@ -7,14 +7,13 @@ import toyproject.syxxn.back_end.entity.BaseIdEntity;
 import toyproject.syxxn.back_end.entity.post.Post;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class PetImage extends BaseIdEntity {
 
-    @NotNull
+    @Column(nullable = false)
     private String path;
 
     @ManyToOne
