@@ -50,7 +50,7 @@ public class Post extends BaseCreatedAtEntity {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @OneToOne(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "post", cascade = CascadeType.REMOVE)
     private PetInfo petInfo;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)

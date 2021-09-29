@@ -32,7 +32,7 @@ public class PostControllerTest extends BaseTest {
         createAccount("test1@naver.com", "true");
         createAccount("test1234@gmail.com", "ggosunnae");
 
-        postId = createPetInfo(account).getPost().getId();
+        postId = createPost(account, false, "2021-09-29").getId();
     }
 
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
@@ -67,6 +67,17 @@ public class PostControllerTest extends BaseTest {
     @Test
     public void updatePost() throws Exception {
         PostRequest request = createPostRequest();
+        System.out.println(request.getTitle());
+        System.out.println(request.getDescription());
+        System.out.println(request.getProtectionStartDate());
+        System.out.println(request.getProtectionEndDate());
+        System.out.println(request.getApplicationEndDate());
+        System.out.println(request.getContactInfo());
+        System.out.println(request.getPetName());
+        System.out.println(request.getPetSpecies());
+        System.out.println(request.getPetSex());
+        System.out.println(request.getAnimalType());
+        System.out.println(new ObjectMapper().writeValueAsString(request));
         mvc.perform(patch("/post/" + postId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(request))
@@ -91,7 +102,7 @@ public class PostControllerTest extends BaseTest {
         mvc.perform(post("/post")
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-        ).andExpect(status().isCreated());
+        ).andDo(print()).andExpect(status().isCreated());
     }
 
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
@@ -118,13 +129,6 @@ public class PostControllerTest extends BaseTest {
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
     @Test
     public void getPostDetails() throws Exception {
-        mvc.perform(get("/post/"+postId)
-        ).andExpect(status().isOk());
-    }
-
-    @WithMockUser(value = "test1@naver.com", password = "asdf123@")
-    @Test
-    public void getPostDetails_() throws Exception {
         mvc.perform(get("/post/"+postId)
         ).andExpect(status().isOk());
     }

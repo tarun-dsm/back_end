@@ -27,7 +27,7 @@ public class PetInfo extends BaseIdEntity {
     private AnimalType animalType;
 
     @OneToOne
-    @JoinColumn(name = "post_id", nullable = false)
+    @JoinColumn(name = "post_id",unique = true, nullable = false)
     private Post post;
 
     @Builder

@@ -15,8 +15,6 @@ public class BaseService {
     private final AuthenticationFacade authenticationFacade;
 
     public Account getLocalConfirmAccount() {
-        System.out.println(authenticationFacade.getUserEmail());
-
         return accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .filter(Account::getIsLocationConfirm)
                 .filter(this::isNotBlocked)
@@ -24,8 +22,6 @@ public class BaseService {
     }
 
     public Boolean isNotBlocked(Account account) {
-        System.out.println(account.getEmail());
-        System.out.println(account.getIsBlocked());
         if (account.getIsBlocked()) {
             throw new BlockedUserException();
         }

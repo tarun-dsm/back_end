@@ -1,6 +1,6 @@
 spring:
   jackson:
-    property-naming-strategy: SNAKE_CASE
+    property-naming-strategy: LOWER_CAMEL_CASE
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:test
