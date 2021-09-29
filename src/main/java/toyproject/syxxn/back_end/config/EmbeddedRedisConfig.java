@@ -12,7 +12,7 @@ import javax.annotation.PreDestroy;
 @Profile({"test", "local"})
 public class EmbeddedRedisConfig {
 
-    /*@Value("${spring.redis.port}")
+    @Value("${spring.redis.port}")
     private int redisPort;
 
     private RedisServer redisServer;
@@ -35,7 +35,7 @@ public class EmbeddedRedisConfig {
         if (redisServer != null) {
             redisServer.stop();
         }
-    }*/
+    }
 
 }
 
