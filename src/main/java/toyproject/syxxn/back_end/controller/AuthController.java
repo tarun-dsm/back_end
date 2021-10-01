@@ -27,4 +27,9 @@ public class AuthController {
         return authService.tokenRefresh(receivedToken);
     }
 
+    @DeleteMapping
+    public void logout() {
+        authService.logout();
+    }
+
 }

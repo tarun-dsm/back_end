@@ -6,4 +6,5 @@ import toyproject.syxxn.back_end.dto.response.TokenResponse;
 public interface AuthService {
     TokenResponse login(SignInRequest request);
     TokenResponse tokenRefresh(String receivedToken);
+    void logout();
 }
