@@ -14,6 +14,7 @@ import toyproject.syxxn.back_end.entity.verify.VerifyNumberRepository;
 import toyproject.syxxn.back_end.exception.EmailSendException;
 import toyproject.syxxn.back_end.exception.UserAlreadyRegisteredException;
 import toyproject.syxxn.back_end.exception.VerifyNumberNotMatchException;
+import toyproject.syxxn.back_end.service.facade.EmailUtil;
 
 import java.util.Random;
 
@@ -24,9 +25,9 @@ public class EmailServiceImpl implements EmailService {
     private final AccountRepository accountRepository;
     private final VerifyNumberRepository verifyNumberRepository;
 
-    private final JavaMailSender javaMailSender;
-
     private static final Random RANDOM = new Random();
+
+    private final EmailUtil emailUtil;
 
     @Async
     @Transactional
@@ -42,14 +43,9 @@ public class EmailServiceImpl implements EmailService {
         String authNumber = generateVerifyNumber();
 
         try {
-            final MimeMessagePreparator preparator = mimeMessage -> {
-                final MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-                helper.setFrom("ggosoonnaefreinds@gmail.com");
-                helper.setTo(email);
-                helper.setSubject("이메일 인증 안내드립니다.");
-                helper.setText("인증 번호는 " + authNumber + "입니다.");
-            };
-            javaMailSender.send(preparator);
+            String subject = "이메일 인증 안내드립니다.";
+            String text = "인증 번호는 " + authNumber + "입니다.";
+            emailUtil.sendEmail(email, subject, text);
 
             verifyNumberRepository.save(
                     new VerifyNumber(email, authNumber, false)
