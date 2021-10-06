@@ -1,6 +1,7 @@
 package toyproject.syxxn.back_end.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import toyproject.syxxn.back_end.dto.request.CommentRequest;
 import toyproject.syxxn.back_end.dto.response.CommentsResponse;
@@ -26,13 +27,15 @@ public class CommentController {
         commentService.deleteComment(commentId);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/{id}")
     public void updateComment(@PathVariable("id") Integer commentId,
                               @RequestBody @Valid CommentRequest request) {
         commentService.updateComment(commentId, request.getComment());
     }
 
-    public CommentsResponse getComments(Integer postId) {
+    @GetMapping("/{id}")
+    public CommentsResponse getComments(@PathVariable("id") Integer postId) {
         return commentService.getComments(postId);
     }
 

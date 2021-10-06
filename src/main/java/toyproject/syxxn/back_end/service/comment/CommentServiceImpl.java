@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import toyproject.syxxn.back_end.dto.response.CommentDto;
 import toyproject.syxxn.back_end.dto.response.CommentsResponse;
 import toyproject.syxxn.back_end.entity.account.Account;
-import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.comment.Comment;
 import toyproject.syxxn.back_end.entity.comment.CommentRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
