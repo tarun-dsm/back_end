@@ -8,12 +8,11 @@ import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.comment.Comment;
 import toyproject.syxxn.back_end.entity.comment.CommentRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
-import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.exception.CommentNotFoundException;
-import toyproject.syxxn.back_end.exception.PostNotFoundException;
 import toyproject.syxxn.back_end.exception.UserNotAccessibleException;
-import toyproject.syxxn.back_end.service.facade.AuthenticationFacade;
-import toyproject.syxxn.back_end.service.facade.BaseService;
+import toyproject.syxxn.back_end.service.facade.AuthenticationUtil;
+import toyproject.syxxn.back_end.service.facade.PostUtil;
+import toyproject.syxxn.back_end.service.facade.UserUtil;
 
 import java.util.stream.Collectors;
 
@@ -21,18 +20,16 @@ import java.util.stream.Collectors;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
-    private final AuthenticationFacade authenticationFacade;
-    private final BaseService baseService;
+    private final AuthenticationUtil authenticationFacade;
+    private final PostUtil postUtil;
+    private final UserUtil baseService;
 
     @Override
     public void writeComment(String comment, Integer postId) {
         Account account = baseService.getLocalConfirmAccount();
-        Post post = postRepository.findById(postId)
-                .filter(p -> !p.getIsApplicationEnd())
-                .orElseThrow(PostNotFoundException::new);
+        Post post = postUtil.getPost(postId, baseService.getLocalConfirmAccount());
 
         commentRepository.save(
                 Comment.builder()
@@ -70,8 +67,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentsResponse getComments(Integer postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(PostNotFoundException::new);
+        baseService.getLocalConfirmAccount();
+        Post post = postUtil.getNotApplicationEndPost(postId);
 
         return new CommentsResponse(
                 commentRepository.findAllByPostOrderByCreatedAtDesc(post).stream().map(

@@ -25,9 +25,9 @@ import toyproject.syxxn.back_end.entity.report.ReportRepository;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumber;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumberRepository;
 import toyproject.syxxn.back_end.exception.*;
-import toyproject.syxxn.back_end.service.facade.AuthenticationFacade;
+import toyproject.syxxn.back_end.service.facade.AuthenticationUtil;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
-import toyproject.syxxn.back_end.service.facade.BaseService;
+import toyproject.syxxn.back_end.service.facade.UserUtil;
 
 import java.math.BigDecimal;
 
@@ -41,7 +41,7 @@ public class AccountServiceImpl implements AccountService{
     private final VerifyNumberRepository verifyNumberRepository;
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final AuthenticationFacade authenticationFacade;
+    private final AuthenticationUtil authenticationFacade;
 
     private final PasswordEncoder encoder;
 
@@ -53,7 +53,7 @@ public class AccountServiceImpl implements AccountService{
 
     private static final String KAKAO_API_URL = "https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=";
 
-    private final BaseService baseService;
+    private final UserUtil baseService;
 
     @Transactional
     @Override

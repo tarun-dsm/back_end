@@ -10,7 +10,7 @@ import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.review.Review;
 import toyproject.syxxn.back_end.entity.review.ReviewRepository;
 import toyproject.syxxn.back_end.exception.*;
-import toyproject.syxxn.back_end.service.facade.BaseService;
+import toyproject.syxxn.back_end.service.facade.UserUtil;
 
 import java.time.LocalDate;
 
@@ -21,7 +21,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ApplicationRepository applicationRepository;
     private final ReviewRepository reviewRepository;
 
-    private final BaseService baseService;
+    private final UserUtil baseService;
 
     @Override
     public void writeReview(Integer applicationId, ReviewRequest request) {

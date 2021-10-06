@@ -14,7 +14,7 @@ import toyproject.syxxn.back_end.entity.review.ReviewRepository;
 import toyproject.syxxn.back_end.exception.BlockedUserException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
 import toyproject.syxxn.back_end.exception.UserNotUnauthenticatedException;
-import toyproject.syxxn.back_end.service.facade.AuthenticationFacade;
+import toyproject.syxxn.back_end.service.facade.AuthenticationUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +29,7 @@ public class ProfileServiceImpl implements ProfileService {
     private final ReviewRepository reviewRepository;
     private final PostRepository postRepository;
 
-    private final AuthenticationFacade authenticationFacade;
+    private final AuthenticationUtil authenticationFacade;
 
     @Override
     public ProfileResponse getProfile(Integer accountId) {

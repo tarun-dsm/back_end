@@ -9,10 +9,10 @@ import toyproject.syxxn.back_end.exception.UserNotUnauthenticatedException;
 
 @RequiredArgsConstructor
 @Component
-public class BaseService {
+public class UserUtil {
 
     private final AccountRepository accountRepository;
-    private final AuthenticationFacade authenticationFacade;
+    private final AuthenticationUtil authenticationFacade;
 
     public Account getLocalConfirmAccount() {
         return accountRepository.findByEmail(authenticationFacade.getUserEmail())

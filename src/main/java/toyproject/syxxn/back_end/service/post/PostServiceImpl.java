@@ -14,8 +14,9 @@ import toyproject.syxxn.back_end.entity.pet.*;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.exception.*;
-import toyproject.syxxn.back_end.service.facade.AuthenticationFacade;
-import toyproject.syxxn.back_end.service.facade.BaseService;
+import toyproject.syxxn.back_end.service.facade.AuthenticationUtil;
+import toyproject.syxxn.back_end.service.facade.PostUtil;
+import toyproject.syxxn.back_end.service.facade.UserUtil;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -33,29 +34,22 @@ public class PostServiceImpl implements PostService {
     private final PetInfoRepository petInfoRepository;
     private final PetImageRepository petImageRepository;
 
-    private final AuthenticationFacade authenticationFacade;
-
-    private final BaseService baseService;
+    private final AuthenticationUtil authenticationFacade;
+    private final PostUtil postUtil;
+    private final UserUtil userUtil;
 
     @Value("${file.path}")
     private String path;
 
     @Override
     public void deletePost(Integer postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(PostNotFoundException::new);
-
-        if (!baseService.getLocalConfirmAccount().equals(post.getAccount())) {
-            throw new UserNotAccessibleException();
-        }
+        Post post = postUtil.getPost(postId, userUtil.getLocalConfirmAccount());
         postRepository.delete(post);
     }
 
     @Override
     public void saveFiles(Integer postId, List<MultipartFile> files) {
-        Post post = postRepository.findById(postId)
-                .filter(p -> p.getAccount().equals(baseService.getLocalConfirmAccount()))
-                .orElseThrow(PostNotFoundException::new);
+        Post post = postUtil.getPost(postId, userUtil.getLocalConfirmAccount());
 
         for (PetImage petImage : post.getPetImages()) {
             File file = new File(petImage.getPath());
@@ -69,7 +63,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     @Override
     public Integer writePost(PostRequest request) {
-        Account account = baseService.getLocalConfirmAccount();
+        Account account = userUtil.getLocalConfirmAccount();
         String startDate = request.getProtectionStartDate();
         String endDate = request.getProtectionEndDate();
 
@@ -103,12 +97,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Integer updatePost(Integer postId, PostRequest request) {
-        Account account = baseService.getLocalConfirmAccount();
-        Post post = postRepository.findById(postId)
-                .filter(p -> p.getAccount().equals(account))
-                .filter(p -> !p.getIsApplicationEnd())
-                .orElseThrow(PostNotFoundException::new);
-
+        Account account = userUtil.getLocalConfirmAccount();
+        Post post = postUtil.getPost(postId, account);
 
         String startDate = request.getProtectionStartDate();
         String endDate = request.getProtectionEndDate();
@@ -125,10 +115,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDetailsResponse getPostDetails(Integer postId) {
-        baseService.getLocalConfirmAccount();
+        userUtil.getLocalConfirmAccount();
 
-        Post post = postRepository.findById(postId)
-                .orElseThrow(PostNotFoundException::new);
+        Post post = postUtil.getPost(postId);
         Account account = post.getAccount();
         PetInfo petInfo = post.getPetInfo();
 

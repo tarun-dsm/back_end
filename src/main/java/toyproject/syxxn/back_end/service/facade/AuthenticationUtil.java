@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import toyproject.syxxn.back_end.exception.UserNotUnauthenticatedException;
 
 @Component
-public class AuthenticationFacade {
+public class AuthenticationUtil {
 
     public String getUserEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

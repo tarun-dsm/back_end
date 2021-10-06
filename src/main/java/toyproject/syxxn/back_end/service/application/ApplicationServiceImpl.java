@@ -14,7 +14,8 @@ import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.exception.*;
-import toyproject.syxxn.back_end.service.facade.BaseService;
+import toyproject.syxxn.back_end.service.facade.PostUtil;
+import toyproject.syxxn.back_end.service.facade.UserUtil;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,16 +29,16 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationCustomRepository applicationCustomRepository;
     private final PostRepository postRepository;
 
-    private final BaseService baseService;
+    private final PostUtil postUtil;
+    private final UserUtil baseService;
 
     @Override
     @Transactional
     public void protectionApplication(Integer postId) {
         Account account = baseService.getLocalConfirmAccount();
-        Post post = postRepository.findById(postId)
-                .orElseThrow(PostNotFoundException::new);
+        Post post = postUtil.getPost(postId);
 
-        if (account.equals(post.getAccount())) {
+        if (account.getEmail().equals(post.getAccount().getEmail())) {
             throw new UserIsWriterException();
         } if (isApplicationClosed(post)) {
             throw new AfterApplicationClosedException();
@@ -108,10 +109,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public ApplicationResponse getApplications(Integer postId) {
         Account account = baseService.getLocalConfirmAccount();
-        Post post = postRepository.findById(postId)
-                .filter(p -> p.getAccount().equals(account))
-                .filter(p -> !p.getIsApplicationEnd())
-                .orElseThrow(PostNotFoundException::new);
+        Post post = postUtil.getPost(postId, account);
 
         List<Application> applications = applicationRepository.findAllByPost(post);
 

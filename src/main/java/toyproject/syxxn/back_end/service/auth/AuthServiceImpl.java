@@ -1,7 +1,6 @@
 package toyproject.syxxn.back_end.service.auth;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,8 +15,8 @@ import toyproject.syxxn.back_end.exception.InvalidTokenException;
 import toyproject.syxxn.back_end.exception.UserNotAccessibleException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
-import toyproject.syxxn.back_end.service.facade.AuthenticationFacade;
-import toyproject.syxxn.back_end.service.facade.BaseService;
+import toyproject.syxxn.back_end.service.facade.AuthenticationUtil;
+import toyproject.syxxn.back_end.service.facade.UserUtil;
 
 @RequiredArgsConstructor
 @Service
@@ -33,8 +32,8 @@ public class AuthServiceImpl implements AuthService {
     @Value("${auth.jwt.exp.refresh}")
     private Long refreshExp;
 
-    private final BaseService baseService;
-    private final AuthenticationFacade authenticationFacade;
+    private final UserUtil baseService;
+    private final AuthenticationUtil authenticationFacade;
 
     @Override
     public TokenResponse login(SignInRequest request) {
