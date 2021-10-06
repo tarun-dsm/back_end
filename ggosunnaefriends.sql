@@ -1,6 +1,14 @@
+DROP TABLE IF EXISTS `report`;
+DROP TABLE IF EXISTS `review`;
+DROP TABLE IF EXISTS `pet_info`;
+DROP TABLE IF EXISTS `pet_image`;
+DROP TABLE IF EXISTS `application`;
+DROP TABLE IF EXISTS `post`;
+DROP TABLE IF EXISTS `account`;
+
 CREATE TABLE `account` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `email` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NOT NULL UNIQUE,
   `password` CHAR(60) NOT NULL,
   `age` INT NOT NULL,
   `is_experience_raising_pet` BIT(1) NOT NULL,
@@ -8,12 +16,11 @@ CREATE TABLE `account` (
   `is_location_confirm` BIT(1) NOT NULL,
   `latitude` DECIMAL(15,10) NOT NULL,
   `longitude` DECIMAL(15,10) NOT NULL,
-  `nickname` VARCHAR(10) NOT NULL,
+  `nickname` VARCHAR(10) NOT NULL UNIQUE,
   `sex` VARCHAR(6) NOT NULL,
   `administration_division` VARCHAR(10),
   `is_blocked` BIT(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY(`id`),
-  UNIQUE(`email`, `nickname`)
+  PRIMARY KEY(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE `post` (
