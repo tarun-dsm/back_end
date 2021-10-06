@@ -109,17 +109,6 @@ public class PostServiceImpl implements PostService {
                 .filter(p -> !p.getIsApplicationEnd())
                 .orElseThrow(PostNotFoundException::new);
 
-        System.out.println(request.getTitle());
-        System.out.println(request.getDescription());
-        System.out.println(request.getProtectionStartDate());
-        System.out.println(request.getProtectionEndDate());
-        System.out.println(request.getApplicationEndDate());
-        System.out.println(request.getContactInfo());
-        System.out.println(request.getPetName());
-        System.out.println(request.getPetSpecies());
-        System.out.println(request.getPetSex());
-        System.out.println(request.getAnimalType());
-
 
         String startDate = request.getProtectionStartDate();
         String endDate = request.getProtectionEndDate();
@@ -192,7 +181,7 @@ public class PostServiceImpl implements PostService {
 
         List<Post> posts = postRepository.findAllByIsApplicationEndFalseOrderByCreatedAtDesc();
         return new PostResponse(posts.stream()
-                .filter(post -> distance(account, post.getAccount()) >= 1)
+                .filter(post -> distance(account, post.getAccount()) >= 2.0)
                 .map(this::getPost).collect(Collectors.toList())
         );
     }
