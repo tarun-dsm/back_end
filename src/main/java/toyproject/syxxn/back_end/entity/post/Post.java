@@ -9,6 +9,7 @@ import toyproject.syxxn.back_end.dto.request.PostRequest;
 import toyproject.syxxn.back_end.entity.BaseCreatedAtEntity;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.application.Application;
+import toyproject.syxxn.back_end.entity.comment.Comment;
 import toyproject.syxxn.back_end.entity.pet.PetImage;
 import toyproject.syxxn.back_end.entity.pet.PetInfo;
 
@@ -40,10 +41,10 @@ public class Post extends BaseCreatedAtEntity {
     @Column(length = 100, nullable = false)
     private String contactInfo;
 
-    @Column(columnDefinition = "bit(1)", nullable = false)
+    @Column(nullable = false)
     private Boolean isApplicationEnd;
 
-    @Column(columnDefinition = "bit(1)", nullable = false)
+    @Column(nullable = false)
     private Boolean isUpdated;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -58,6 +59,9 @@ public class Post extends BaseCreatedAtEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Application> applications;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<Comment> comments;
 
     @Builder
     public Post(String title, String description, Account account, LocalDate protectionStartDate, LocalDate protectionEndDate, LocalDate applicationEndDate, String contactInfo, Boolean isApplicationEnd, Boolean isUpdated) {

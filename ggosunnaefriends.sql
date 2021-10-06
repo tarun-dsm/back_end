@@ -11,15 +11,15 @@ CREATE TABLE `account` (
   `email` VARCHAR(45) NOT NULL UNIQUE,
   `password` CHAR(60) NOT NULL,
   `age` INT NOT NULL,
-  `is_experience_raising_pet` BIT(1) NOT NULL,
+  `is_experience_raising_pet` TINYINT(1) NOT NULL,
   `experience` VARCHAR(100),
-  `is_location_confirm` BIT(1) NOT NULL,
+  `is_location_confirm` TINYINT(1) NOT NULL,
   `latitude` DECIMAL(15,10) NOT NULL,
   `longitude` DECIMAL(15,10) NOT NULL,
   `nickname` VARCHAR(10) NOT NULL UNIQUE,
   `sex` VARCHAR(6) NOT NULL,
   `administration_division` VARCHAR(10),
-  `is_blocked` BIT(1) NOT NULL DEFAULT 0,
+  `is_blocked` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -31,9 +31,9 @@ CREATE TABLE `post` (
   `application_end_date` DATE NOT NULL,
   `protection_start_date` DATE NOT NULL,
   `protection_end_date` DATE NOT NULL,
-  `is_updated` BIT(1) NOT NULL DEFAULT 0,
+  `is_updated` TINYINT(1) NOT NULL DEFAULT 0,
   `contact_info` VARCHAR(100) NOT NULL,
-  `is_application_end` BIT(1) NOT NULL DEFAULT 0,
+  `is_application_end` TINYINT(1) NOT NULL DEFAULT 0,
   `account_id` INT NOT NULL,
   PRIMARY KEY(`id`),
   FOREIGN KEY(`account_id`) REFERENCES `account`(`id`)
@@ -41,7 +41,7 @@ CREATE TABLE `post` (
 
 CREATE TABLE `application` (
   `id` INT NOT NULL AUTO_INCREMENT, 
-  `is_accepted` BIT(1) NOT NULL DEFAULT 0,
+  `is_accepted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL,
   `account_id` INT NOT NULL,
   `post_id` INT NOT NULL,
@@ -91,4 +91,17 @@ CREATE TABLE `report` (
   PRIMARY KEY(`id`),
   FOREIGN KEY(`target_id`) REFERENCES `account`(`id`),
   FOREIGN KEY(`reporter_id`) REFERENCES `account`(`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+CREATE TABLE `comment` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `comment` VARCHAR(255) NOT NULL,
+  `created_at` DATETIME NOT NULL,
+  `is_updated` TINYINT(1) NOT NULL,
+  `updated_at` DATETIME NOT NULL,
+  `account_id` INT NOT NULL,
+  `post_id` INT NOT NULL,
+  PRIMARY KEY(`id`),
+  FOREIGN KEY(`account_id`) REFERENCES `account`(`id`),
+  FOREIGN KEY(`post_id`) REFERENCES `post`(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

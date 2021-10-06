@@ -20,7 +20,7 @@ import java.util.List;
 @QueryEntity
 public class Application extends BaseCreatedAtEntity {
 
-    @Column(columnDefinition = "bit(1)", nullable = false)
+    @Column(nullable = false)
     private Boolean isAccepted;
 
     @ManyToOne
