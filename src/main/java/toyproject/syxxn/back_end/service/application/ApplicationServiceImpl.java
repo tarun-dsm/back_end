@@ -1,6 +1,7 @@
 package toyproject.syxxn.back_end.service.application;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.syxxn.back_end.dto.response.ApplicationDto;
@@ -35,6 +36,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final PostUtil postUtil;
     private final UserUtil baseService;
 
+    @Async
     @Transactional
     @Override
     public void protectionApplication(Integer postId) {
@@ -80,6 +82,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
     }
 
+    @Async
     @Transactional
     @Override
     public void acceptApplication(Integer applicationId) {
