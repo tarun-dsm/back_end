@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
+import toyproject.syxxn.back_end.entity.post.Post;
 
 import java.math.BigDecimal;
 
@@ -67,17 +68,6 @@ public class PostControllerTest extends BaseTest {
     @Test
     public void updatePost() throws Exception {
         PostRequest request = createPostRequest();
-        System.out.println(request.getTitle());
-        System.out.println(request.getDescription());
-        System.out.println(request.getProtectionStartDate());
-        System.out.println(request.getProtectionEndDate());
-        System.out.println(request.getApplicationEndDate());
-        System.out.println(request.getContactInfo());
-        System.out.println(request.getPetName());
-        System.out.println(request.getPetSpecies());
-        System.out.println(request.getPetSex());
-        System.out.println(request.getAnimalType());
-        System.out.println(new ObjectMapper().writeValueAsString(request));
         mvc.perform(patch("/post/" + postId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(request))
@@ -129,7 +119,7 @@ public class PostControllerTest extends BaseTest {
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
     @Test
     public void getPostDetails() throws Exception {
-        mvc.perform(get("/post/"+postId)
+        mvc.perform(get("/post/" + postId)
         ).andExpect(status().isOk());
     }
 

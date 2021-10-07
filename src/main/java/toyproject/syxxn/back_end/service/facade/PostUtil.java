@@ -30,7 +30,7 @@ public class PostUtil {
                 .filter(p -> !p.getIsApplicationEnd())
                 .orElseThrow(PostNotFoundException::new);
 
-        if (post.getAccount().getEmail().equals(account.getEmail()))
+        if (!post.getAccount().getEmail().equals(account.getEmail()))
             throw new UserNotAccessibleException();
 
         return post;
