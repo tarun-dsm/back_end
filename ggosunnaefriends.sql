@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS `comment`;
 DROP TABLE IF EXISTS `report`;
 DROP TABLE IF EXISTS `review`;
 DROP TABLE IF EXISTS `pet_info`;
