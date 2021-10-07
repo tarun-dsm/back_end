@@ -13,7 +13,9 @@ import toyproject.syxxn.back_end.entity.application.ApplicationCustomRepository;
 import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
+import toyproject.syxxn.back_end.entity.verify.VerifyNumber;
 import toyproject.syxxn.back_end.exception.*;
+import toyproject.syxxn.back_end.service.facade.EmailUtil;
 import toyproject.syxxn.back_end.service.facade.PostUtil;
 import toyproject.syxxn.back_end.service.facade.UserUtil;
 
@@ -29,11 +31,12 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationCustomRepository applicationCustomRepository;
     private final PostRepository postRepository;
 
+    private final EmailUtil emailUtil;
     private final PostUtil postUtil;
     private final UserUtil baseService;
 
-    @Override
     @Transactional
+    @Override
     public void protectionApplication(Integer postId) {
         Account account = baseService.getLocalConfirmAccount();
         Post post = postUtil.getPost(postId);
@@ -53,6 +56,14 @@ public class ApplicationServiceImpl implements ApplicationService {
                         .post(post)
                         .build()
         );
+
+        try {
+            String subject = "회원님의 게시글에 새로운 신청이 있습니다.";
+            String text = "\'" + post.getTitle() + "\' 게시글에 " + account.getNickname() + "님이 신청하셨습니다.";
+            emailUtil.sendEmail(post.getAccount().getEmail(), subject, text);
+        } catch (Exception e) {
+            throw new EmailSendException();
+        }
 
     }
 
@@ -87,6 +98,15 @@ public class ApplicationServiceImpl implements ApplicationService {
             applicationRepository.save(application);
             postRepository.save(post);
         }
+
+        try {
+            String subject = "회원님의 신청이 수락되었습니다.";
+            String text = "\'" + post.getTitle() + "\' 게시글의 신청이 수락되었습니다.";
+            emailUtil.sendEmail(application.getAccount().getEmail(), subject, text);
+        } catch (Exception e) {
+            throw new EmailSendException();
+        }
+
     }
 
     @Override
