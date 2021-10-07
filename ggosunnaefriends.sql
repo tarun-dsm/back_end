@@ -96,7 +96,7 @@ CREATE TABLE `report` (
 
 CREATE TABLE `comment` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `comment` VARCHAR(255) NOT NULL,
+  `comment` VARCHAR(100) NOT NULL,
   `created_at` DATETIME NOT NULL,
   `is_updated` TINYINT(1) NOT NULL,
   `updated_at` DATETIME NOT NULL,
