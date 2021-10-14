@@ -22,9 +22,10 @@ public class EmailServiceImpl implements EmailService {
     private final AccountRepository accountRepository;
     private final VerifyNumberRepository verifyNumberRepository;
 
-    private static final Random RANDOM = new Random();
-
     private final EmailUtil emailUtil;
+
+    private static final Random RANDOM = new Random();
+    private static final String SUBJECT = "이메일 인증 안내드립니다.";
 
     @Async
     @Transactional
@@ -40,9 +41,8 @@ public class EmailServiceImpl implements EmailService {
         String authNumber = generateVerifyNumber();
 
         try {
-            String subject = "이메일 인증 안내드립니다.";
             String text = "인증 번호는 " + authNumber + "입니다.";
-            emailUtil.sendEmail(email, subject, text);
+            emailUtil.sendEmail(email, SUBJECT, text);
 
             verifyNumberRepository.save(
                     new VerifyNumber(email, authNumber, false)
