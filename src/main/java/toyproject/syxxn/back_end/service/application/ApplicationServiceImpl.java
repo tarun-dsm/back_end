@@ -35,6 +35,9 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final PostUtil postUtil;
     private final UserUtil baseService;
 
+    private static final String NEW_APPLICATION = "회원님의 게시글에 새로운 신청이 있습니다.";
+    private static final String ACCEPT_APPLICATION = "회원님의 신청이 수락되었습니다.";
+
     @Async
     @Transactional
     @Override
@@ -59,9 +62,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         );
 
         try {
-            String subject = "회원님의 게시글에 새로운 신청이 있습니다.";
             String text = "\'" + post.getTitle() + "\' 게시글에 " + account.getNickname() + "님이 신청하셨습니다.";
-            emailUtil.sendEmail(post.getAccount().getEmail(), subject, text);
+            emailUtil.sendEmail(post.getAccount().getEmail(), NEW_APPLICATION, text);
         } catch (Exception e) {
             throw new EmailSendException();
         }
@@ -102,9 +104,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         try {
-            String subject = "회원님의 신청이 수락되었습니다.";
             String text = "\'" + post.getTitle() + "\' 게시글의 신청이 수락되었습니다.";
-            emailUtil.sendEmail(application.getAccount().getEmail(), subject, text);
+            emailUtil.sendEmail(application.getAccount().getEmail(), ACCEPT_APPLICATION, text);
         } catch (Exception e) {
             throw new EmailSendException();
         }
