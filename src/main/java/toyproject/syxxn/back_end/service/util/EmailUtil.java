@@ -1,4 +1,4 @@
-package toyproject.syxxn.back_end.service.facade;
+package toyproject.syxxn.back_end.service.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;

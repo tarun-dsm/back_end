@@ -1,9 +1,6 @@
 package toyproject.syxxn.back_end.service.email;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +11,7 @@ import toyproject.syxxn.back_end.entity.verify.VerifyNumberRepository;
 import toyproject.syxxn.back_end.exception.EmailSendException;
 import toyproject.syxxn.back_end.exception.UserAlreadyRegisteredException;
 import toyproject.syxxn.back_end.exception.VerifyNumberNotMatchException;
-import toyproject.syxxn.back_end.service.facade.EmailUtil;
+import toyproject.syxxn.back_end.service.util.EmailUtil;
 
 import java.util.Random;
 

@@ -10,7 +10,7 @@ import toyproject.syxxn.back_end.exception.InvalidTokenException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
 import toyproject.syxxn.back_end.security.auth.AuthDetails;
 import toyproject.syxxn.back_end.security.auth.AuthDetailsService;
-import toyproject.syxxn.back_end.service.facade.AuthenticationUtil;
+import toyproject.syxxn.back_end.service.util.AuthenticationUtil;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 
 import static org.junit.jupiter.api.Assertions.*;

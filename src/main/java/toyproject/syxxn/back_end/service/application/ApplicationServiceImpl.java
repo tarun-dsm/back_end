@@ -14,11 +14,10 @@ import toyproject.syxxn.back_end.entity.application.ApplicationCustomRepository;
 import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
-import toyproject.syxxn.back_end.entity.verify.VerifyNumber;
 import toyproject.syxxn.back_end.exception.*;
-import toyproject.syxxn.back_end.service.facade.EmailUtil;
-import toyproject.syxxn.back_end.service.facade.PostUtil;
-import toyproject.syxxn.back_end.service.facade.UserUtil;
+import toyproject.syxxn.back_end.service.util.EmailUtil;
+import toyproject.syxxn.back_end.service.util.PostUtil;
+import toyproject.syxxn.back_end.service.util.UserUtil;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -10,9 +10,9 @@ import toyproject.syxxn.back_end.entity.comment.CommentRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.exception.CommentNotFoundException;
 import toyproject.syxxn.back_end.exception.UserNotAccessibleException;
-import toyproject.syxxn.back_end.service.facade.AuthenticationUtil;
-import toyproject.syxxn.back_end.service.facade.PostUtil;
-import toyproject.syxxn.back_end.service.facade.UserUtil;
+import toyproject.syxxn.back_end.service.util.AuthenticationUtil;
+import toyproject.syxxn.back_end.service.util.PostUtil;
+import toyproject.syxxn.back_end.service.util.UserUtil;
 
 import java.util.stream.Collectors;
 

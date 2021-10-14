@@ -10,7 +10,7 @@ import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.review.Review;
 import toyproject.syxxn.back_end.entity.review.ReviewRepository;
 import toyproject.syxxn.back_end.exception.*;
-import toyproject.syxxn.back_end.service.facade.UserUtil;
+import toyproject.syxxn.back_end.service.util.UserUtil;
 
 import java.time.LocalDate;
 
