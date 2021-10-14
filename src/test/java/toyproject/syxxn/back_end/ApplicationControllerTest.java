@@ -39,7 +39,7 @@ public class ApplicationControllerTest extends BaseTest {
         Post post = createPost(account1, false, "2021-10-10");
         postId = post.getId();
 
-        application = createApplication(account1, account2,false, false, "2021-10-10");
+        application = createApplication(account1, account2,false, false, "2025-10-25");
         //createApplication(account1, account3,false, true, "2021-10-10");
         createApplication(account1, account2,false, false, "2021-08-10");
     }
@@ -83,7 +83,7 @@ public class ApplicationControllerTest extends BaseTest {
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void protectionApplication_409() throws Exception {
-        mvc.perform(post("/application/"+ application.getPost().getId()))
+        mvc.perform(post("/application/"+ application.getPost().getId())).andDo(print())
                 .andExpect(status().isConflict());
     }
 
