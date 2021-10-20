@@ -26,7 +26,6 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void writeReview(Integer applicationId, ReviewRequest request) {
         Account writer = baseService.getLocalConfirmAccount();
-        System.out.println(writer);
         Application application = applicationRepository.findById(applicationId)
                 .filter(Application::getIsAccepted)
                 .orElseThrow(ApplicationNotFoundException::new);
@@ -43,7 +42,7 @@ public class ReviewServiceImpl implements ReviewService {
         Account target;
         if (writer.getId().equals(application.getAccount().getId())) {
             target = application.getPost().getAccount();
-        } else if (writer.equals(application.getPost().getAccount())) {
+        } else if (writer.getEmail().equals(application.getPost().getAccount().getEmail())) {
             target = application.getAccount();
         } else {
             throw new UserNotAccessibleException();

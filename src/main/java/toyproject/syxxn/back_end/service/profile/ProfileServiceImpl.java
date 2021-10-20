@@ -50,11 +50,10 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ProfileReviewResponse getReviews(Integer accountId) {
-        Account target = getAccount(accountId);
         Account connectedAccount = accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .orElseThrow(UserNotUnauthenticatedException::new);
 
-        List<Review> reviews = reviewRepository.findAllByTarget(target);
+        List<Review> reviews = reviewRepository.findAllByTarget(getAccount(accountId));
 
         return new ProfileReviewResponse(reviews.stream().map(
                 review -> ProfileReviewDto.builder()
@@ -70,8 +69,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ProfilePostResponse getPosts(Integer accountId) {
-        Account account = getAccount(accountId);
-        List<Post> posts = postRepository.findAllByAccountAndPetImagesNotNullOrderByCreatedAtDesc(account);
+        List<Post> posts = postRepository.findAllByAccountAndPetImagesNotNullOrderByCreatedAtDesc(getAccount(accountId));
 
         return new ProfilePostResponse(posts.stream().map(
                 post -> {

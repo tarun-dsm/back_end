@@ -45,7 +45,7 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
 
-        if(comment.getWriter().getEmail().equals(authenticationFacade.getUserEmail())) {
+        if(equalsEmail(comment.getWriter().getEmail())) {
             commentRepository.delete(comment);
         } else {
             throw new UserNotAccessibleException();
@@ -58,7 +58,7 @@ public class CommentServiceImpl implements CommentService {
                 .filter(com -> com.getWriter().getEmail().equals(authenticationFacade.getUserEmail()))
                 .orElseThrow(CommentNotFoundException::new);
 
-        if(c.getWriter().getEmail().equals(authenticationFacade.getUserEmail())) {
+        if(equalsEmail(c.getWriter().getEmail())) {
             commentRepository.save(c.updateComment(comment));
         } else {
             throw new UserNotAccessibleException();
@@ -82,5 +82,9 @@ public class CommentServiceImpl implements CommentService {
                             .build()
                 ).collect(Collectors.toList())
         );
+    }
+
+    private boolean equalsEmail(String email) {
+        return email.equals(authenticationFacade.getUserEmail());
     }
 }

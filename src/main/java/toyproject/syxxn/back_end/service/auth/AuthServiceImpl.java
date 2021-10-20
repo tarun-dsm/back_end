@@ -46,16 +46,8 @@ public class AuthServiceImpl implements AuthService {
             throw new BlockedUserException();
         }
 
-        RefreshToken refreshToken = refreshTokenRepository.save(
-                RefreshToken.builder()
-                        .accountId(account.getId())
-                        .refreshExp(refreshExp)
-                        .refreshToken(jwtTokenProvider.generateRefreshToken(account.getId()))
-                        .build()
-        );
-
         return TokenResponse.builder()
-                .refreshToken(refreshToken.getRefreshToken())
+                .refreshToken(getRefreshToken(account.getId()))
                 .accessToken(jwtTokenProvider.generateAccessToken(account.getId()))
                 .build();
     }
@@ -65,13 +57,12 @@ public class AuthServiceImpl implements AuthService {
         if(!jwtTokenProvider.isRefreshToken(receivedToken)) {
             throw new InvalidTokenException();
         }
-        RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(receivedToken)
-                .orElseThrow(UserNotFoundException::new);
-        refreshTokenRepository.save(refreshToken);
+        Integer accountId = refreshTokenRepository.findByRefreshToken(receivedToken)
+                .orElseThrow(UserNotFoundException::new).getAccountId();
 
         return TokenResponse.builder()
-                .refreshToken(jwtTokenProvider.generateRefreshToken(refreshToken.getAccountId()))
-                .accessToken(jwtTokenProvider.generateAccessToken(refreshToken.getAccountId()))
+                .refreshToken(getRefreshToken(accountId))
+                .accessToken(jwtTokenProvider.generateAccessToken(accountId))
                 .build();
     }
 
@@ -84,6 +75,16 @@ public class AuthServiceImpl implements AuthService {
         } catch (Exception e) {
             throw new UserNotFoundException();
         }
+    }
+
+    private String getRefreshToken(Integer accountId) {
+        return refreshTokenRepository.save(
+                RefreshToken.builder()
+                        .accountId(accountId)
+                        .refreshExp(refreshExp)
+                        .refreshToken(jwtTokenProvider.generateRefreshToken(accountId))
+                        .build()
+        ).getRefreshToken();
     }
 
 }

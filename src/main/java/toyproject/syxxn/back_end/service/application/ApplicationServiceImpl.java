@@ -72,10 +72,10 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public void cancelApplication(Integer applicationId) {
-        Account account = baseService.getLocalConfirmAccount();
+        String email = baseService.getLocalConfirmAccount().getEmail();
 
         Application application = applicationRepository.findById(applicationId)
-                .filter(a -> a.getAccount().equals(account))
+                .filter(a -> a.getAccount().getEmail().equals(email))
                 .orElseThrow(ApplicationNotFoundException::new);
 
         if (!isApplicationClosed(application.getPost())) {
@@ -114,8 +114,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public MyApplicationResponse getMyApplications() {
-        Account account = baseService.getLocalConfirmAccount();
-        List<Application> applications = applicationRepository.findAllByAccount(account);
+        List<Application> applications = applicationRepository.findAllByAccount(baseService.getLocalConfirmAccount());
 
         return new MyApplicationResponse(applications.stream().map(
                 application -> MyApplicationDto.builder()
@@ -131,9 +130,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ApplicationResponse getApplications(Integer postId) {
-        Account account = baseService.getLocalConfirmAccount();
-        Post post = postUtil.getPost(postId, account);
-
+        Post post = postUtil.getPost(postId, baseService.getLocalConfirmAccount());
         List<Application> applications = applicationRepository.findAllByPost(post);
 
         return new ApplicationResponse(applications.stream().map(application ->

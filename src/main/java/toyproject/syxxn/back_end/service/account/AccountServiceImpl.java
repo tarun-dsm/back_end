@@ -62,7 +62,7 @@ public class AccountServiceImpl implements AccountService{
                 .filter(VerifyNumber::isVerified)
                 .orElseThrow(UserNotUnauthenticatedException::new);
 
-        Account account = accountRepository.save(
+        Integer accountId = accountRepository.save(
                 Account.builder()
                         .email(request.getEmail())
                         .password(encoder.encode(request.getPassword()))
@@ -72,19 +72,19 @@ public class AccountServiceImpl implements AccountService{
                         .isExperienceRaisingPet(request.isExperienceRasingPet())
                         .experience(request.getExperience())
                         .build()
-        );
+        ).getId();
 
-        RefreshToken refreshToken = refreshTokenRepository.save(
+        String refreshToken = refreshTokenRepository.save(
                 RefreshToken.builder()
-                        .accountId(account.getId())
+                        .accountId(accountId)
                         .refreshExp(refreshExp)
-                        .refreshToken(jwtTokenProvider.generateRefreshToken(account.getId()))
+                        .refreshToken(jwtTokenProvider.generateRefreshToken(accountId))
                         .build()
-        );
+        ).getRefreshToken();
 
         return TokenResponse.builder()
-                .accessToken(jwtTokenProvider.generateAccessToken(account.getId()))
-                .refreshToken(refreshToken.getRefreshToken())
+                .accessToken(jwtTokenProvider.generateAccessToken(accountId))
+                .refreshToken(refreshToken)
                 .build();
     }
 
@@ -105,10 +105,10 @@ public class AccountServiceImpl implements AccountService{
         Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .filter(baseService::isNotBlocked)
                 .orElseThrow(UserNotFoundException::new);
-        BigDecimal x = BigDecimal.valueOf(request.getLongitude());
-        BigDecimal y = BigDecimal.valueOf(request.getLatitude());
+        Double x = request.getLongitude();
+        Double y = request.getLatitude();
 
-        accountRepository.save(account.updateLocation(x, y, getAdministrationDivision(x.doubleValue(),y.doubleValue())));
+        accountRepository.save(account.updateLocation(BigDecimal.valueOf(x), BigDecimal.valueOf(y), getAdministrationDivision(x, y)));
     }
 
     @Override
