@@ -10,6 +10,7 @@ import toyproject.syxxn.back_end.dto.response.*;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
+import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
 import toyproject.syxxn.back_end.entity.pet.*;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private final AccountRepository accountRepository;
+    private final ApplicationRepository applicationRepository;
     private final PostRepository postRepository;
     private final PetInfoRepository petInfoRepository;
     private final PetImageRepository petImageRepository;
@@ -151,6 +153,8 @@ public class PostServiceImpl implements PostService {
         return PostDetailsResponse.builder()
                 .writerId(account.getId())
                 .rating(account.getRating())
+                .isMine(postUtil.postIsMine(account, post))
+                .isApplied(isApplied(account, post))
                 .nickname(post.getAccount().getNickname())
                 .pet(petDetailsDto)
                 .post(postDetailsDto)
@@ -243,6 +247,11 @@ public class PostServiceImpl implements PostService {
                 .protectionStartDate(post.getProtectionStartDate())
                 .protectionEndDate(post.getProtectionEndDate())
                 .build();
+    }
+
+    private boolean isApplied(Account account, Post post) {
+        if (postUtil.postIsMine(account, post)) return false;
+        return applicationRepository.findByPostAndAccount(post, account).orElse(null) != null;
     }
 
 }

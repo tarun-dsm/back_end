@@ -13,4 +13,5 @@ public interface ApplicationRepository extends CrudRepository<Application, Integ
     List<Application> findAllByAccount(Account account);
     List<Application> findAllByPost(Post post);
     Optional<Application> findByPostAndIsAcceptedTrue(Post post);
+    Optional<Application> findByPostAndAccount(Post post, Account account);
 }

@@ -30,10 +30,14 @@ public class PostUtil {
                 .filter(p -> !p.getIsApplicationEnd())
                 .orElseThrow(PostNotFoundException::new);
 
-        if (!post.getAccount().getEmail().equals(account.getEmail()))
+        if (!postIsMine(account, post))
             throw new UserNotAccessibleException();
 
         return post;
+    }
+
+    public boolean postIsMine(Account account, Post post) {
+        return post.getAccount().getEmail().equals(account.getEmail());
     }
 
 }
