@@ -69,17 +69,6 @@ public class ReviewControllerTest extends BaseTest{
         ).andDo(print()).andExpect(status().isCreated());
     }
 
-    @WithMockUser(value = "test2@naver.com", password = "asdf123@")
-    @Test
-    public void writeReview_400() throws Exception {
-        ReviewRequest request = createRequest();
-
-        mvc.perform(post("/review/"+notDoneApplication.getId())
-                .content(new ObjectMapper().writeValueAsString(request))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        ).andExpect(status().isBadRequest());
-    }
-
     @Test
     public void writeReview_401() throws Exception {
         ReviewRequest request = createRequest();
