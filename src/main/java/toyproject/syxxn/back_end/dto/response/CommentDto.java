@@ -1,5 +1,6 @@
 package toyproject.syxxn.back_end.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,5 +23,8 @@ public class CommentDto {
     private Boolean isUpdated;
 
     private String updatedAt;
+
+    @JsonProperty("is_mine")
+    private boolean isMine;
 
 }

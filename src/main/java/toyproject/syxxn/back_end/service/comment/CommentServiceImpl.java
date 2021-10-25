@@ -67,7 +67,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentsResponse getComments(Integer postId) {
-        baseService.getLocalConfirmAccount();
+        String email = baseService.getLocalConfirmAccount().getEmail();
         Post post = postUtil.getNotApplicationEndPost(postId);
 
         return new CommentsResponse(
@@ -79,6 +79,7 @@ public class CommentServiceImpl implements CommentService {
                                 .createdAt(c.getCreatedAt() == null ? null : c.getCreatedAt().toString())
                                 .isUpdated(c.getIsUpdated())
                                 .updatedAt(c.getUpdatedAt() == null ? null : c.getUpdatedAt().toString())
+                                .isMine(c.getWriter().getEmail().equals(email))
                             .build()
                 ).collect(Collectors.toList())
         );
