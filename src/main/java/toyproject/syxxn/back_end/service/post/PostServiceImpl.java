@@ -70,29 +70,34 @@ public class PostServiceImpl implements PostService {
         String endDate = request.getProtectionEndDate();
 
         startDateAfterEndDate(startDate, endDate);
-        Post post = postRepository.save(
-                Post.builder()
-                        .title(request.getTitle())
-                        .description(request.getDescription())
-                        .account(account)
-                        .protectionStartDate(LocalDate.parse(startDate))
-                        .protectionEndDate(LocalDate.parse(endDate))
-                        .applicationEndDate(LocalDate.parse(request.getApplicationEndDate()))
-                        .contactInfo(request.getContactInfo())
-                        .isApplicationEnd(false)
-                        .isUpdated(false)
-                        .build()
-        );
+        Post post = new Post();
+        try {
+             post = postRepository.save(
+                    Post.builder()
+                            .title(request.getTitle())
+                            .description(request.getDescription())
+                            .account(account)
+                            .protectionStartDate(LocalDate.parse(startDate))
+                            .protectionEndDate(LocalDate.parse(endDate))
+                            .applicationEndDate(LocalDate.parse(request.getApplicationEndDate()))
+                            .contactInfo(request.getContactInfo())
+                            .isApplicationEnd(false)
+                            .isUpdated(false)
+                            .build()
+            );
 
-        petInfoRepository.save(
-                PetInfo.builder()
-                        .petName(request.getPetName())
-                        .petSpecies(request.getPetSpecies())
-                        .petSex(Sex.valueOf(request.getPetSex()))
-                        .post(post)
-                        .animalType(AnimalType.valueOf(request.getAnimalType()))
-                        .build()
-        );
+            petInfoRepository.save(
+                    PetInfo.builder()
+                            .petName(request.getPetName())
+                            .petSpecies(request.getPetSpecies())
+                            .petSex(Sex.valueOf(request.getPetSex()))
+                            .post(post)
+                            .animalType(AnimalType.valueOf(request.getAnimalType()))
+                            .build()
+            );
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
 
         return post.getId();
     }

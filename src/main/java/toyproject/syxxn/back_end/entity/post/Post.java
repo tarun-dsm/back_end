@@ -18,7 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Entity
 @QueryEntity
 public class Post extends BaseCreatedAtEntity {
