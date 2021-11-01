@@ -84,8 +84,9 @@ public class PostServiceImpl implements PostService {
                             .isUpdated(false)
                             .build()
             );
+            System.out.println(post.getId());
 
-            petInfoRepository.save(
+            PetInfo petInfo = petInfoRepository.save(
                     PetInfo.builder()
                             .petName(request.getPetName())
                             .petSpecies(request.getPetSpecies())
@@ -94,6 +95,7 @@ public class PostServiceImpl implements PostService {
                             .animalType(request.getAnimalType())
                             .build()
             );
+            System.out.println(petInfo.getId());
         } catch(Exception e) {
             e.printStackTrace();
         }
