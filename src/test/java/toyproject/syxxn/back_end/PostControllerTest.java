@@ -107,7 +107,7 @@ public class PostControllerTest extends BaseTest {
                 .contactInfo("010-0000-0000")
                 .petName("또로")
                 .petSpecies("코리안숏헤어")
-                .petSex(Sex.MALE.toString())
+                .petSex("MALE")
                 .build();
 
         mvc.perform(post("/post")

@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
 import toyproject.syxxn.back_end.dto.response.*;
-import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
@@ -77,9 +76,9 @@ public class PostServiceImpl implements PostService {
                             .title(request.getTitle())
                             .description(request.getDescription())
                             .account(account)
-                            .protectionStartDate(LocalDate.parse(startDate))
-                            .protectionEndDate(LocalDate.parse(endDate))
-                            .applicationEndDate(LocalDate.parse(request.getApplicationEndDate()))
+                            .protectionStartDate(startDate)
+                            .protectionEndDate(endDate)
+                            .applicationEndDate(request.getApplicationEndDate())
                             .contactInfo(request.getContactInfo())
                             .isApplicationEnd(false)
                             .isUpdated(false)
@@ -90,9 +89,9 @@ public class PostServiceImpl implements PostService {
                     PetInfo.builder()
                             .petName(request.getPetName())
                             .petSpecies(request.getPetSpecies())
-                            .petSex(Sex.valueOf(request.getPetSex()))
+                            .petSex(request.getPetSex())
                             .post(post)
-                            .animalType(AnimalType.valueOf(request.getAnimalType()))
+                            .animalType(request.getAnimalType())
                             .build()
             );
         } catch(Exception e) {

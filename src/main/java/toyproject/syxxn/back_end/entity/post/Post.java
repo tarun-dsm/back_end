@@ -64,13 +64,13 @@ public class Post extends BaseCreatedAtEntity {
     private List<Comment> comments;
 
     @Builder
-    public Post(String title, String description, Account account, LocalDate protectionStartDate, LocalDate protectionEndDate, LocalDate applicationEndDate, String contactInfo, Boolean isApplicationEnd, Boolean isUpdated) {
+    public Post(String title, String description, Account account, String protectionStartDate, String protectionEndDate, String applicationEndDate, String contactInfo, Boolean isApplicationEnd, Boolean isUpdated) {
         this.title = title;
         this.description = description;
         this.account = account;
-        this.protectionStartDate = protectionStartDate;
-        this.protectionEndDate = protectionEndDate;
-        this.applicationEndDate = applicationEndDate;
+        this.protectionStartDate = LocalDate.parse(protectionStartDate);
+        this.protectionEndDate = LocalDate.parse(protectionEndDate);
+        this.applicationEndDate = LocalDate.parse(applicationEndDate);
         this.contactInfo = contactInfo;
         this.isApplicationEnd = isApplicationEnd;
         this.isUpdated = isUpdated;

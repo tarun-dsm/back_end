@@ -141,9 +141,9 @@ public class BaseTest {
                 Post.builder()
                         .account(account)
                         .title("제목을 까먹었지 뭐야..")
-                        .applicationEndDate(LocalDate.parse(endDate))
-                        .protectionStartDate(LocalDate.of(2021,10,29))
-                        .protectionEndDate(LocalDate.of(2021,10,30))
+                        .applicationEndDate(endDate)
+                        .protectionStartDate("2021-10-29")
+                        .protectionEndDate("2021-10-30")
                         .contactInfo("010-0000-0000")
                         .description("랄랄라")
                         .isUpdated(false)
@@ -152,9 +152,9 @@ public class BaseTest {
         );
         petInfoRepository.save(
                 PetInfo.builder()
-                        .petSex(Sex.MALE)
+                        .petSex("MALE")
                         .petName("아몰랑고양이")
-                        .animalType(AnimalType.AMPHIBIANS)
+                        .animalType("AMPHIBIANS")
                         .petSpecies("코리안숏헤어인줄알았죠")
                         .post(post)
                         .build()
@@ -185,8 +185,8 @@ public class BaseTest {
                 .contactInfo("010-0000-0000")
                 .petName("또로")
                 .petSpecies("코리안숏헤어")
-                .petSex(Sex.MALE.toString())
-                .animalType(AnimalType.AMPHIBIANS.toString())
+                .petSex("MALE")
+                .animalType("AMPHIBIANS")
                 .build();
     }
 

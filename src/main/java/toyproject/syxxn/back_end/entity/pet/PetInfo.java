@@ -31,12 +31,12 @@ public class PetInfo extends BaseIdEntity {
     private Post post;
 
     @Builder
-    public PetInfo(Post post, String petName, String petSpecies, Sex petSex, AnimalType animalType) {
+    public PetInfo(Post post, String petName, String petSpecies, String petSex, String animalType) {
         this.post = post;
         this.petName = petName;
         this.petSpecies = petSpecies;
-        this.petSex = petSex;
-        this.animalType = animalType;
+        this.petSex = Sex.valueOf(petSex);
+        this.animalType = AnimalType.valueOf(animalType);
     }
 
     public void update(PostRequest pet) {
