@@ -2,7 +2,6 @@ package toyproject.syxxn.back_end.entity.pet;
 
 import lombok.*;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
-import toyproject.syxxn.back_end.entity.BaseIdEntity;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.post.Post;
 
@@ -11,7 +10,10 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class PetInfo extends BaseIdEntity {
+public class PetInfo {
+
+    @Id
+    private Integer postId;
 
     @Column(length = 30, nullable = false)
     private String petName;
@@ -26,8 +28,9 @@ public class PetInfo extends BaseIdEntity {
     @Column(length = 10, nullable = false)
     private AnimalType animalType;
 
+    @MapsId
     @OneToOne
-    @JoinColumn(name = "post_id",unique = true, nullable = false)
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     @Builder

@@ -137,28 +137,8 @@ public class BaseTest {
     }
 
     public Post createPost(Account account, boolean isEnd, String endDate) {
-        Post post = postRepository.save(
-                Post.builder()
-                        .account(account)
-                        .title("제목을 까먹었지 뭐야..")
-                        .applicationEndDate(endDate)
-                        .protectionStartDate("2021-10-29")
-                        .protectionEndDate("2021-10-30")
-                        .contactInfo("010-0000-0000")
-                        .description("랄랄라")
-                        .isUpdated(false)
-                        .isApplicationEnd(isEnd)
-                        .build()
-        );
-        petInfoRepository.save(
-                PetInfo.builder()
-                        .petSex("MALE")
-                        .petName("아몰랑고양이")
-                        .animalType("AMPHIBIANS")
-                        .petSpecies("코리안숏헤어인줄알았죠")
-                        .post(post)
-                        .build()
-        );
+        Post post = postRepository.save(new Post(createPostRequest(endDate), account, isEnd));
+        petInfoRepository.save(post.getPetInfo());
         petImageRepository.save(new PetImage(post, "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMDA5MDhfMjI3%2FMDAxNTk5NTE0MTg2ODc2.XR5pv2EMxtHWqPvmQiKzdDehiQx_ocJmGYeQdg__1wgg.pws149iHO28YsC3jXUc25tJwkGPB8Cfzu7NjrOF2YxEg.JPEG.byb0111%2F1599514185873.jpg&type=a340"));
         return post;
     }
@@ -181,6 +161,21 @@ public class BaseTest {
                 .description("이것은 설명")
                 .protectionStartDate("2021-08-05")
                 .protectionEndDate("2021-08-06")
+                .applicationEndDate("2021-08-04")
+                .contactInfo("010-0000-0000")
+                .petName("또로")
+                .petSpecies("코리안숏헤어")
+                .petSex("MALE")
+                .animalType("AMPHIBIANS")
+                .build();
+    }
+
+    public PostRequest createPostRequest(String endDate) {
+        return PostRequest.builder()
+                .title("이것은 제목")
+                .description("이것은 설명")
+                .protectionStartDate("2021-08-05")
+                .protectionEndDate(endDate)
                 .applicationEndDate("2021-08-04")
                 .contactInfo("010-0000-0000")
                 .petName("또로")

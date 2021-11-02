@@ -69,38 +69,15 @@ public class PostServiceImpl implements PostService {
         String endDate = request.getProtectionEndDate();
 
         startDateAfterEndDate(startDate, endDate);
-        Post post = new Post();
+        Integer postId = 0;
         try {
-             post = postRepository.save(
-                    Post.builder()
-                            .title(request.getTitle())
-                            .description(request.getDescription())
-                            .account(account)
-                            .protectionStartDate(startDate)
-                            .protectionEndDate(endDate)
-                            .applicationEndDate(request.getApplicationEndDate())
-                            .contactInfo(request.getContactInfo())
-                            .isApplicationEnd(false)
-                            .isUpdated(false)
-                            .build()
-            );
-            System.out.println(post.getId());
-
-            PetInfo petInfo = petInfoRepository.save(
-                    PetInfo.builder()
-                            .petName(request.getPetName())
-                            .petSpecies(request.getPetSpecies())
-                            .petSex(request.getPetSex())
-                            .post(post)
-                            .animalType(request.getAnimalType())
-                            .build()
-            );
-            System.out.println(petInfo.getId());
+             Post post = postRepository.save(new Post(request, account, false));
+             petInfoRepository.save(post.getPetInfo());
+             postId = post.getId();
         } catch(Exception e) {
             e.printStackTrace();
         }
-
-        return post.getId();
+        return postId;
     }
 
     @Override

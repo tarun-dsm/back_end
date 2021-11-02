@@ -51,7 +51,7 @@ public class Post extends BaseCreatedAtEntity {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @OneToOne(mappedBy = "post", cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "post", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private PetInfo petInfo;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
@@ -64,16 +64,17 @@ public class Post extends BaseCreatedAtEntity {
     private List<Comment> comments;
 
     @Builder
-    public Post(String title, String description, Account account, String protectionStartDate, String protectionEndDate, String applicationEndDate, String contactInfo, Boolean isApplicationEnd, Boolean isUpdated) {
-        this.title = title;
-        this.description = description;
+    public Post(PostRequest request, Account account, boolean isApplicationEnd) {
+        this.title = request.getTitle();
+        this.description = request.getDescription();
         this.account = account;
-        this.protectionStartDate = LocalDate.parse(protectionStartDate);
-        this.protectionEndDate = LocalDate.parse(protectionEndDate);
-        this.applicationEndDate = LocalDate.parse(applicationEndDate);
-        this.contactInfo = contactInfo;
+        this.protectionStartDate = LocalDate.parse(request.getProtectionStartDate());
+        this.protectionEndDate = LocalDate.parse(request.getProtectionEndDate());
+        this.applicationEndDate = LocalDate.parse(request.getApplicationEndDate());
+        this.contactInfo = request.getContactInfo();
         this.isApplicationEnd = isApplicationEnd;
-        this.isUpdated = isUpdated;
+        this.isUpdated = false;
+        this.petInfo = new PetInfo(this, request.getPetName(), request.getPetSpecies(), request.getPetSex(), request.getAnimalType());
     }
 
     public void isEnd() {
