@@ -97,7 +97,7 @@ public class ApplicationControllerTest extends BaseTest {
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
     @Test
     public void cancelApplication() throws Exception {
-        mvc.perform(delete("/application/"+application.getId()))
+        mvc.perform(delete("/application/"+application.getId())).andDo(print())
                 .andExpect(status().isOk());
     }
 
