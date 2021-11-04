@@ -34,7 +34,7 @@ public class PostController {
     @PostMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveFiles(@PathVariable("id") Integer postId,
-            @RequestParam("files") List<MultipartFile> files) {
+            @RequestParam List<MultipartFile> files) {
         postService.saveFiles(postId, files);
     }
 

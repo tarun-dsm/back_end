@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -173,12 +174,11 @@ public class PostServiceImpl implements PostService {
             if (files.size() > 5) {
                 throw new FileNumberExceedException();
             }
-            int i = 1;
             for (MultipartFile file : files) {
                 if (file.getOriginalFilename() == null) {
                     throw new FileNotFoundException();
                 }
-                String filePath = path + post.getId() + file.getOriginalFilename() + LocalDateTime.now();
+                String filePath = path + post.getId() + "-" + UUID.randomUUID();
 
                 String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
                 if (!(extension.contains("JPG") || extension.contains("jpg") || extension.contains("jpeg") || extension.contains("JPEG") || extension.contains("png") || extension.contains("PNG"))) {
