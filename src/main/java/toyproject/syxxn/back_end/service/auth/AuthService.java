@@ -1,7 +1,6 @@
 package toyproject.syxxn.back_end.service.auth;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +16,7 @@ import toyproject.syxxn.back_end.exception.UserNotAccessibleException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 import toyproject.syxxn.back_end.service.util.AuthenticationUtil;
+import toyproject.syxxn.back_end.service.util.TokenUtil;
 import toyproject.syxxn.back_end.service.util.UserUtil;
 
 @RequiredArgsConstructor
@@ -30,10 +30,8 @@ public class AuthService {
 
     private final PasswordEncoder encoder;
 
-    @Value("${auth.jwt.exp.refresh}")
-    private Long refreshExp;
-
     private final UserUtil userUtil;
+    private final TokenUtil tokenUtil;
     private final AuthenticationUtil authenticationFacade;
 
     public TokenResponse login(SignInRequest request) {
@@ -47,14 +45,8 @@ public class AuthService {
         }
 
         return TokenResponse.builder()
-                .refreshToken(refreshTokenRepository.save(
-                        RefreshToken.builder()
-                                .accountId(account.getId())
-                                .refreshExp(refreshExp)
-                                .refreshToken(jwtTokenProvider.generateRefreshToken(account.getId()))
-                                .build()
-                ).getRefreshToken())
-                .accessToken(jwtTokenProvider.generateAccessToken(account.getId()))
+                .refreshToken(tokenUtil.getRefreshToken(account.getId()))
+                .accessToken(tokenUtil.getAccessToken(account.getId()))
                 .build();
     }
 
@@ -66,14 +58,14 @@ public class AuthService {
         RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(receivedToken)
                 .map(token -> {
                     String refresh = jwtTokenProvider.generateRefreshToken(token.getAccountId());
-                    token.update(refresh, refreshExp);
+                    token.update(refresh, token.getRefreshExp());
                     return token;
                 })
                 .orElseThrow(UserNotFoundException::new);
 
         return TokenResponse.builder()
                 .refreshToken(refreshToken.getRefreshToken())
-                .accessToken(jwtTokenProvider.generateAccessToken(refreshToken.getAccountId()))
+                .accessToken(tokenUtil.getAccessToken(refreshToken.getAccountId()))
                 .build();
     }
 

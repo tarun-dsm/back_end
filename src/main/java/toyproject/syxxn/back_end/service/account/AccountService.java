@@ -18,15 +18,13 @@ import toyproject.syxxn.back_end.dto.response.TokenResponse;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.Sex;
-import toyproject.syxxn.back_end.entity.refreshtoken.RefreshToken;
-import toyproject.syxxn.back_end.entity.refreshtoken.RefreshTokenRepository;
 import toyproject.syxxn.back_end.entity.report.Report;
 import toyproject.syxxn.back_end.entity.report.ReportRepository;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumber;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumberRepository;
 import toyproject.syxxn.back_end.exception.*;
 import toyproject.syxxn.back_end.service.util.AuthenticationUtil;
-import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
+import toyproject.syxxn.back_end.service.util.TokenUtil;
 import toyproject.syxxn.back_end.service.util.UserUtil;
 
 import java.math.BigDecimal;
@@ -36,17 +34,12 @@ import java.math.BigDecimal;
 public class AccountService {
 
     private final AccountRepository accountRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final ReportRepository reportRepository;
     private final VerifyNumberRepository verifyNumberRepository;
 
-    private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationUtil authenticationFacade;
 
     private final PasswordEncoder encoder;
-
-    @Value("${auth.jwt.exp.refresh}")
-    private Long refreshExp;
 
     @Value("${kakao.api-key}")
     private String restApiKey;
@@ -54,6 +47,7 @@ public class AccountService {
     private static final String KAKAO_API_URL = "https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=";
 
     private final UserUtil baseService;
+    private final TokenUtil tokenUtil;
 
     @Transactional
     public TokenResponse signUp(SignUpRequest request) {
@@ -73,16 +67,10 @@ public class AccountService {
                         .build()
         ).getId();
 
-        String refreshToken = refreshTokenRepository.save(
-                RefreshToken.builder()
-                        .accountId(accountId)
-                        .refreshExp(refreshExp)
-                        .refreshToken(jwtTokenProvider.generateRefreshToken(accountId))
-                        .build()
-        ).getRefreshToken();
+        String refreshToken = tokenUtil.getRefreshToken(accountId);
 
         return TokenResponse.builder()
-                .accessToken(jwtTokenProvider.generateAccessToken(accountId))
+                .accessToken(tokenUtil.getAccessToken(accountId))
                 .refreshToken(refreshToken)
                 .build();
     }
