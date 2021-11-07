@@ -54,7 +54,7 @@ public class ProfileService {
         List<Review> reviews = reviewRepository.findAllByTarget(getAccount(accountId));
 
         return new ProfileReviewResponse(reviews.stream().map(
-                review -> ProfileReviewDto.builder()
+                review -> ProfileReviewResponse.ProfileReviewDto.builder()
                         .id(review.getId())
                         .nickname(review.getWriter().getNickname())
                         .grade(review.getGrade())
@@ -71,7 +71,7 @@ public class ProfileService {
         return new ProfilePostResponse(posts.stream().map(
                 post -> {
                     Optional<Application> application = applicationRepository.findByPostAndIsAcceptedTrue(post);
-                    return ProfilePostDto.builder()
+                    return ProfilePostResponse.ProfilePostDto.builder()
                             .id(post.getId())
                             .title(post.getTitle())
                             .firstImagePath(post.getPetImages().get(0).getPath())

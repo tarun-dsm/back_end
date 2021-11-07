@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import toyproject.syxxn.back_end.dto.response.ApplicationDto;
 import toyproject.syxxn.back_end.dto.response.ApplicationResponse;
-import toyproject.syxxn.back_end.dto.response.MyApplicationDto;
 import toyproject.syxxn.back_end.dto.response.MyApplicationResponse;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.application.Application;
@@ -113,7 +111,7 @@ public class ApplicationService {
         List<Application> applications = applicationRepository.findAllByAccount(baseService.getLocalConfirmAccount());
 
         return new MyApplicationResponse(applications.stream().map(
-                application -> MyApplicationDto.builder()
+                application -> MyApplicationResponse.MyApplicationDto.builder()
                         .id(application.getId())
                         .applicationDate(application.getCreatedAt())
                         .isAccepted(application.getIsAccepted())
@@ -129,7 +127,7 @@ public class ApplicationService {
         List<Application> applications = applicationRepository.findAllByPost(post);
 
         return new ApplicationResponse(applications.stream().map(application ->
-                ApplicationDto.builder()
+                ApplicationResponse.ApplicationDto.builder()
                         .applicationId(application.getId())
                         .applicationDate(application.getCreatedAt())
                         .applicantId(application.getAccount().getId())

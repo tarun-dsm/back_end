@@ -2,7 +2,6 @@ package toyproject.syxxn.back_end.service.comment;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import toyproject.syxxn.back_end.dto.response.CommentDto;
 import toyproject.syxxn.back_end.dto.response.CommentsResponse;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.comment.Comment;
@@ -68,7 +67,7 @@ public class CommentService {
 
         return new CommentsResponse(
                 commentRepository.findAllByPostOrderByCreatedAtDesc(post).stream().map(
-                        c -> CommentDto.builder()
+                        c -> CommentsResponse.CommentDto.builder()
                                 .id(c.getId())
                                 .nickname(c.getWriter().getNickname())
                                 .comment(c.getComment())

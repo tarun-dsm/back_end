@@ -108,34 +108,30 @@ public class PostService {
             filePaths.add(petImage.getPath());
         }
 
-        PostDetailsDto postDetailsDto = PostDetailsDto.builder()
-                .title(post.getTitle())
-                .description(post.getDescription())
-                .protectionStartDate(post.getProtectionStartDate())
-                .protectionEndDate(post.getProtectionEndDate())
-                .applicationEndDate(post.getApplicationEndDate())
-                .contactInfo(post.getContactInfo())
-                .createdAt(post.getCreatedAt())
-                .isApplicationEnd(post.getIsApplicationEnd())
-                .isUpdated(post.getIsUpdated())
-                .build();
-
-        PetDetailsDto petDetailsDto = PetDetailsDto.builder()
-                .petName(petInfo.getPetName())
-                .petSpecies(petInfo.getPetSpecies())
-                .petSex(petInfo.getPetSex().toString())
-                .animalType(petInfo.getAnimalType().toString())
-                .filePaths(filePaths)
-                .build();
-
         return PostDetailsResponse.builder()
                 .writerId(account.getId())
                 .rating(account.getRating())
                 .isMine(postUtil.postIsMine(account, post))
                 .isApplied(isApplied(account, post))
                 .nickname(post.getAccount().getNickname())
-                .pet(petDetailsDto)
-                .post(postDetailsDto)
+                .pet(PostDetailsResponse.PetDetailsDto.builder()
+                        .petName(petInfo.getPetName())
+                        .petSpecies(petInfo.getPetSpecies())
+                        .petSex(petInfo.getPetSex().toString())
+                        .animalType(petInfo.getAnimalType().toString())
+                        .filePaths(filePaths)
+                        .build())
+                .post(PostDetailsResponse.PostDetailsDto.builder()
+                        .title(post.getTitle())
+                        .description(post.getDescription())
+                        .protectionStartDate(post.getProtectionStartDate())
+                        .protectionEndDate(post.getProtectionEndDate())
+                        .applicationEndDate(post.getApplicationEndDate())
+                        .contactInfo(post.getContactInfo())
+                        .createdAt(post.getCreatedAt())
+                        .isApplicationEnd(post.getIsApplicationEnd())
+                        .isUpdated(post.getIsUpdated())
+                        .build())
                 .build();
     }
 
@@ -213,8 +209,8 @@ public class PostService {
         return (rad * 180 / Math.PI);
     }
     
-    private PostResponseDto getPost(Post post) {
-        return PostResponseDto.builder()
+    private PostResponse.PostResponseDto getPost(Post post) {
+        return PostResponse.PostResponseDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .animalType(post.getPetInfo().getAnimalType().toString())

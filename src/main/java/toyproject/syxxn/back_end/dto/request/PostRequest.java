@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
-import toyproject.syxxn.back_end.entity.Sex;
-import toyproject.syxxn.back_end.entity.pet.AnimalType;
 
 import javax.validation.constraints.NotBlank;
 
