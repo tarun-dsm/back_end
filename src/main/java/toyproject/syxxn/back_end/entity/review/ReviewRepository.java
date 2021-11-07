@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.application.Application;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 

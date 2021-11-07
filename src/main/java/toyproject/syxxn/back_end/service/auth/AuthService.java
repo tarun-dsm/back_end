@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import toyproject.syxxn.back_end.dto.request.SignInRequest;
 import toyproject.syxxn.back_end.dto.response.TokenResponse;
 import toyproject.syxxn.back_end.entity.account.Account;
@@ -46,21 +47,33 @@ public class AuthService {
         }
 
         return TokenResponse.builder()
-                .refreshToken(getRefreshToken(account.getId()))
+                .refreshToken(refreshTokenRepository.save(
+                        RefreshToken.builder()
+                                .accountId(account.getId())
+                                .refreshExp(refreshExp)
+                                .refreshToken(jwtTokenProvider.generateRefreshToken(account.getId()))
+                                .build()
+                ).getRefreshToken())
                 .accessToken(jwtTokenProvider.generateAccessToken(account.getId()))
                 .build();
     }
 
+    @Transactional
     public TokenResponse tokenRefresh(String receivedToken) {
         if(!jwtTokenProvider.isRefreshToken(receivedToken)) {
             throw new InvalidTokenException();
         }
-        Integer accountId = refreshTokenRepository.findByRefreshToken(receivedToken)
-                .orElseThrow(UserNotFoundException::new).getAccountId();
+        RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(receivedToken)
+                .map(token -> {
+                    String refresh = jwtTokenProvider.generateRefreshToken(token.getAccountId());
+                    token.update(refresh, refreshExp);
+                    return token;
+                })
+                .orElseThrow(UserNotFoundException::new);
 
         return TokenResponse.builder()
-                .refreshToken(getRefreshToken(accountId))
-                .accessToken(jwtTokenProvider.generateAccessToken(accountId))
+                .refreshToken(refreshToken.getRefreshToken())
+                .accessToken(jwtTokenProvider.generateAccessToken(refreshToken.getAccountId()))
                 .build();
     }
 
@@ -72,16 +85,6 @@ public class AuthService {
         } catch (Exception e) {
             throw new UserNotFoundException();
         }
-    }
-
-    private String getRefreshToken(Integer accountId) {
-        return refreshTokenRepository.save(
-                RefreshToken.builder()
-                        .accountId(accountId)
-                        .refreshExp(refreshExp)
-                        .refreshToken(jwtTokenProvider.generateRefreshToken(accountId))
-                        .build()
-        ).getRefreshToken();
     }
 
 }

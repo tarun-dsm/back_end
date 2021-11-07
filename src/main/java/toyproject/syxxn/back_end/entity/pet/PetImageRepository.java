@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface PetImageRepository extends CrudRepository<PetImage, Integer> {
-    void deleteAllByPost(Post post);
     List<PetImage> findAllByPost(Post post);
 }
