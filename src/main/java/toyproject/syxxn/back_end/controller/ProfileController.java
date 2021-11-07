@@ -10,8 +10,6 @@ import toyproject.syxxn.back_end.dto.response.ProfileResponse;
 import toyproject.syxxn.back_end.dto.response.ProfileReviewResponse;
 import toyproject.syxxn.back_end.service.profile.ProfileService;
 
-import java.util.Optional;
-
 @RequestMapping("/profile")
 @RequiredArgsConstructor
 @RestController
