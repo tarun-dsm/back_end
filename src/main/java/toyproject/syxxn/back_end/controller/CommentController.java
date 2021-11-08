@@ -10,31 +10,30 @@ import toyproject.syxxn.back_end.service.comment.CommentService;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
-@RequestMapping("/comment")
 @RestController
 public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/{id}")
+    @PostMapping("/comment/{id}")
     public void writeComment(@PathVariable("id") Integer postId,
                              @RequestBody @Valid CommentRequest request) {
         commentService.writeComment(request.getComment(), postId);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/comment/{id}")
     public void deleteComment(@PathVariable("id") Integer commentId) {
         commentService.deleteComment(commentId);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PatchMapping("/{id}")
+    @PatchMapping("/comment/{id}")
     public void updateComment(@PathVariable("id") Integer commentId,
                               @RequestBody @Valid CommentRequest request) {
         commentService.updateComment(commentId, request.getComment());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/comments/post/{id}")
     public CommentsResponse getComments(@PathVariable("id") Integer postId) {
         return commentService.getComments(postId);
     }
