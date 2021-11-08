@@ -85,6 +85,7 @@ public class AccountService {
                 .ifPresent(account -> {throw new UserNicknameAlreadyExistsException(); });
     }
 
+    @Transactional
     public void saveCoordinate(CoordinatesRequest request) throws JsonProcessingException, UnirestException {
         Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .filter(baseService::isNotBlocked)
@@ -92,7 +93,7 @@ public class AccountService {
         Double x = request.getLongitude();
         Double y = request.getLatitude();
 
-        accountRepository.save(account.updateLocation(BigDecimal.valueOf(x), BigDecimal.valueOf(y), getAdministrationDivision(x, y)));
+        account.updateLocation(BigDecimal.valueOf(x), BigDecimal.valueOf(y), getAdministrationDivision(x, y));
     }
 
     public void makeReport(String comment, Integer id) {
@@ -112,11 +113,16 @@ public class AccountService {
     private String getAdministrationDivision(Double x, Double y) throws JsonProcessingException, UnirestException {
         ObjectMapper mapper = new ObjectMapper();
         String administrationDivision = "";
-        HttpResponse<com.mashape.unirest.http.JsonNode> response = Unirest.get(KAKAO_API_URL + x + "&y=" + y)
-                .header("Authorization", "KakaoAK " + restApiKey)
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE)
-                .header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8")
-                .asJson();
+        HttpResponse<com.mashape.unirest.http.JsonNode> response;
+        try {
+             response = Unirest.get(KAKAO_API_URL + x + "&y=" + y)
+                    .header("Authorization", "KakaoAK " + restApiKey)
+                    .header("Accept", MediaType.APPLICATION_JSON_VALUE)
+                    .header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8")
+                    .asJson();
+        } catch(Exception e) {
+            throw new WrongLocationInformationException();
+        }
 
         String json = response.getBody().toString();
 
