@@ -24,7 +24,7 @@ public class PostController {
         postService.deletePost(postId);
     }
 
-    @PostMapping
+    @PostMapping("/post")
     @ResponseStatus(HttpStatus.CREATED)
     public PostIdResponse writePost(@RequestBody @Valid PostRequest request) {
         return new PostIdResponse(postService.writePost(request));
