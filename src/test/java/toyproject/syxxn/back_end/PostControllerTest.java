@@ -126,14 +126,14 @@ public class PostControllerTest extends BaseTest {
     @WithMockUser(value = "test1234@gmail.com", password = "asdf123@")
     @Test
     public void getPosts_locationConfirmFalse() throws Exception {
-        mvc.perform(get("/post")
+        mvc.perform(get("/posts")
         ).andExpect(status().isOk());
     }
 
     @WithMockUser(value = "test1@naver.com", password = "asdf123@")
     @Test
     public void getPosts_locationConfirmTrue() throws Exception {
-        mvc.perform(get("/post")
+        mvc.perform(get("/posts")
         ).andExpect(status().isOk());
     }
 

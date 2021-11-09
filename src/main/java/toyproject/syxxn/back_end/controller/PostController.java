@@ -13,14 +13,13 @@ import toyproject.syxxn.back_end.service.post.PostService;
 import javax.validation.Valid;
 import java.util.List;
 
-@RequestMapping("/post")
 @RequiredArgsConstructor
 @RestController
 public class PostController {
 
     private final PostService postService;
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/post/{id}")
     public void deletePost(@PathVariable("id") Integer postId) {
         postService.deletePost(postId);
     }
@@ -31,25 +30,25 @@ public class PostController {
         return new PostIdResponse(postService.writePost(request));
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("/post/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveFiles(@PathVariable("id") Integer postId,
             @RequestParam List<MultipartFile> files) {
         postService.saveFiles(postId, files);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/post/{id}")
     public PostIdResponse updatePost(@PathVariable("id") Integer postId,
                              @RequestBody @Valid PostRequest request) {
         return new PostIdResponse(postService.updatePost(postId, request));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/post/{id}")
     public PostDetailsResponse getPostDetails(@PathVariable("id") Integer postId) {
         return postService.getPostDetails(postId);
     }
 
-    @GetMapping
+    @GetMapping("/posts")
     public PostResponse getPosts() {
         return postService.getPosts();
     }
