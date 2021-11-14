@@ -73,7 +73,8 @@ public class AuthService {
         Account user = accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .orElseThrow(UserNotAccessibleException::new);
         try {
-            refreshTokenRepository.deleteAllByAccountId(user.getId());
+            refreshTokenRepository.findById(user.getId())
+                    .ifPresent(refreshTokenRepository::delete);
         } catch (Exception e) {
             throw new UserNotFoundException();
         }
