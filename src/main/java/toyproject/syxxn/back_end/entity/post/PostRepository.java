@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends CrudRepository<Post, Integer> {
-    List<Post> findAllByOrderByCreatedAtDesc();
+    List<Post> findAllByPetImagesNotNullOrderByCreatedAtDesc();
     List<Post> findAllByAccountAndPetImagesNotNullOrderByCreatedAtDesc(Account account);
-    List<Post> findAllByIsApplicationEndFalseOrderByCreatedAtDesc();
+    List<Post> findAllByIsApplicationEndFalseAndPetImagesNotNullOrderByCreatedAtDesc();
 }
