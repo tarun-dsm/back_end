@@ -146,7 +146,8 @@ public class PostService {
         }
 
         System.out.println("인증 됨 - size : " + postRepository.findAllByIsApplicationEndFalseOrderByCreatedAtDesc().size());
-        return new PostResponse(Optional.of(postRepository.findAllByIsApplicationEndFalseOrderByCreatedAtDesc()).orElse(new ArrayList<>()).stream()
+        return new PostResponse(postRepository.findAllByIsApplicationEndFalseOrderByCreatedAtDesc().stream()
+                .peek(post -> System.out.println("postTile: " + post.getTitle()))
                 .filter(post -> distance(account, post.getAccount()) <= 2.0)
                 .map(this::getPost).collect(Collectors.toList())
         );
