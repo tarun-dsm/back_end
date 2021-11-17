@@ -45,7 +45,7 @@ public class PostControllerTest extends BaseTest {
                 .andExpect(status().isNotFound());
     }
 
-    @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
+    @WithMockUser(value = "adsf123@naver.com", password = "asdf123@")
     @Test
     public void deletePost() throws Exception {
         mvc.perform(delete("/post/" + postId)).andDo(print())
@@ -66,7 +66,7 @@ public class PostControllerTest extends BaseTest {
                 .andExpect(status().isUnauthorized());
     }
 
-    @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
+    @WithMockUser(value = "adsf123@naver.com", password = "asdf123@")
     @Test
     public void updatePost() throws Exception {
         PostRequest request = createPostRequest();
