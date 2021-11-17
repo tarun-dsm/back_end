@@ -140,10 +140,12 @@ public class PostService {
         Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .orElseThrow(UserNotFoundException::new);
         if (!account.getIsLocationConfirm()) {
+            System.out.println("인증 안됨 - size : " + postRepository.findAllByOrderByCreatedAtDesc().size());
             return new PostResponse(Optional.of(postRepository.findAllByOrderByCreatedAtDesc()).orElse(new ArrayList<>()).stream()
                     .map(this::getPost).collect(Collectors.toList()));
         }
 
+        System.out.println("인증 됨 - size : " + postRepository.findAllByIsApplicationEndFalseOrderByCreatedAtDesc().size());
         return new PostResponse(Optional.of(postRepository.findAllByIsApplicationEndFalseOrderByCreatedAtDesc()).orElse(new ArrayList<>()).stream()
                 .filter(post -> distance(account, post.getAccount()) <= 2.0)
                 .map(this::getPost).collect(Collectors.toList())
