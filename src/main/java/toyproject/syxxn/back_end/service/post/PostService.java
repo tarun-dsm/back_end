@@ -139,15 +139,14 @@ public class PostService {
         Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .orElseThrow(UserNotFoundException::new);
         if (!account.getIsLocationConfirm()) {
-            List<Post> latelyPost = postRepository.findAllByOrderByCreatedAtDesc();
-            return new PostResponse(latelyPost.stream()
+            return new PostResponse(postRepository.findAllByOrderByCreatedAtDesc().stream()
                     .map(this::getPost).collect(Collectors.toList())
             );
         }
 
         List<Post> posts = postRepository.findAllByIsApplicationEndFalseOrderByCreatedAtDesc();
         return new PostResponse(posts.stream()
-                .filter(post -> distance(account, post.getAccount()) >= 2.0)
+                .filter(post -> distance(account, post.getAccount()) <= 2.0)
                 .map(this::getPost).collect(Collectors.toList())
         );
     }
