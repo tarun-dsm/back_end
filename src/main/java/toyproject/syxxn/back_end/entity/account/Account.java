@@ -94,6 +94,21 @@ public class Account extends BaseIdEntity {
         this.isBlocked = false;
     }
 
+    public Account(String email, String password, String nickname, boolean isLocationConfirm) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.age = 18;
+        this.sex = Sex.MALE;
+        this.isExperienceRaisingPet = false;
+        this.experience = null;
+        this.longitude = BigDecimal.ZERO;
+        this.latitude = BigDecimal.ZERO;
+        this.isLocationConfirm = isLocationConfirm;
+        this.administrationDivision = isLocationConfirm ? "동동동" : null;
+        this.isBlocked = false;
+    }
+
     public Account updateLocation(BigDecimal longitude, BigDecimal latitude, String administrationDivision) {
         this.isLocationConfirm = true;
         this.longitude = longitude;

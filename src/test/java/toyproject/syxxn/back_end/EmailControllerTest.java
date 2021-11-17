@@ -21,7 +21,7 @@ public class EmailControllerTest extends BaseTest {
     public void setUp() {
         mvc = setMvc();
 
-        createAccount("test1@naver.com", "Tarun");
+        createAccount("test1@naver.com", "Tarun", false);
         createVerifyNumber();
     }
 

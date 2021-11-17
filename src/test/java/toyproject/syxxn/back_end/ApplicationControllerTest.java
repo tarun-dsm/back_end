@@ -27,14 +27,11 @@ public class ApplicationControllerTest extends BaseTest {
     public void setUp() {
         mvc = setMvc();
 
-        account1 = createAccount("test1@naver.com", "Tarun1");
-        account2 = createAccount("test2@naver.com", "Tarun2");
-        account3 = createAccount("test3@naver.com", "Tarun3");
-        accountRepository.save(account1.updateLocation(BigDecimal.valueOf(12.5), BigDecimal.valueOf(12.5), "동동동"));
-        accountRepository.save(account2.updateLocation(BigDecimal.valueOf(12.5), BigDecimal.valueOf(12.5), "동동동"));
-        accountRepository.save(account3.updateLocation(BigDecimal.valueOf(12.5), BigDecimal.valueOf(12.5), "동동동"));
-        createAccount("test4@naver.com", "Tarun4");
-        createAccount("test5@naver.com", "Tarun5");
+        account1 = createAccount("test1@naver.com", "Tarun1", true);
+        account2 = createAccount("test2@naver.com", "Tarun2", true);
+        account3 = createAccount("test3@naver.com", "Tarun3", true);
+        createAccount("test4@naver.com", "Tarun4", false);
+        createAccount("test5@naver.com", "Tarun5", false);
 
         Post post = createPost(account1, false, "2021-10-10");
         postId = post.getId();

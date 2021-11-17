@@ -33,12 +33,10 @@ public class ReviewControllerTest extends BaseTest{
     public void setUp() {
         mvc = setMvc();
 
-        account1 = createAccount("test1@naver.com", "Tarun1");
-        account2 = createAccount("test2@naver.com", "Tarun2");
-        accountRepository.save(account1.updateLocation(BigDecimal.valueOf(13.25), BigDecimal.valueOf(13.25), "대덕동"));
-        accountRepository.save(account2.updateLocation(BigDecimal.valueOf(13.25), BigDecimal.valueOf(13.25), "대덕동"));
-        accountRepository.save(createAccount("test3@naver.com", "Tarun3").updateLocation(BigDecimal.valueOf(13.25), BigDecimal.valueOf(13.25), "대덕동"));
-        createAccount("test4@naver.com", "Tarun4");
+        account1 = createAccount("test1@naver.com", "Tarun1", true);
+        account2 = createAccount("test2@naver.com", "Tarun2", true);
+        createAccount("test3@naver.com", "Tarun3", true);
+        createAccount("test4@naver.com", "Tarun4", false);
 
         notDoneApplication = createApplication(account1, account2,true, true, "2021-10-22");
         application = createApplication(account1, account2,true, true, "2021-05-22");

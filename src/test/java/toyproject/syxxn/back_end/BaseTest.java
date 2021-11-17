@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -86,17 +87,9 @@ public class BaseTest {
                 .build();
     }
 
-    public Account createAccount(String email, String nickname) {
+    public Account createAccount(String email, String nickname, boolean isLocationConfirm) {
         return accountRepository.save(
-                Account.builder()
-                        .email(email)
-                        .password(encoder.encode("asdf123@"))
-                        .sex(Sex.MALE)
-                        .nickname(nickname)
-                        .age(18)
-                        .isExperienceRaisingPet(false)
-                        .experience(null)
-                        .build()
+                new Account(email, encoder.encode("asdf123@"), nickname, isLocationConfirm)
         );
     }
 

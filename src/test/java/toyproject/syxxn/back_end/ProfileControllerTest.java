@@ -24,14 +24,11 @@ public class ProfileControllerTest extends BaseTest {
     public void setUp() {
         mvc = setMvc();
 
-        account1 = createAccount("test1@naver.com", "Tarun1");
-        account2 = createAccount("test2@naver.com", "Tarun2");
-        account3 = createAccount("test3@naver.com", "Tarun3");
-        accountRepository.save(account1.updateLocation(BigDecimal.valueOf(13.25), BigDecimal.valueOf(13.25), "대덕동"));
-        accountRepository.save(account2.updateLocation(BigDecimal.valueOf(13.25), BigDecimal.valueOf(13.25), "대덕동"));
-        accountRepository.save(account3.updateLocation(BigDecimal.valueOf(13.25), BigDecimal.valueOf(13.25), "대덕동"));
-        Account account4 = createAccount("test4@naver.com", "true");
-        Account account5 = createAccount("test5@naver.com", "true2");
+        account1 = createAccount("test1@naver.com", "Tarun1", true);
+        account2 = createAccount("test2@naver.com", "Tarun2", true);
+        account3 = createAccount("test3@naver.com", "Tarun3", true);
+        Account account4 = createAccount("test4@naver.com", "true", false);
+        Account account5 = createAccount("test5@naver.com", "true2", false);
 
 
         createApplication(account1, account2, true);

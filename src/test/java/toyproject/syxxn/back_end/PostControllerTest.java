@@ -28,12 +28,14 @@ public class PostControllerTest extends BaseTest {
     public void setUp() {
         mvc = setMvc();
 
-        account = createAccount("adsf1234@naver.com", "Tarun");
-        accountRepository.save(account.updateLocation(BigDecimal.ONE, BigDecimal.ONE, "동그라미"));
-        createAccount("test1@naver.com", "true");
-        createAccount("test1234@gmail.com", "ggosunnae");
+        account = createAccount("adsf1234@naver.com", "Tarun", true);
+        accountRepository.save(account.updateLocation(BigDecimal.valueOf(37.5668260000), BigDecimal.valueOf(126.9786567000), "동동동"));
+        Account account2 = createAccount("adsf123@naver.com", "asdf", true);
+        accountRepository.save(account2.updateLocation(BigDecimal.valueOf(37.5668260000), BigDecimal.valueOf(126.978), "동동동"));
+        createAccount("test1@naver.com", "true", false);
+        createAccount("test1234@gmail.com", "ggosunnae", false);
 
-        postId = createPost(account, false, "2021-09-29").getId();
+        postId = createPost(account2, false, "2021-09-29").getId();
     }
 
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
@@ -123,18 +125,18 @@ public class PostControllerTest extends BaseTest {
         ).andExpect(status().isOk());
     }
 
-    @WithMockUser(value = "test1234@gmail.com", password = "asdf123@")
+    @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
     @Test
-    public void getPosts_locationConfirmFalse() throws Exception {
+    public void getPosts_locationConfirmTrue() throws Exception {
         mvc.perform(get("/posts")
-        ).andExpect(status().isOk());
+        ).andExpect(status().isOk()).andDo(print());
     }
 
     @WithMockUser(value = "test1@naver.com", password = "asdf123@")
     @Test
-    public void getPosts_locationConfirmTrue() throws Exception {
+    public void getPosts_locationConfirmFalse_1() throws Exception {
         mvc.perform(get("/posts")
-        ).andExpect(status().isOk());
+        ).andExpect(status().isOk()).andDo(print());
     }
 
 }

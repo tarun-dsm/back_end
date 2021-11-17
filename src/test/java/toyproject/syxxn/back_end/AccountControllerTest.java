@@ -28,8 +28,8 @@ public class AccountControllerTest extends BaseTest {
     public void setUp() {
         mvc = setMvc();
 
-        account = createAccount("adsf1234@naver.com", "Tarun");
-        createAccount("test1234@gmail.com", "ggosunnae");
+        account = createAccount("adsf1234@naver.com", "Tarun", false);
+        createAccount("test1234@gmail.com", "ggosunnae", false);
         createVerifyNumber();
     }
 

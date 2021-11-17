@@ -25,7 +25,7 @@ public class AuthControllerTest extends BaseTest {
     public void setUp() {
         mvc = setMvc();
 
-        Account account = createAccount("test1@naver.com", "Tarun");
+        Account account = createAccount("test1@naver.com", "Tarun", false);
         refreshToken = createRefreshToken(account);
     }
 
@@ -76,7 +76,6 @@ public class AuthControllerTest extends BaseTest {
     @Test
     public void test() {
         assertNotNull(refreshToken.getRefreshToken());
-        assertNotNull(refreshToken.getRefreshExp());
         assertNotNull(refreshToken.getAccountId());
     }
 
