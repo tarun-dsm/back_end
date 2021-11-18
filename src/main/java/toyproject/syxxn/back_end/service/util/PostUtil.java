@@ -27,7 +27,7 @@ public class PostUtil {
 
     public Post getPost(Integer id, Account account) {
         Post post =  postRepository.findById(id)
-                .filter(p -> !p.getIsApplicationEnd())
+                .filter(Post::getIsApplicationEnd)
                 .orElseThrow(PostNotFoundException::new);
 
         if (!postIsMine(account, post))
