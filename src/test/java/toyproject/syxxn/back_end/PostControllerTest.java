@@ -7,9 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
-import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
-import toyproject.syxxn.back_end.entity.post.Post;
 
 import java.math.BigDecimal;
 
@@ -118,12 +116,12 @@ public class PostControllerTest extends BaseTest {
         ).andExpect(status().isBadRequest());
     }
 
-    @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
+    /*@WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
     @Test
     public void getPostDetails() throws Exception {
         mvc.perform(get("/post/" + postId)
         ).andExpect(status().isOk());
-    }
+    }*/
 
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
     @Test

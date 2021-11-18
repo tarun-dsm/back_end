@@ -7,8 +7,6 @@ import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.application.Application;
 import toyproject.syxxn.back_end.entity.post.Post;
 
-import java.math.BigDecimal;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -155,7 +153,7 @@ public class ApplicationControllerTest extends BaseTest {
         Post post = createPost(account1, true, "2021-05-10");
 
         mvc.perform(get("/applications/post/"+post.getId()))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isOk());
     }
 
 }

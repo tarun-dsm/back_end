@@ -4,7 +4,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -12,7 +11,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
-import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.application.Application;
@@ -29,7 +27,6 @@ import toyproject.syxxn.back_end.entity.verify.VerifyNumberRepository;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackEndApplication.class)
