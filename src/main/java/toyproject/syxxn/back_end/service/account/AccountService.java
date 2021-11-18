@@ -92,8 +92,10 @@ public class AccountService {
                 .orElseThrow(UserNotFoundException::new);
         Double x = request.getLongitude();
         Double y = request.getLatitude();
+        String division = getAdministrationDivision(x, y);
+        String administrationDivision = division.substring(1, division.length() - 1);
 
-        account.updateLocation(BigDecimal.valueOf(x), BigDecimal.valueOf(y), getAdministrationDivision(x, y));
+        account.updateLocation(BigDecimal.valueOf(x), BigDecimal.valueOf(y), administrationDivision);
     }
 
     public void makeReport(String comment, Integer id) {
