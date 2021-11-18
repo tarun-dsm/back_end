@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface ApplicationRepository extends CrudRepository<Application, Integer> {
+    Optional<Application> findByPostIdAndAccountEmail(Integer id, String email);
     List<Application> findAllByAccount(Account account);
     List<Application> findAllByPost(Post post);
     Optional<Application> findByPostAndIsAcceptedTrue(Post post);

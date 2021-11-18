@@ -67,11 +67,10 @@ public class ApplicationService {
 
     }
 
-    public void cancelApplication(Integer applicationId) {
+    public void cancelApplication(Integer postId) {
         String email = baseService.getLocalConfirmAccount().getEmail();
 
-        Application application = applicationRepository.findById(applicationId)
-                .filter(a -> a.getAccount().getEmail().equals(email))
+        Application application = applicationRepository.findByPostIdAndAccountEmail(postId, email)
                 .orElseThrow(ApplicationNotFoundException::new);
 
         if (!isApplicationClosed(application.getPost())) {

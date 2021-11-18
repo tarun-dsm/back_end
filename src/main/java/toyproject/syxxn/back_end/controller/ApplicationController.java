@@ -19,8 +19,8 @@ public class ApplicationController {
     }
 
     @DeleteMapping("/application/{id}")
-    public void cancelApplication(@PathVariable("id") Integer applicationId) {
-        applicationService.cancelApplication(applicationId);
+    public void cancelApplication(@PathVariable("id") Integer postId) {
+        applicationService.cancelApplication(postId);
     }
 
     @PatchMapping("/application/{id}")
