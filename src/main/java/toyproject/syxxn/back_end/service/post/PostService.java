@@ -14,6 +14,7 @@ import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.exception.*;
 import toyproject.syxxn.back_end.service.util.AuthenticationUtil;
 import toyproject.syxxn.back_end.service.util.PostUtil;
+import toyproject.syxxn.back_end.service.util.S3Util;
 import toyproject.syxxn.back_end.service.util.UserUtil;
 
 import java.time.LocalDate;
@@ -35,6 +36,7 @@ public class PostService {
     private final AuthenticationUtil authenticationFacade;
     private final PostUtil postUtil;
     private final UserUtil userUtil;
+    private final S3Util s3Util;
 
     public void deletePost(Integer postId) {
         Post post = postUtil.getPost(postId, userUtil.getLocalConfirmAccount());
@@ -87,7 +89,7 @@ public class PostService {
         List<String> filePaths = new ArrayList<>();
 
         for (PetImage petImage : petImages) {
-            filePaths.add(petImage.getPath());
+            filePaths.add(s3Util.generateObjectUrl(petImage.getPath()));
         }
 
         return PostDetailsResponse.builder()

@@ -30,13 +30,6 @@ public class PostController {
         return new PostIdResponse(postService.writePost(request));
     }
 
-    @PostMapping("/post/{id}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void saveFiles(@PathVariable("id") Integer postId,
-            @RequestParam List<MultipartFile> files) {
-        postService.saveFiles(postId, files);
-    }
-
     @PatchMapping("/post/{id}")
     public PostIdResponse updatePost(@PathVariable("id") Integer postId,
                              @RequestBody @Valid PostRequest request) {
