@@ -1,5 +1,6 @@
 package toyproject.syxxn.back_end.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,7 +32,8 @@ public class ProfileReviewResponse {
 
         private LocalDateTime createdAt;
 
-        private Boolean isMyReview;
+        @JsonProperty("is_my_review")
+        private boolean isMyReview;
 
     }
 
