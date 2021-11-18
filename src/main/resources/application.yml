@@ -45,7 +45,7 @@ auth:
 aws:
   s3:
     bucket: ${AWS_S3_BUCKET:bucket}
-    base-image-url: ${AWS_S3_URL:image/}
+    base-image-url: image/
 
 cloud:
   aws:
