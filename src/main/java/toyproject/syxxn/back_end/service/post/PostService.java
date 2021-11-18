@@ -1,10 +1,8 @@
 package toyproject.syxxn.back_end.service.post;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
 import toyproject.syxxn.back_end.dto.response.*;
 import toyproject.syxxn.back_end.entity.account.Account;
@@ -18,12 +16,10 @@ import toyproject.syxxn.back_end.service.util.AuthenticationUtil;
 import toyproject.syxxn.back_end.service.util.PostUtil;
 import toyproject.syxxn.back_end.service.util.UserUtil;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -40,24 +36,9 @@ public class PostService {
     private final PostUtil postUtil;
     private final UserUtil userUtil;
 
-    @Value("${file.path}")
-    private String path;
-
     public void deletePost(Integer postId) {
         Post post = postUtil.getPost(postId, userUtil.getLocalConfirmAccount());
         postRepository.delete(post);
-    }
-
-    public void saveFiles(Integer postId, List<MultipartFile> files) {
-        Post post = postUtil.getPost(postId, userUtil.getLocalConfirmAccount());
-
-        for (PetImage petImage : post.getPetImages()) {
-            File file = new File(petImage.getPath());
-            if (file.exists() && file.delete())
-                petImageRepository.delete(petImage);
-        }
-
-        saveFile(files, post);
     }
 
     @Transactional
@@ -96,7 +77,7 @@ public class PostService {
     }
 
     public PostDetailsResponse getPostDetails(Integer postId) {
-        userUtil.getLocalConfirmAccount();
+        Account me = userUtil.getLocalConfirmAccount();
 
         Post post = postUtil.getPost(postId);
         Account account = post.getAccount();
@@ -112,7 +93,7 @@ public class PostService {
         return PostDetailsResponse.builder()
                 .writerId(account.getId())
                 .rating(account.getRating())
-                .isMine(postUtil.postIsMine(account, post))
+                .isMine(postUtil.postIsMine(me, post))
                 .isApplied(isApplied(account, post))
                 .nickname(post.getAccount().getNickname())
                 .pet(PostDetailsResponse.PetDetailsDto.builder()
@@ -153,33 +134,6 @@ public class PostService {
     private void startDateAfterEndDate(String startDate, String endDate) {
         if (LocalDate.parse(startDate).isAfter(LocalDate.parse(endDate))) {
             throw new InvalidScheduleSettingException();
-        }
-    }
-
-    private void saveFile(List<MultipartFile> files, Post post) {
-        try {
-            if (files.size() > 5) {
-                throw new FileNumberExceedException();
-            }
-            for (MultipartFile file : files) {
-                if (file.getOriginalFilename() == null) {
-                    throw new FileNotFoundException();
-                }
-                String filePath = path + post.getId() + "-" + UUID.randomUUID();
-
-                String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
-                if (!(extension.contains("JPG") || extension.contains("jpg") || extension.contains("jpeg") || extension.contains("JPEG") || extension.contains("png") || extension.contains("PNG"))) {
-                    throw new InvalidFileTypeException();
-                }
-
-                file.transferTo(new File(filePath));
-                petImageRepository.save(new PetImage(post, filePath));
-            }
-        } catch (Exception e) {
-            postRepository.delete(post);
-            petInfoRepository.delete(post.getPetInfo());
-            e.printStackTrace();
-            throw new FileSaveFailedException();
         }
     }
 
