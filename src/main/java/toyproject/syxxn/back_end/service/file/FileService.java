@@ -11,6 +11,7 @@ import toyproject.syxxn.back_end.service.util.PostUtil;
 import toyproject.syxxn.back_end.service.util.S3Util;
 import toyproject.syxxn.back_end.service.util.UserUtil;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -38,7 +39,7 @@ public class FileService {
                 petImageRepository.save(
                         new PetImage(post, s3Util.uploadImage(file)));
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new FileSaveFailedException();
         }
     }

@@ -1,7 +1,7 @@
 package toyproject.syxxn.back_end.service.util;
 
 import com.amazonaws.HttpMethod;
-import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -16,15 +16,13 @@ import toyproject.syxxn.back_end.exception.InvalidFileExtensionException;
 import java.io.*;
 import java.net.URL;
 import java.util.Date;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @Component
 public class S3Util {
 
-    private final AmazonS3Client amazonS3Client;
+    private final AmazonS3 amazonS3Client;
 
     @Value("${aws.s3.bucket}")
     private String bucketName;
@@ -38,18 +36,14 @@ public class S3Util {
         amazonS3Client.deleteObject(bucketName, objectName);
     }
 
-    public String uploadImage(MultipartFile file) {
+    public String uploadImage(MultipartFile file) throws IOException {
         String extension = verificationFile(file);
         String filePath;
         try{
-            File uploadFile = convertMultipartFileToFile(file)
-                    .orElseThrow(FileSaveFailedException::new);
-
-            filePath = saveImage(uploadFile, extension);
+            filePath = saveImage(file, extension);
         } catch (IOException e) {
             throw new FileSaveFailedException();
         }
-
         return filePath;
     }
 
@@ -79,24 +73,12 @@ public class S3Util {
         return extension;
     }
 
-    private Optional<File> convertMultipartFileToFile(MultipartFile file) throws IOException {
-        File convertFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
-        if(convertFile.createNewFile()) {
-            try(FileOutputStream fileOutputStream = new FileOutputStream(convertFile)) {
-                fileOutputStream.write(file.getBytes());
-            }
-            return Optional.of(convertFile);
-        }
+    private String saveImage(MultipartFile file, String extension) throws IOException {
+        String fileName = baseImageUrl + UUID.randomUUID() + extension;
 
-        return Optional.empty();
-    }
-
-    private String saveImage(File file, String extension) {
-        String filePath = baseImageUrl + UUID.randomUUID() + extension;
-        amazonS3Client.putObject(new PutObjectRequest(bucketName, filePath, file)
+        amazonS3Client.putObject(new PutObjectRequest(bucketName, fileName, file.getInputStream(), null)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
-
-        return filePath;
+        return amazonS3Client.getUrl(bucketName, fileName).toString();
     }
 
 }
