@@ -11,7 +11,6 @@ import toyproject.syxxn.back_end.service.util.PostUtil;
 import toyproject.syxxn.back_end.service.util.S3Util;
 import toyproject.syxxn.back_end.service.util.UserUtil;
 
-import java.io.*;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -31,11 +30,8 @@ public class FileService {
             throw new FileNumberExceedException();
         }
 
-        for (PetImage petImage : post.getPetImages()) {
-            File file = new File(petImage.getPath());
-            if (file.exists() && file.delete())
-                s3Util.delete(petImage.getPath());
-        }
+        for (PetImage petImage : post.getPetImages())
+            s3Util.delete(petImage.getPath());
 
         try {
             for (MultipartFile file : files) {
@@ -43,7 +39,6 @@ public class FileService {
                         new PetImage(post, s3Util.uploadImage(file)));
             }
         } catch (Exception e) {
-            e.printStackTrace();
             throw new FileSaveFailedException();
         }
     }
