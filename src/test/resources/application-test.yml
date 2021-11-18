@@ -29,7 +29,6 @@ spring:
           starttls:
             enable: true
 
-
 cloud:
   aws:
     region:
@@ -50,8 +49,6 @@ auth:
       access: 2021
       refresh: 20210629
 
-file:
-  path: D://
 
 kakao:
   api-key: asdf1234
