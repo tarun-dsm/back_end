@@ -15,6 +15,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/comment/{id}")
     public void writeComment(@PathVariable("id") Integer postId,
                              @RequestBody @Valid CommentRequest request) {
