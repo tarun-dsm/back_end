@@ -21,8 +21,10 @@ services:
       - REDIS_PORT=${REDIS_PORT}
       - FILE_PATH=${FILE_PATH}
       - REST_API_KEY=${REST_API_KEY}
-    volumes:
-      - "/home/ubuntu/Tarun/image:/home/ubuntu/Tarun/image"
+      - AWS_S3_ACCESS=${AWS_S3_ACCESS}
+      - AWS_S3_SECRET=${AWS_S3_SECRET}
+      - AWS_S3_BUCKET=${AWS_S3_BUCKET}
+      - AWS_S3_URL=${AWS_S3_URL}
   redis:
     image: redis
     container_name: redis-server

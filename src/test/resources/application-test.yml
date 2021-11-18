@@ -29,6 +29,20 @@ spring:
           starttls:
             enable: true
 
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      access-key: ${AWS_S3_ACCESS:s3_access}
+      secret-key: ${AWS_S3_SECRET:s3_secret}
+    s3:
+      bucket: ${AWS_S3_BUCKET:bucket}
+      base_image_url: ${AWS_S3_URL:image/}
+
 auth:
   jwt:
     secret: asdf1234

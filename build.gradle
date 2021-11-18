@@ -59,6 +59,9 @@ dependencies {
 	implementation 'com.querydsl:querydsl-core:5.0.0'
 	annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:general'
 
+	//s3
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.5.RELEASE'
+
 	//test
 	implementation 'com.h2database:h2'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {

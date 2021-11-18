@@ -42,8 +42,20 @@ auth:
       access: ${JWT_ACCESS_EXP:12345}
       refresh: ${JWT_REFRESH_EXP:2345678}
 
-file:
-  path: ${FILE_PATH}
+aws:
+  s3:
+    bucket: ${AWS_S3_BUCKET:bucket}
+    base-image-url: ${AWS_S3_URL:image/}
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      access-key: ${AWS_S3_ACCESS:s3_access}
+      secret-key: ${AWS_S3_SECRET:s3_secret}
 
 kakao:
   api-key: ${REST_API_KEY}
