@@ -177,7 +177,7 @@ public class PostService {
 
     private boolean isApplied(Account account, Post post) {
         if (postUtil.postIsMine(account, post)) return false;
-        return !applicationRepository.findByPostIdAndAccountEmail(post.getId(), account.getEmail()).isEmpty();
+        return applicationRepository.findByPostAndAccount(post, account).isPresent();
     }
 
 }
