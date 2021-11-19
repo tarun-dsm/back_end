@@ -15,6 +15,7 @@ import toyproject.syxxn.back_end.security.auth.AuthDetails;
 import toyproject.syxxn.back_end.security.auth.AuthDetailsService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @RequiredArgsConstructor
@@ -83,8 +84,7 @@ public class JwtTokenProvider {
 
     private boolean validateToken(String token) {
         try {
-            getBody(token).getSubject();
-            return true;
+            return getBody(token).getExpiration().after(new Date());
         } catch (Exception e) {
             throw new InvalidTokenException();
         }
