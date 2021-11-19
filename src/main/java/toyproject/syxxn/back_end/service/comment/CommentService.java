@@ -27,7 +27,7 @@ public class CommentService {
 
     public void writeComment(String comment, Integer postId) {
         Account account = userUtil.getLocalConfirmAccount();
-        Post post = postUtil.getPost(postId, account);
+        Post post = postUtil.getPost(postId);
 
         commentRepository.save(
                 Comment.builder()
@@ -63,7 +63,7 @@ public class CommentService {
 
     public CommentsResponse getComments(Integer postId) {
         String email = userUtil.getLocalConfirmAccount().getEmail();
-        Post post = postUtil.getNotApplicationEndPost(postId);
+        Post post = postUtil.getPost(postId);
 
         return new CommentsResponse(
                 commentRepository.findAllByPostOrderByCreatedAtDesc(post).stream().map(

@@ -19,12 +19,6 @@ public class PostUtil {
                 .orElseThrow(PostNotFoundException::new);
     }
 
-    public Post getNotApplicationEndPost(Integer id) {
-        return postRepository.findById(id)
-                .filter(p -> !p.getIsApplicationEnd())
-                .orElseThrow(PostNotFoundException::new);
-    }
-
     public Post getPost(Integer id, Account account) {
         Post post =  postRepository.findById(id)
                 .orElseThrow(PostNotFoundException::new);
