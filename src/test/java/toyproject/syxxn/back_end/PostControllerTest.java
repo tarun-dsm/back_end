@@ -3,11 +3,14 @@ package toyproject.syxxn.back_end;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
 import toyproject.syxxn.back_end.entity.account.Account;
+import toyproject.syxxn.back_end.entity.application.Application;
+import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
 
 import java.math.BigDecimal;
 
@@ -19,7 +22,11 @@ public class PostControllerTest extends BaseTest {
 
     private MockMvc mvc;
 
+    @Autowired
+    private ApplicationRepository applicationRepository;
+
     Account account;
+    Account account2;
     Integer postId;
 
     @BeforeEach
@@ -28,12 +35,12 @@ public class PostControllerTest extends BaseTest {
 
         account = createAccount("adsf1234@naver.com", "Tarun", true);
         accountRepository.save(account.updateLocation(BigDecimal.valueOf(37.5668260000), BigDecimal.valueOf(126.9786567000), "동동동"));
-        Account account2 = createAccount("adsf123@naver.com", "asdf", true);
+        account2 = createAccount("adsf123@naver.com", "asdf", true);
         accountRepository.save(account2.updateLocation(BigDecimal.valueOf(37.5668260000), BigDecimal.valueOf(126.978), "동동동"));
         createAccount("test1@naver.com", "true", false);
         createAccount("test1234@gmail.com", "ggosunnae", false);
 
-        postId = createPost(account2, false, "2021-09-29").getId();
+        postId = createPost(account2, false, "2022-03-29").getId();
     }
 
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
@@ -116,12 +123,28 @@ public class PostControllerTest extends BaseTest {
         ).andExpect(status().isBadRequest());
     }
 
-    /*@WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
+    @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
     @Test
     public void getPostDetails() throws Exception {
         mvc.perform(get("/post/" + postId)
-        ).andExpect(status().isOk());
-    }*/
+        ).andExpect(status().isOk()).andDo(print());
+    }
+
+    @WithMockUser(value = "adsf123@naver.com", password = "asdf123@")
+    @Test
+    public void getPostDetails_mine() throws Exception {
+        mvc.perform(get("/post/" + postId)
+        ).andExpect(status().isOk()).andDo(print());
+    }
+
+    @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
+    @Test
+    public void getPostDetails_applied() throws Exception {
+        Application application = createApplication(account2, account, false, false, "2022-02-20");
+
+        mvc.perform(get("/post/" + application.getPost().getId())
+        ).andExpect(status().isOk()).andDo(print());
+    }
 
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
     @Test

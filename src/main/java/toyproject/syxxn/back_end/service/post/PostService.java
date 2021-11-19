@@ -82,7 +82,7 @@ public class PostService {
         Account me = userUtil.getLocalConfirmAccount();
 
         Post post = postUtil.getPost(postId);
-        Account account = post.getAccount();
+        Account writer = post.getAccount();
         PetInfo petInfo = post.getPetInfo();
 
         List<PetImage> petImages = petImageRepository.findAllByPost(post);
@@ -93,10 +93,10 @@ public class PostService {
         }
 
         return PostDetailsResponse.builder()
-                .writerId(account.getId())
-                .rating(account.getRating())
+                .writerId(writer.getId())
+                .rating(writer.getRating())
                 .isMine(postUtil.postIsMine(me, post))
-                .isApplied(isApplied(account, post))
+                .isApplied(isApplied(me, post))
                 .nickname(post.getAccount().getNickname())
                 .pet(PostDetailsResponse.PetDetailsDto.builder()
                         .petName(petInfo.getPetName())
@@ -177,7 +177,7 @@ public class PostService {
 
     private boolean isApplied(Account account, Post post) {
         if (postUtil.postIsMine(account, post)) return false;
-        return applicationRepository.findByPostAndAccount(post, account).orElse(null) != null;
+        return !applicationRepository.findByPostIdAndAccountEmail(post.getId(), account.getEmail()).isEmpty();
     }
 
 }
