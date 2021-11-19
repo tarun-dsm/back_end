@@ -99,7 +99,7 @@ CREATE TABLE `comment` (
   `comment` VARCHAR(100) NOT NULL,
   `created_at` DATETIME NOT NULL,
   `is_updated` TINYINT(1) NOT NULL,
-  `updated_at` DATETIME NOT NULL,
+  `updated_at` DATETIME,
   `account_id` INT NOT NULL,
   `post_id` INT NOT NULL,
   PRIMARY KEY(`id`),
