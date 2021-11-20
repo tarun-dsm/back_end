@@ -86,11 +86,6 @@ public class PostService {
         PetInfo petInfo = post.getPetInfo();
 
         List<PetImage> petImages = petImageRepository.findAllByPost(post);
-        List<String> filePaths = new ArrayList<>();
-
-        for (PetImage petImage : petImages) {
-            filePaths.add(s3Util.generateObjectUrl(petImage.getPath()));
-        }
 
         return PostDetailsResponse.builder()
                 .writerId(writer.getId())
@@ -103,7 +98,9 @@ public class PostService {
                         .petSpecies(petInfo.getPetSpecies())
                         .petSex(petInfo.getPetSex().toString())
                         .animalType(petInfo.getAnimalType().toString())
-                        .filePaths(filePaths)
+                        .filePaths(petImages.stream()
+                                .map(PetImage::getPath)
+                                .collect(Collectors.toList()))
                         .build())
                 .post(PostDetailsResponse.PostDetailsDto.builder()
                         .title(post.getTitle())
