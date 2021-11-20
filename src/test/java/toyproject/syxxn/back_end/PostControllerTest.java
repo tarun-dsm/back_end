@@ -41,6 +41,9 @@ public class PostControllerTest extends BaseTest {
         createAccount("test1234@gmail.com", "ggosunnae", false);
 
         postId = createPost(account2, false, "2022-03-29").getId();
+        createPost(account2, false, "2022-03-29");
+        createPost(account2, false, "2022-03-29");
+        createPost(account, false, "2022-03-29");
     }
 
     @WithMockUser(value = "adsf1234@naver.com", password = "asdf123@")
