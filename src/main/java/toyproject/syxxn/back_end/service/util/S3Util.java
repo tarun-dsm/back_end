@@ -20,6 +20,9 @@ public class S3Util {
 
     private final AmazonS3 amazonS3Client;
 
+    @Value("${aws.s3.url}")
+    private String s3BaseUrl;
+
     @Value("${aws.s3.bucket}")
     private String bucketName;
 
@@ -27,7 +30,7 @@ public class S3Util {
     private String baseImageUrl;
 
     public void delete(String objectName) {
-        amazonS3Client.deleteObject(bucketName, objectName);
+        amazonS3Client.deleteObject(bucketName, objectName.replaceAll(s3BaseUrl, ""));
     }
 
     public String uploadImage(MultipartFile file) throws IOException {
