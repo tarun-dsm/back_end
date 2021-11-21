@@ -24,6 +24,7 @@ services:
       - AWS_S3_ACCESS=${AWS_S3_ACCESS}
       - AWS_S3_SECRET=${AWS_S3_SECRET}
       - AWS_S3_BUCKET=${AWS_S3_BUCKET}
+      - S3_BASE_URL=${S3_BASE_URL}
   redis:
     image: redis
     container_name: redis-server

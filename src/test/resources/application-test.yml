@@ -38,9 +38,13 @@ cloud:
     credentials:
       access-key: ${AWS_S3_ACCESS:s3_access}
       secret-key: ${AWS_S3_SECRET:s3_secret}
-    s3:
-      bucket: ${AWS_S3_BUCKET:bucket}
-      base_image_url: ${AWS_S3_URL:image/}
+
+aws:
+  s3:
+    url: ${S3_BASE_URL:https://}
+    bucket: ${AWS_S3_BUCKET:bucket}
+    base_image_url: ${AWS_S3_URL:image/}
+
 
 auth:
   jwt:
@@ -48,7 +52,6 @@ auth:
     exp:
       access: 2021
       refresh: 20210629
-
 
 kakao:
   api-key: asdf1234

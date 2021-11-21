@@ -46,6 +46,7 @@ aws:
   s3:
     bucket: ${AWS_S3_BUCKET:bucket}
     base-image-url: image/
+    url: ${S3_BASE_URL:https://}
 
 cloud:
   aws:
