@@ -40,6 +40,11 @@ public class PostService {
 
     public void deletePost(Integer postId) {
         Post post = postUtil.getPost(postId, userUtil.getLocalConfirmAccount());
+
+        for (PetImage petImage : post.getPetImages()) {
+            s3Util.delete(petImage.getPath());
+        }
+
         postRepository.delete(post);
     }
 
