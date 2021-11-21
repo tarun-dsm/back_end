@@ -43,6 +43,7 @@ public class PostService {
 
         for (PetImage petImage : post.getPetImages()) {
             s3Util.delete(petImage.getPath());
+            petImageRepository.delete(petImage);
         }
 
         postRepository.delete(post);
