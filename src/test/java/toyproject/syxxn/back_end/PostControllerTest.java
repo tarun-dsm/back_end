@@ -3,14 +3,12 @@ package toyproject.syxxn.back_end;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.application.Application;
-import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
 
 import java.math.BigDecimal;
 
@@ -21,9 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 public class PostControllerTest extends BaseTest {
 
     private MockMvc mvc;
-
-    @Autowired
-    private ApplicationRepository applicationRepository;
 
     Account account;
     Account account2;
