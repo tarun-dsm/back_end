@@ -31,8 +31,9 @@ public class FileService {
             throw new FileNumberExceedException();
         }
 
-        for (PetImage petImage : post.getPetImages())
+        for (PetImage petImage : post.getPetImages()) {
             s3Util.delete(petImage.getPath());
+        }
 
         try {
             for (MultipartFile file : files) {
