@@ -15,6 +15,7 @@ import toyproject.syxxn.back_end.exception.BlockedUserException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
 import toyproject.syxxn.back_end.exception.UserNotUnauthenticatedException;
 import toyproject.syxxn.back_end.service.util.AuthenticationUtil;
+import toyproject.syxxn.back_end.service.util.UserUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +30,8 @@ public class ProfileService {
     private final ReviewRepository reviewRepository;
     private final PostRepository postRepository;
 
-    private final AuthenticationUtil authenticationFacade;
+    private final UserUtil userUtil;
+    private final AuthenticationUtil authenticationUtil;
 
     public ProfileResponse getProfile(Integer accountId) {
         Account account = getAccount(accountId);
@@ -48,8 +50,7 @@ public class ProfileService {
     }
 
     public ProfileReviewResponse getReviews(Integer accountId) {
-        Account connectedAccount = accountRepository.findByEmail(authenticationFacade.getUserEmail())
-                .orElseThrow(UserNotUnauthenticatedException::new);
+        Account connectedAccount = userUtil .getLocalConfirmAccount();
 
         List<Review> reviews = reviewRepository.findAllByTarget(getAccount(accountId));
 
@@ -59,7 +60,7 @@ public class ProfileService {
                         .nickname(review.getWriter().getNickname())
                         .grade(review.getGrade())
                         .comment(review.getComment())
-                        .createdAt(review.getCreatedAt())
+                        .createdAt(review.getCreatedAt().toLocalDate().toString())
                         .isMyReview(review.getWriter().equals(connectedAccount))
                         .build()
         ).collect(Collectors.toList()));
@@ -86,7 +87,7 @@ public class ProfileService {
 
     private Account getAccount(Integer accountId) {
         if (accountId == null) {
-            return accountRepository.findByEmail(authenticationFacade.getUserEmail())
+            return accountRepository.findByEmail(authenticationUtil.getUserEmail())
                     .map(this::isBlocked)
                     .orElseThrow(UserNotUnauthenticatedException::new);
         } else {
