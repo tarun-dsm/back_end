@@ -48,12 +48,12 @@ public class PostControllerTest extends BaseTest {
                 .andExpect(status().isNotFound());
     }
 
-    @WithMockUser(value = "adsf123@naver.com", password = "asdf123@")
+    /*@WithMockUser(value = "adsf123@naver.com", password = "asdf123@")
     @Test
     public void deletePost() throws Exception {
         mvc.perform(delete("/post/" + postId)).andDo(print())
                 .andExpect(status().isOk());
-    }
+    }*/
 
     @WithMockUser(value = "test1234@gmail.com", password = "asdf123@")
     @Test
