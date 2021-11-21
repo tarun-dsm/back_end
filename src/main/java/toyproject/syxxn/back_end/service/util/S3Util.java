@@ -1,9 +1,7 @@
 package toyproject.syxxn.back_end.service.util;
 
-import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,8 +12,6 @@ import toyproject.syxxn.back_end.exception.FileSaveFailedException;
 import toyproject.syxxn.back_end.exception.InvalidFileExtensionException;
 
 import java.io.*;
-import java.net.URL;
-import java.util.Date;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -29,8 +25,6 @@ public class S3Util {
 
     @Value("${aws.s3.base-image-url}")
     private String baseImageUrl;
-
-    private static final int EXP_TIME = 1000 * 60 * 2;
 
     public void delete(String objectName) {
         amazonS3Client.deleteObject(bucketName, objectName);
@@ -47,19 +41,19 @@ public class S3Util {
         return filePath;
     }
 
-    public String generateObjectUrl(String filePath) {
-        Date expiration = new Date();
-        expiration.setTime(expiration.getTime() + EXP_TIME);
+    /*public String generateObjectUrl(String filePath){ 를 쓰려고 했는데 값이 요상하게 와서 일단 지워둠.
+            Date expiration = new Date();
+            expiration.setTime(expiration.getTime() + EXP_TIME);
 
-        GeneratePresignedUrlRequest generatePresignedUrlRequest =
-                new GeneratePresignedUrlRequest(bucketName, filePath)
-                        .withMethod(HttpMethod.GET)
-                        .withExpiration(expiration);
+            GeneratePresignedUrlRequest generatePresignedUrlRequest =
+                    new GeneratePresignedUrlRequest(bucketName, filePath)
+                            .withMethod(HttpMethod.GET)
+                            .withExpiration(expiration);
 
-        URL url = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
+            URL url = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
 
-        return url.toString();
-    }
+            return url.toExternalForm();
+    }*/
 
     private String verificationFile(MultipartFile file) {
         if(file == null || file.isEmpty() || file.getOriginalFilename() == null)
@@ -78,7 +72,7 @@ public class S3Util {
 
         amazonS3Client.putObject(new PutObjectRequest(bucketName, filePath, file.getInputStream(), null)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
-        return filePath;
+        return amazonS3Client.getUrl(bucketName, filePath).toString(); // key는 버킷/파일명인듯
     }
 
 }

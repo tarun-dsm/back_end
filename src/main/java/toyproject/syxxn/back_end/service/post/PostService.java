@@ -104,7 +104,7 @@ public class PostService {
                         .petSex(petInfo.getPetSex().toString())
                         .animalType(petInfo.getAnimalType().toString())
                         .filePaths(petImages.stream()
-                                .map(img -> s3Util.generateObjectUrl(img.getPath()))
+                                .map(PetImage::getPath)
                                 .collect(Collectors.toList()))
                         .build())
                 .post(PostDetailsResponse.PostDetailsDto.builder()
@@ -171,7 +171,7 @@ public class PostService {
                 .title(post.getTitle())
                 .animalType(post.getPetInfo().getAnimalType().toString())
                 .administrationDivision(post.getAccount().getAdministrationDivision())
-                .firstImagePath(s3Util.generateObjectUrl(post.getPetImages().get(0).getPath()))
+                .firstImagePath(post.getPetImages().get(0).getPath())
                 .protectionStartDate(post.getProtectionStartDate())
                 .protectionEndDate(post.getProtectionEndDate())
                 .build();
