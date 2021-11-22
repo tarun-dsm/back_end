@@ -38,12 +38,12 @@ public class PostService {
     private final UserUtil userUtil;
     private final S3Util s3Util;
 
+    @Transactional
     public void deletePost(Integer postId) {
         Post post = postUtil.getPost(postId, userUtil.getLocalConfirmAccount());
 
         for (PetImage petImage : post.getPetImages()) {
             s3Util.delete(petImage.getPath());
-            petImageRepository.delete(petImage);
         }
 
         postRepository.delete(post);
