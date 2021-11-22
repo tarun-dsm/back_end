@@ -15,6 +15,7 @@ import toyproject.syxxn.back_end.exception.BlockedUserException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
 import toyproject.syxxn.back_end.exception.UserNotUnauthenticatedException;
 import toyproject.syxxn.back_end.service.util.AuthenticationUtil;
+import toyproject.syxxn.back_end.service.util.S3Util;
 import toyproject.syxxn.back_end.service.util.UserUtil;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class ProfileService {
     private final PostRepository postRepository;
 
     private final UserUtil userUtil;
+    private final S3Util s3Util;
     private final AuthenticationUtil authenticationUtil;
 
     public ProfileResponse getProfile(Integer accountId) {
@@ -75,7 +77,7 @@ public class ProfileService {
                     return ProfilePostResponse.ProfilePostDto.builder()
                             .id(post.getId())
                             .title(post.getTitle())
-                            .firstImagePath(post.getPetImages().get(0).getPath())
+                            .firstImagePath(s3Util.getS3ObjectUrl(post.getPetImages().get(0).getPath()))
                             .createdAt(post.getCreatedAt())
                             .isApplicationEnd(post.getIsApplicationEnd())
                             .protectorId(application.isEmpty() ? null : application.get().getAccount().getId().toString())

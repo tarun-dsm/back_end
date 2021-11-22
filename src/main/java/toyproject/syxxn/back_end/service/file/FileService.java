@@ -33,6 +33,7 @@ public class FileService {
 
         for (PetImage petImage : post.getPetImages()) {
             s3Util.delete(petImage.getPath());
+            petImageRepository.delete(petImage);
         }
 
         try {

@@ -30,7 +30,7 @@ public class S3Util {
     private String baseImageUrl;
 
     public void delete(String objectName) {
-        amazonS3Client.deleteObject(bucketName, objectName.replaceAll(s3BaseUrl, ""));
+        amazonS3Client.deleteObject(bucketName, objectName);
     }
 
     public String uploadImage(MultipartFile file) throws IOException {
@@ -58,6 +58,10 @@ public class S3Util {
             return url.toExternalForm();
     }*/
 
+    public String getS3ObjectUrl(String path) {
+        return s3BaseUrl + path;
+    }
+
     private String verificationFile(MultipartFile file) {
         if(file == null || file.isEmpty() || file.getOriginalFilename() == null)
             throw new FileIsEmptyException();
@@ -75,7 +79,7 @@ public class S3Util {
 
         amazonS3Client.putObject(new PutObjectRequest(bucketName, filePath, file.getInputStream(), null)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
-        return amazonS3Client.getUrl(bucketName, filePath).toString(); // key는 버킷/파일명인듯
+        return filePath; // key는 버킷/파일명인듯
     }
 
 }
