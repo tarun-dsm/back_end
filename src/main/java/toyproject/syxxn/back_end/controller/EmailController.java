@@ -22,7 +22,7 @@ public class EmailController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PostMapping
+    @PatchMapping
     public void verify(@RequestBody @Valid VerifyRequest request) {
         emailService.verify(request);
     }
