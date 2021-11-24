@@ -1,6 +1,7 @@
 package toyproject.syxxn.back_end.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import toyproject.syxxn.back_end.dto.request.EmailRequest;
 import toyproject.syxxn.back_end.dto.request.VerifyRequest;
@@ -20,7 +21,8 @@ public class EmailController {
         emailService.sendVerifyNumberEmail(request.getEmail());
     }
 
-    @GetMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PostMapping
     public void verify(@RequestBody @Valid VerifyRequest request) {
         emailService.verify(request);
     }
