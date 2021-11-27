@@ -26,7 +26,7 @@ public class BaseCreatedAtEntity extends BaseIdEntity{
     }
 
     public String getCreatedAtToLocalDate() {
-        return String.valueOf(this.createdAt.plusHours(9));
+        return String.valueOf(this.createdAt.toLocalDate());
     }
 
 }
