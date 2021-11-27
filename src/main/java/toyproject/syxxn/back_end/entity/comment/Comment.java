@@ -50,7 +50,7 @@ public class Comment extends BaseCreatedAtEntity {
         return this;
     }
 
-    public String getUpdatedAt() {
+    public String getUpdatedAtToString() {
         return String.valueOf(ZonedDateTime.of(this.updatedAt, ZoneId.of("Asia/Seoul")));
     }
 

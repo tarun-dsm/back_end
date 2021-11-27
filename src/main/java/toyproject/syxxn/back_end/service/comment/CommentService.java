@@ -73,7 +73,7 @@ public class CommentService {
                                 .comment(c.getComment())
                                 .createdAt(c.getCreatedAt() == null ? null : c.getCreatedAtToString())
                                 .isUpdated(c.getIsUpdated())
-                                .updatedAt(c.getUpdatedAt() == null ? null : c.getUpdatedAt())
+                                .updatedAt(c.getUpdatedAt() == null ? null : c.getUpdatedAtToString())
                                 .isMine(c.getWriter().getEmail().equals(email))
                             .build()
                 ).collect(Collectors.toList())
