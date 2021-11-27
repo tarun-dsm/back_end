@@ -52,7 +52,7 @@ public class Comment extends BaseCreatedAtEntity {
     }
 
     public String getUpdatedAtToString() {
-        return this.updatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        return this.updatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
     }
 
 }
