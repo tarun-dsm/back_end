@@ -13,6 +13,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -51,7 +52,7 @@ public class Comment extends BaseCreatedAtEntity {
     }
 
     public String getUpdatedAtToString() {
-        return String.valueOf(this.updatedAt.plusHours(9));
+        return this.updatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
     }
 
 }
