@@ -29,7 +29,7 @@ public class ApplicationResponse {
 
         private Boolean isAccepted;
 
-        private LocalDateTime applicationDate;
+        private String applicationDate;
 
         private String administrationDivision;
 

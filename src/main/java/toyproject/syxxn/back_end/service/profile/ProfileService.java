@@ -62,7 +62,7 @@ public class ProfileService {
                         .nickname(review.getWriter().getNickname())
                         .grade(review.getGrade())
                         .comment(review.getComment())
-                        .createdAt(review.getCreatedAt().toLocalDate().toString())
+                        .createdAt(review.getCreatedAtToLocalDate())
                         .isMyReview(review.getWriter().equals(connectedAccount))
                         .build()
         ).collect(Collectors.toList()));
@@ -78,7 +78,7 @@ public class ProfileService {
                             .id(post.getId())
                             .title(post.getTitle())
                             .firstImagePath(s3Util.getS3ObjectUrl(post.getPetImages().get(0).getPath()))
-                            .createdAt(post.getCreatedAt())
+                            .createdAt(post.getCreatedAtToString())
                             .isApplicationEnd(post.getIsApplicationEnd())
                             .protectorId(application.isEmpty() ? null : application.get().getAccount().getId().toString())
                             .protectorNickname(application.isEmpty() ? null : application.get().getAccount().getNickname())

@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Getter
 @MappedSuperclass
@@ -19,5 +21,13 @@ public class BaseCreatedAtEntity extends BaseIdEntity{
     @DateTimeFormat(pattern = "yyyy-MM-dd`T`hh:mm:ss")
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    public String getCreatedAtToString() {
+        return String.valueOf(ZonedDateTime.of(this.createdAt, ZoneId.of("Asia/Seoul")));
+    }
+
+    public String getCreatedAtToLocalDate() {
+        return String.valueOf(ZonedDateTime.of(this.createdAt, ZoneId.of("Asia/Seoul")).toLocalDate());
+    }
 
 }

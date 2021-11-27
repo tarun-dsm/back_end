@@ -112,7 +112,7 @@ public class ApplicationService {
         return new MyApplicationResponse(applications.stream().map(
                 application -> MyApplicationResponse.MyApplicationDto.builder()
                         .id(application.getId())
-                        .applicationDate(application.getCreatedAt())
+                        .applicationDate(application.getCreatedAtToString())
                         .isAccepted(application.getIsAccepted())
                         .postId(application.getPost().getId())
                         .postName(application.getPost().getTitle())
@@ -128,7 +128,7 @@ public class ApplicationService {
         return new ApplicationResponse(applications.stream().map(application ->
                 ApplicationResponse.ApplicationDto.builder()
                         .applicationId(application.getId())
-                        .applicationDate(application.getCreatedAt())
+                        .applicationDate(application.getCreatedAtToString())
                         .applicantId(application.getAccount().getId())
                         .isAccepted(application.getIsAccepted())
                         .applicantNickname(application.getAccount().getNickname())

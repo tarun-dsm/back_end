@@ -11,6 +11,8 @@ import toyproject.syxxn.back_end.entity.post.Post;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -46,6 +48,10 @@ public class Comment extends BaseCreatedAtEntity {
         this.isUpdated = true;
         this.updatedAt = LocalDateTime.now();
         return this;
+    }
+
+    public String getUpdatedAt() {
+        return String.valueOf(ZonedDateTime.of(this.updatedAt, ZoneId.of("Asia/Seoul")));
     }
 
 }

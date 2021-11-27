@@ -115,7 +115,7 @@ public class PostService {
                         .protectionEndDate(post.getProtectionEndDate())
                         .applicationEndDate(post.getApplicationEndDate())
                         .contactInfo(post.getContactInfo())
-                        .createdAt(post.getCreatedAt())
+                        .createdAt(post.getCreatedAtToString())
                         .isApplicationEnd(post.getIsApplicationEnd())
                         .isUpdated(post.getIsUpdated())
                         .build())

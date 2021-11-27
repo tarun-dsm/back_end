@@ -31,7 +31,7 @@ public class MyApplicationResponse {
 
         private boolean isEnd;
 
-        private LocalDateTime applicationDate;
+        private String applicationDate;
 
     }
 

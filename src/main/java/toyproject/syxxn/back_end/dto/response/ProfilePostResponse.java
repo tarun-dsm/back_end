@@ -26,7 +26,7 @@ public class ProfilePostResponse {
 
         private String firstImagePath;
 
-        private LocalDateTime createdAt;
+        private String createdAt;
 
         private Boolean isApplicationEnd;
 
