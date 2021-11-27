@@ -9,8 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 @Getter
 @MappedSuperclass
@@ -23,11 +21,12 @@ public class BaseCreatedAtEntity extends BaseIdEntity{
     private LocalDateTime createdAt;
 
     public String getCreatedAtToString() {
-        return String.valueOf(ZonedDateTime.of(this.createdAt, ZoneId.of("Asia/Seoul")));
+
+        return String.valueOf(this.createdAt);
     }
 
     public String getCreatedAtToLocalDate() {
-        return String.valueOf(ZonedDateTime.of(this.createdAt, ZoneId.of("Asia/Seoul")).toLocalDate());
+        return String.valueOf(this.createdAt.plusHours(9));
     }
 
 }
