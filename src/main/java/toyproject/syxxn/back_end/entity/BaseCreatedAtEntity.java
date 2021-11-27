@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @MappedSuperclass
@@ -21,8 +22,7 @@ public class BaseCreatedAtEntity extends BaseIdEntity{
     private LocalDateTime createdAt;
 
     public String getCreatedAtToString() {
-
-        return String.valueOf(this.createdAt);
+        return this.createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
     }
 
     public String getCreatedAtToLocalDate() {
