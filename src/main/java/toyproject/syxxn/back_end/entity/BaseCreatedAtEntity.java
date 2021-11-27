@@ -22,11 +22,11 @@ public class BaseCreatedAtEntity extends BaseIdEntity{
     private LocalDateTime createdAt;
 
     public String getCreatedAtToString() {
-        return this.createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+        return this.createdAt.plusHours(9).format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
     }
 
     public String getCreatedAtToLocalDate() {
-        return String.valueOf(this.createdAt.toLocalDate());
+        return String.valueOf(this.createdAt.plusHours(9).toLocalDate());
     }
 
 }

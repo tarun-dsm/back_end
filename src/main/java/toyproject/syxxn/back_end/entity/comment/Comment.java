@@ -51,7 +51,7 @@ public class Comment extends BaseCreatedAtEntity {
     }
 
     public String getUpdatedAtToString() {
-        return String.valueOf(this.updatedAt);
+        return String.valueOf(this.updatedAt.plusHours(9));
     }
 
 }
