@@ -80,8 +80,8 @@ public class ProfileService {
                             .firstImagePath(s3Util.getS3ObjectUrl(post.getPetImages().get(0).getPath()))
                             .createdAt(post.getCreatedAtToString())
                             .isApplicationEnd(post.getIsApplicationEnd())
-                            .protectorId(application.isEmpty() ? null : application.get().getAccount().getId().toString())
-                            .protectorNickname(application.isEmpty() ? null : application.get().getAccount().getNickname())
+                            .protectorId(application.isEmpty() ? null : application.get().getApplicant().getId().toString())
+                            .protectorNickname(application.isEmpty() ? null : application.get().getApplicant().getNickname())
                             .build();
                 }
         ).collect(Collectors.toList()));

@@ -53,7 +53,7 @@ public class ApplicationService {
         applicationRepository.save(
                 Application.builder()
                         .isAccepted(false)
-                        .account(account)
+                        .applicant(account)
                         .post(post)
                         .build()
         );
@@ -99,11 +99,10 @@ public class ApplicationService {
 
         try {
             String text = "\'" + post.getTitle() + "\' 게시글의 신청이 수락되었습니다.";
-            emailUtil.sendEmail(application.getAccount().getEmail(), ACCEPT_APPLICATION, text);
+            emailUtil.sendEmail(application.getApplicant().getEmail(), ACCEPT_APPLICATION, text);
         } catch (Exception e) {
             throw new EmailSendException();
         }
-
     }
 
     public MyApplicationResponse getMyApplications() {
@@ -129,10 +128,10 @@ public class ApplicationService {
                 ApplicationResponse.ApplicationDto.builder()
                         .applicationId(application.getId())
                         .applicationDate(application.getCreatedAtToString())
-                        .applicantId(application.getAccount().getId())
+                        .applicantId(application.getApplicant().getId())
                         .isAccepted(application.getIsAccepted())
-                        .applicantNickname(application.getAccount().getNickname())
-                        .administrationDivision(application.getAccount().getAdministrationDivision())
+                        .applicantNickname(application.getApplicant().getNickname())
+                        .administrationDivision(application.getApplicant().getAdministrationDivision())
                         .build()
         ).collect(Collectors.toList()));
     }

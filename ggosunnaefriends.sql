@@ -44,10 +44,12 @@ CREATE TABLE `application` (
   `id` INT NOT NULL AUTO_INCREMENT, 
   `is_accepted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL,
-  `account_id` INT NOT NULL,
+  `applicant_id` INT NOT NULL,
+  `post_writer_id` INT NOT NULL,
   `post_id` INT NOT NULL,
   PRIMARY KEY(`id`),
-  FOREIGN KEY(`account_id`) REFERENCES `account`(`id`),
+  FOREIGN KEY(`applicant_id`) REFERENCES `account`(`id`),
+  FOREIGN KEY(`post_writer_id`) REFERENCES `account`(`id`),
   FOREIGN KEY(`post_id`) REFERENCES `post`(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 

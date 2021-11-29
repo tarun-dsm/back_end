@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"account_id", "post_id"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"applicant_id", "post_id"}))
 @QueryEntity
 public class Application extends BaseCreatedAtEntity {
 
@@ -24,8 +24,12 @@ public class Application extends BaseCreatedAtEntity {
     private Boolean isAccepted;
 
     @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
+    @JoinColumn(name = "applicant_id", nullable = false)
+    private Account applicant;
+
+    @ManyToOne
+    @JoinColumn(name = "post_writer_id", nullable = false)
+    private Account postWriter;
 
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
@@ -35,10 +39,11 @@ public class Application extends BaseCreatedAtEntity {
     private List<Review> reviews;
 
     @Builder
-    public Application(Boolean isAccepted, Account account, Post post) {
+    public Application(Boolean isAccepted, Account applicant, Post post) {
         this.isAccepted = isAccepted;
-        this.account = account;
+        this.applicant = applicant;
         this.post = post;
+        this.postWriter = post.getAccount();
     }
 
     public void acceptApplication() {
