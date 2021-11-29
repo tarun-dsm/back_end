@@ -55,6 +55,10 @@ public class AccountService {
                 .filter(VerifyNumber::isVerified)
                 .orElseThrow(UserNotUnauthenticatedException::new);
 
+        if (!request.isExperienceRasingPet() && request.getExperience() != null) {
+            throw new ExperienceRequiredNullException();
+        }
+
         Integer accountId = accountRepository.save(
                 Account.builder()
                         .email(request.getEmail())
