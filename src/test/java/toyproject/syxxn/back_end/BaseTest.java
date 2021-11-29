@@ -110,7 +110,7 @@ public class BaseTest {
         return applicationRepository.save(
                 Application.builder()
                         .post(createPost(account1, isEnd, endDate))
-                        .account(account2)
+                        .applicant(account2)
                         .isAccepted(isAccepted)
                         .build()
         );
@@ -120,7 +120,7 @@ public class BaseTest {
         return applicationRepository.save(
                 Application.builder()
                         .post(createPost(account1, false, "2021-09-08"))
-                        .account(account2)
+                        .applicant(account2)
                         .isAccepted(isAccepted)
                         .build()
         );

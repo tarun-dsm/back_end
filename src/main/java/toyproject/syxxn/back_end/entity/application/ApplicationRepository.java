@@ -1,5 +1,6 @@
 package toyproject.syxxn.back_end.entity.application;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import toyproject.syxxn.back_end.entity.account.Account;
@@ -15,4 +16,6 @@ public interface ApplicationRepository extends CrudRepository<Application, Integ
     List<Application> findAllByPost(Post post);
     Optional<Application> findByPostAndIsAcceptedTrue(Post post);
     Optional<Application> findByPostAndAccount(Post post, Account account);
+    @Query("select a from Application a where a.isAccepted = true and ((a.applicant = ?1 and a.postWriter = ?2) or (a.postWriter = ?1 and a.applicant = ?2))")
+    List<Application> findAllByVisitAccountAndMe(Account visitAccount, Account me);
 }

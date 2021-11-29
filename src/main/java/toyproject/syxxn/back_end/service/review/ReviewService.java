@@ -39,10 +39,10 @@ public class ReviewService {
         }
 
         Account target;
-        if (writer.getId().equals(application.getAccount().getId())) {
-            target = application.getPost().getAccount();
+        if (writer.getId().equals(application.getApplicant().getId())) {
+            target = application.getPostWriter();
         } else if (writer.getEmail().equals(application.getPost().getAccount().getEmail())) {
-            target = application.getAccount();
+            target = application.getApplicant();
         } else {
             throw new UserNotAccessibleException();
         }

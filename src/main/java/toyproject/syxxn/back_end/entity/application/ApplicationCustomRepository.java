@@ -21,7 +21,7 @@ public class ApplicationCustomRepository {
     public Boolean existsNotEndApplication(Account user) {
         return jpaQueryFactory.selectFrom(application)
                 .innerJoin(application.post, post)
-                .innerJoin(application.account, account)
+                .innerJoin(application.applicant, account)
                 .where(account.eq(user))
                 .where(post.isApplicationEnd.eq(false)
                     .or(application.isAccepted.eq(true)))
