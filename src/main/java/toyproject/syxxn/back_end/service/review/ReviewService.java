@@ -40,7 +40,7 @@ public class ReviewService {
 
         Account target;
         if (writer.getId().equals(application.getApplicant().getId())) {
-            target = application.getPostWriter();
+            target = application.getPost().getAccount();
         } else if (writer.getEmail().equals(application.getPost().getAccount().getEmail())) {
             target = application.getApplicant();
         } else {

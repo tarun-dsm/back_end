@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import toyproject.syxxn.back_end.dto.request.CoordinatesRequest;
 import toyproject.syxxn.back_end.dto.request.ReportRequest;
 import toyproject.syxxn.back_end.dto.request.SignUpRequest;
+import toyproject.syxxn.back_end.dto.response.HaveEverBeenEntrustedResponse;
 import toyproject.syxxn.back_end.dto.response.TokenResponse;
 import toyproject.syxxn.back_end.service.account.AccountService;
 
@@ -50,6 +51,11 @@ public class AccountController {
     @ResponseStatus(HttpStatus.CREATED)
     public void makeReport(@PathVariable Integer id, @RequestBody @Valid ReportRequest request) {
         accountService.makeReport(request.getComment(), id);
+    }
+
+    @GetMapping("/account/enterested")
+    public HaveEverBeenEntrustedResponse haveEverBeenEntrusted(@RequestParam String email) {
+        return accountService.haveEverBeenEntrusted(email);
     }
 
 }

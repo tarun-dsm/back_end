@@ -8,16 +8,19 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.syxxn.back_end.dto.request.CoordinatesRequest;
 import toyproject.syxxn.back_end.dto.request.SignUpRequest;
+import toyproject.syxxn.back_end.dto.response.HaveEverBeenEntrustedResponse;
 import toyproject.syxxn.back_end.dto.response.TokenResponse;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.Sex;
+import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
 import toyproject.syxxn.back_end.entity.report.Report;
 import toyproject.syxxn.back_end.entity.report.ReportRepository;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumber;
@@ -34,6 +37,7 @@ import java.math.BigDecimal;
 public class AccountService {
 
     private final AccountRepository accountRepository;
+    private final ApplicationRepository applicationRepository;
     private final ReportRepository reportRepository;
     private final VerifyNumberRepository verifyNumberRepository;
 
@@ -46,7 +50,7 @@ public class AccountService {
 
     private static final String KAKAO_API_URL = "https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=";
 
-    private final UserUtil baseService;
+    private final UserUtil userUtil;
     private final TokenUtil tokenUtil;
 
     @Transactional
@@ -92,7 +96,7 @@ public class AccountService {
     @Transactional
     public void saveCoordinate(CoordinatesRequest request) throws JsonProcessingException, UnirestException {
         Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
-                .filter(baseService::isNotBlocked)
+                .filter(userUtil::isNotBlocked)
                 .orElseThrow(UserNotFoundException::new);
         Double x = request.getLongitude();
         Double y = request.getLatitude();
@@ -102,8 +106,19 @@ public class AccountService {
         account.updateLocation(BigDecimal.valueOf(x), BigDecimal.valueOf(y), administrationDivision);
     }
 
+    public HaveEverBeenEntrustedResponse haveEverBeenEntrusted(String email) {
+        Account me = userUtil.getLocalConfirmAccount();
+        Account target = accountRepository.findByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
+
+        if (applicationRepository.findAllByVisitAccountAndMe(target, me).size() > 0) {
+            return new HaveEverBeenEntrustedResponse(true);
+        }
+        return new HaveEverBeenEntrustedResponse(false);
+    }
+
     public void makeReport(String comment, Integer id) {
-        Account reporter = baseService.getLocalConfirmAccount();
+        Account reporter = userUtil.getLocalConfirmAccount();
         Account target = accountRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
 

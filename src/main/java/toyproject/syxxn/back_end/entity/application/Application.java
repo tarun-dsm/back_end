@@ -28,10 +28,6 @@ public class Application extends BaseCreatedAtEntity {
     private Account applicant;
 
     @ManyToOne
-    @JoinColumn(name = "post_writer_id", nullable = false)
-    private Account postWriter;
-
-    @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
@@ -43,7 +39,6 @@ public class Application extends BaseCreatedAtEntity {
         this.isAccepted = isAccepted;
         this.applicant = applicant;
         this.post = post;
-        this.postWriter = post.getAccount();
     }
 
     public void acceptApplication() {
