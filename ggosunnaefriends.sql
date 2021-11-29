@@ -41,7 +41,7 @@ CREATE TABLE `post` (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE `application` (
-  `id` INT NOT NULL AUTO_INCREMENT, 
+  `id` INT NOT NULL AUTO_INCREMENT,
   `is_accepted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL,
   `applicant_id` INT NOT NULL,

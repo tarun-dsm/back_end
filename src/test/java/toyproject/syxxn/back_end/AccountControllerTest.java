@@ -101,7 +101,7 @@ public class AccountControllerTest extends BaseTest {
                 .nickname("닉네임야호")
                 .age(120)
                 .sex("FEMALE")
-                .isExperienceRasingPet(true)
+                .isExperienceRaisingPet(true)
                 .experience("야호")
                 .build();
 
@@ -119,7 +119,7 @@ public class AccountControllerTest extends BaseTest {
                 .nickname("닉네임야호")
                 .age(120)
                 .sex("FEMALE")
-                .isExperienceRasingPet(true)
+                .isExperienceRaisingPet(true)
                 .experience("야호")
                 .build();
 
@@ -137,7 +137,7 @@ public class AccountControllerTest extends BaseTest {
                 .nickname("닉네임이다 이거야")
                 .age(120)
                 .sex("FEMALE")
-                .isExperienceRasingPet(true)
+                .isExperienceRaisingPet(true)
                 .experience("야호")
                 .build();
 
