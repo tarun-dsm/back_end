@@ -108,7 +108,7 @@ public class AccountControllerTest extends BaseTest {
         mvc.perform(post("/account")
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-        ).andExpect(status().isCreated());
+        ).andDo(print()).andExpect(status().isCreated());
     }
 
     @Test

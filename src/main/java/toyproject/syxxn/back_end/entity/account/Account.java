@@ -61,8 +61,11 @@ public class Account extends BaseIdEntity {
     @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "applicant", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Application> applications;
+
+    @OneToMany(mappedBy = "postWriter", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Application> postWriters;
 
     @OneToMany(mappedBy = "writer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Review> writtenReview;

@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Getter
@@ -33,7 +34,8 @@ public class SignUpRequest {
     @NotBlank
     private String sex;
 
-    private boolean isExperienceRasingPet;
+    @NotNull
+    private Boolean isExperienceRasingPet;
 
     @Length(max = 100)
     private String experience;

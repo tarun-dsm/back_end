@@ -180,7 +180,7 @@ public class PostService {
 
     private boolean isApplied(Account account, Post post) {
         if (postUtil.postIsMine(account, post)) return false;
-        return applicationRepository.findByPostAndAccount(post, account).isPresent();
+        return applicationRepository.findByPostAndApplicant(post, account).isPresent();
     }
 
 }

@@ -55,7 +55,7 @@ public class AccountService {
                 .filter(VerifyNumber::isVerified)
                 .orElseThrow(UserNotUnauthenticatedException::new);
 
-        if (!request.isExperienceRasingPet() && request.getExperience() != null) {
+        if (!request.getIsExperienceRasingPet() && request.getExperience() != null) {
             throw new ExperienceRequiredNullException();
         }
 
@@ -66,7 +66,7 @@ public class AccountService {
                         .nickname(request.getNickname())
                         .age(request.getAge())
                         .sex(Sex.valueOf(request.getSex()))
-                        .isExperienceRaisingPet(request.isExperienceRasingPet())
+                        .isExperienceRaisingPet(request.getIsExperienceRasingPet())
                         .experience(request.getExperience())
                         .build()
         ).getId();

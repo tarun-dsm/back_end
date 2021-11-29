@@ -70,7 +70,7 @@ public class ApplicationService {
     public void cancelApplication(Integer postId) {
         String email = baseService.getLocalConfirmAccount().getEmail();
 
-        Application application = applicationRepository.findByPostIdAndAccountEmail(postId, email)
+        Application application = applicationRepository.findByPostIdAndApplicantEmail(postId, email)
                 .orElseThrow(ApplicationNotFoundException::new);
 
         if (!isApplicationClosed(application.getPost())) {
@@ -106,7 +106,7 @@ public class ApplicationService {
     }
 
     public MyApplicationResponse getMyApplications() {
-        List<Application> applications = applicationRepository.findAllByAccount(baseService.getLocalConfirmAccount());
+        List<Application> applications = applicationRepository.findAllByApplicant(baseService.getLocalConfirmAccount());
 
         return new MyApplicationResponse(applications.stream().map(
                 application -> MyApplicationResponse.MyApplicationDto.builder()
