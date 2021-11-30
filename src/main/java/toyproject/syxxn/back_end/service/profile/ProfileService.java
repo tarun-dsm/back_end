@@ -12,12 +12,14 @@ import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.entity.review.Review;
 import toyproject.syxxn.back_end.entity.review.ReviewRepository;
 import toyproject.syxxn.back_end.exception.BlockedUserException;
+import toyproject.syxxn.back_end.exception.UserNotAccessibleException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
 import toyproject.syxxn.back_end.exception.UserNotUnauthenticatedException;
 import toyproject.syxxn.back_end.service.util.AuthenticationUtil;
 import toyproject.syxxn.back_end.service.util.S3Util;
 import toyproject.syxxn.back_end.service.util.UserUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,7 +33,6 @@ public class ProfileService {
     private final ReviewRepository reviewRepository;
     private final PostRepository postRepository;
 
-    private final UserUtil userUtil;
     private final S3Util s3Util;
     private final AuthenticationUtil authenticationUtil;
 
@@ -52,26 +53,32 @@ public class ProfileService {
     }
 
     public ProfileReviewResponse getReviews(Integer accountId) {
-        Account connectedAccount = userUtil .getLocalConfirmAccount();
+        Account account = getMe();
+        Account accessedAccount = getAccount(accountId);
+        if (!account.getIsLocationConfirm()) {
+            return new ProfileReviewResponse(new ArrayList<>());
+        }
 
-        List<Review> reviews = reviewRepository.findAllByTarget(getAccount(accountId));
-
-        return new ProfileReviewResponse(reviews.stream().map(
+        return new ProfileReviewResponse(reviewRepository.findAllByTarget(accessedAccount).stream().map(
                 review -> ProfileReviewResponse.ProfileReviewDto.builder()
                         .id(review.getId())
                         .nickname(review.getWriter().getNickname())
                         .grade(review.getGrade())
                         .comment(review.getComment())
                         .createdAt(review.getCreatedAtToLocalDate())
-                        .isMyReview(review.getWriter().equals(connectedAccount))
+                        .isMyReview(review.getWriter().equals(account))
                         .build()
         ).collect(Collectors.toList()));
     }
 
     public ProfilePostResponse getPosts(Integer accountId) {
-        List<Post> posts = postRepository.findAllByAccountAndPetImagesNotNullOrderByCreatedAtDesc(getAccount(accountId));
+        Account account = getMe();
+        Account accessedAccount = getAccount(accountId);
+        if (!account.getIsLocationConfirm()) {
+            return new ProfilePostResponse(new ArrayList<>());
+        }
 
-        return new ProfilePostResponse(posts.stream().map(
+        return new ProfilePostResponse(postRepository.findAllByAccountAndPetImagesNotNullOrderByCreatedAtDesc(accessedAccount).stream().map(
                 post -> {
                     Optional<Application> application = applicationRepository.findByPostAndIsAcceptedTrue(post);
                     return ProfilePostResponse.ProfilePostDto.builder()
@@ -89,15 +96,22 @@ public class ProfileService {
 
     private Account getAccount(Integer accountId) {
         if (accountId == null) {
-            return accountRepository.findByEmail(authenticationUtil.getUserEmail())
-                    .map(this::isBlocked)
-                    .orElseThrow(UserNotUnauthenticatedException::new);
+            return getMe();
         } else {
+            if (!getMe().getIsLocationConfirm()) {
+                throw new UserNotAccessibleException();
+            }
 
             return accountRepository.findById(accountId)
                     .map(this::isBlocked)
                     .orElseThrow(UserNotFoundException::new);
         }
+    }
+
+    private Account getMe() {
+        return accountRepository.findByEmail(authenticationUtil.getUserEmail())
+                .map(this::isBlocked)
+                .orElseThrow(UserNotUnauthenticatedException::new);
     }
 
     private Account isBlocked(Account account) {
