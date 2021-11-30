@@ -53,7 +53,7 @@ public class AccountController {
         accountService.makeReport(request.getComment(), id);
     }
 
-    @GetMapping("/account/enterested")
+    @GetMapping("/enterested")
     public HaveEverBeenEntrustedResponse haveEverBeenEntrusted(@RequestParam int id) {
         return accountService.haveEverBeenEntrusted(id);
     }
