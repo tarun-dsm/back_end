@@ -112,7 +112,6 @@ public class ApplicationService {
                     Post post = application.getPost();
                     return MyApplicationResponse.MyApplicationDto.builder()
                             .id(application.getId())
-                            .applicationDate(application.getCreatedAtToString())
                             .isAccepted(application.getIsAccepted())
                             .postId(post.getId())
                             .postName(post.getTitle())
