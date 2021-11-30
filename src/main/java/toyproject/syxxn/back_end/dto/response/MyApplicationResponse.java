@@ -31,6 +31,14 @@ public class MyApplicationResponse {
 
         private boolean isEnd;
 
+        private String firstImagePath;
+
+        private String startDate;
+
+        private String endDate;
+
+        private String administrationDivision;
+
         private String applicationDate;
 
     }

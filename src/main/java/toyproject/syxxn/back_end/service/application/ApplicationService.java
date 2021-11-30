@@ -106,17 +106,23 @@ public class ApplicationService {
     }
 
     public MyApplicationResponse getMyApplications() {
-        List<Application> applications = applicationRepository.findAllByApplicant(baseService.getLocalConfirmAccount());
 
-        return new MyApplicationResponse(applications.stream().map(
-                application -> MyApplicationResponse.MyApplicationDto.builder()
-                        .id(application.getId())
-                        .applicationDate(application.getCreatedAtToString())
-                        .isAccepted(application.getIsAccepted())
-                        .postId(application.getPost().getId())
-                        .postName(application.getPost().getTitle())
-                        .isEnd(application.getPost().getIsApplicationEnd())
-                        .build()
+        return new MyApplicationResponse(applicationRepository.findAllByApplicant(baseService.getLocalConfirmAccount()).stream().map(
+                application -> {
+                    Post post = application.getPost();
+                    return MyApplicationResponse.MyApplicationDto.builder()
+                            .id(application.getId())
+                            .applicationDate(application.getCreatedAtToString())
+                            .isAccepted(application.getIsAccepted())
+                            .postId(post.getId())
+                            .postName(post.getTitle())
+                            .startDate(post.getProtectionStartDate().toString())
+                            .endDate(post.getProtectionEndDate().toString())
+                            .firstImagePath(post.getPetImages().get(0).getPath())
+                            .administrationDivision(post.getAccount().getAdministrationDivision())
+                            .isEnd(post.getIsApplicationEnd())
+                            .build();
+                }
         ).collect(Collectors.toList()));
     }
 
