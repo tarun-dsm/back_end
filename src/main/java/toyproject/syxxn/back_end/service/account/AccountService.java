@@ -59,9 +59,6 @@ public class AccountService {
                 .filter(VerifyNumber::isVerified)
                 .orElseThrow(UserNotUnauthenticatedException::new);
 
-        System.out.println(request.getIsExperienceRaisingPet());
-        System.out.println(request.getExperience().length());
-
         if (!request.getIsExperienceRaisingPet() && request.getExperience() != null) {
             throw new ExperienceRequiredNullException();
         }
