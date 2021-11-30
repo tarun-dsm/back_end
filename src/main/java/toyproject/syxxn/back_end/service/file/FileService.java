@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import toyproject.syxxn.back_end.entity.pet.PetImage;
 import toyproject.syxxn.back_end.entity.pet.PetImageRepository;
+import toyproject.syxxn.back_end.entity.pet.PetInfoRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
+import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.exception.*;
 import toyproject.syxxn.back_end.service.util.PostUtil;
 import toyproject.syxxn.back_end.service.util.S3Util;
@@ -18,7 +20,9 @@ import java.util.List;
 @Service
 public class FileService {
 
+    private final PostRepository postRepository;
     private final PetImageRepository petImageRepository;
+    private final PetInfoRepository petInfoRepository;
 
     private final PostUtil postUtil;
     private final UserUtil userUtil;
@@ -30,11 +34,7 @@ public class FileService {
         if (files.size() > 5) {
             throw new FileNumberExceedException();
         }
-
-        for (PetImage petImage : post.getPetImages()) {
-            s3Util.delete(petImage.getPath());
-            petImageRepository.delete(petImage);
-        }
+        deleteImage(post.getPetImages());
 
         try {
             for (MultipartFile file : files) {
@@ -42,10 +42,18 @@ public class FileService {
                         new PetImage(post, s3Util.uploadImage(file)));
             }
         } catch (IOException e) {
+            petInfoRepository.delete(post.getPetInfo());
+            postRepository.delete(post);
+            deleteImage(post.getPetImages());
             throw new FileSaveFailedException();
         }
     }
 
-
+    public void deleteImage(List<PetImage> petImages) {
+        for (PetImage petImage : petImages) {
+            s3Util.delete(petImage.getPath());
+            petImageRepository.delete(petImage);
+        }
+    }
 
 }
