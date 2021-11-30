@@ -54,8 +54,8 @@ public class AccountController {
     }
 
     @GetMapping("/account/enterested")
-    public HaveEverBeenEntrustedResponse haveEverBeenEntrusted(@RequestParam String email) {
-        return accountService.haveEverBeenEntrusted(email);
+    public HaveEverBeenEntrustedResponse haveEverBeenEntrusted(@RequestParam int id) {
+        return accountService.haveEverBeenEntrusted(id);
     }
 
 }

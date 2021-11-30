@@ -1,15 +1,14 @@
 package toyproject.syxxn.back_end.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Getter
@@ -35,7 +34,8 @@ public class SignUpRequest {
     @NotBlank
     private String sex;
 
-    private boolean isExperienceRaisingPet;
+    @NotNull
+    private Boolean isExperienceRaisingPet;
 
     @Length(max = 100)
     private String experience;

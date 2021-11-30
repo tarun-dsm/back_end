@@ -59,10 +59,10 @@ public class AccountService {
                 .filter(VerifyNumber::isVerified)
                 .orElseThrow(UserNotUnauthenticatedException::new);
 
-        System.out.println(request.isExperienceRaisingPet());
+        System.out.println(request.getIsExperienceRaisingPet());
         System.out.println(request.getExperience().length());
 
-        if (!request.isExperienceRaisingPet() && request.getExperience() != null) {
+        if (!request.getIsExperienceRaisingPet() && request.getExperience() != null) {
             throw new ExperienceRequiredNullException();
         }
 
@@ -73,7 +73,7 @@ public class AccountService {
                         .nickname(request.getNickname())
                         .age(request.getAge())
                         .sex(Sex.valueOf(request.getSex()))
-                        .isExperienceRaisingPet(request.isExperienceRaisingPet())
+                        .isExperienceRaisingPet(request.getIsExperienceRaisingPet())
                         .experience(request.getExperience())
                         .build()
         ).getId();
@@ -109,9 +109,9 @@ public class AccountService {
         account.updateLocation(BigDecimal.valueOf(x), BigDecimal.valueOf(y), administrationDivision);
     }
 
-    public HaveEverBeenEntrustedResponse haveEverBeenEntrusted(String email) {
+    public HaveEverBeenEntrustedResponse haveEverBeenEntrusted(int id) {
         Account me = userUtil.getLocalConfirmAccount();
-        Account target = accountRepository.findByEmail(email)
+        Account target = accountRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
 
         if (applicationRepository.findAllByVisitAccountAndMe(target, me).size() > 0) {
