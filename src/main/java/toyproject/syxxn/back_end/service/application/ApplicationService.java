@@ -12,6 +12,7 @@ import toyproject.syxxn.back_end.entity.application.ApplicationCustomRepository;
 import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
+import toyproject.syxxn.back_end.entity.review.ReviewRepository;
 import toyproject.syxxn.back_end.exception.*;
 import toyproject.syxxn.back_end.service.util.EmailUtil;
 import toyproject.syxxn.back_end.service.util.PostUtil;
@@ -29,11 +30,12 @@ public class ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final ApplicationCustomRepository applicationCustomRepository;
     private final PostRepository postRepository;
+    private final ReviewRepository reviewRepository;
 
     private final EmailUtil emailUtil;
     private final PostUtil postUtil;
     private final S3Util s3Util;
-    private final UserUtil baseService;
+    private final UserUtil userUtil;
 
     private static final String NEW_APPLICATION = "회원님의 게시글에 새로운 신청이 있습니다.";
     private static final String ACCEPT_APPLICATION = "회원님의 신청이 수락되었습니다.";
@@ -41,7 +43,7 @@ public class ApplicationService {
     @Async
     @Transactional
     public void protectionApplication(Integer postId) {
-        Account account = baseService.getLocalConfirmAccount();
+        Account account = userUtil.getLocalConfirmAccount();
         Post post = postUtil.getPost(postId);
 
         if (account.getEmail().equals(post.getAccount().getEmail())) {
@@ -70,7 +72,7 @@ public class ApplicationService {
     }
 
     public void cancelApplication(Integer postId) {
-        String email = baseService.getLocalConfirmAccount().getEmail();
+        String email = userUtil.getLocalConfirmAccount().getEmail();
 
         Application application = applicationRepository.findByPostIdAndApplicantEmail(postId, email)
                 .orElseThrow(ApplicationNotFoundException::new);
@@ -83,7 +85,7 @@ public class ApplicationService {
     @Async
     @Transactional
     public void acceptApplication(Integer applicationId) {
-        Account account = baseService.getLocalConfirmAccount();
+        Account account = userUtil.getLocalConfirmAccount();
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(ApplicationNotFoundException::new);
         Post post = application.getPost();
@@ -108,8 +110,8 @@ public class ApplicationService {
     }
 
     public MyApplicationResponse getMyApplications() {
-
-        return new MyApplicationResponse(applicationRepository.findAllByApplicant(baseService.getLocalConfirmAccount()).stream().map(
+        Account account = userUtil.getLocalConfirmAccount();
+        return new MyApplicationResponse(applicationRepository.findAllByApplicant(account).stream().map(
                 application -> {
                     Post post = application.getPost();
                     return MyApplicationResponse.MyApplicationDto.builder()
@@ -122,13 +124,15 @@ public class ApplicationService {
                             .firstImagePath(s3Util.getS3ObjectUrl(post.getPetImages().get(0).getPath()))
                             .administrationDivision(post.getAccount().getAdministrationDivision())
                             .isEnd(post.getIsApplicationEnd())
+                            .isWrittenReview(reviewRepository.findByWriterAndApplication(account, application).isPresent())
                             .build();
                 }
         ).collect(Collectors.toList()));
     }
 
     public ApplicationResponse getApplications(Integer postId) {
-        Post post = postUtil.getPost(postId, baseService.getLocalConfirmAccount());
+        Account account = userUtil.getLocalConfirmAccount();
+        Post post = postUtil.getPost(postId, account);
         List<Application> applications = applicationRepository.findAllByPost(post);
 
         return new ApplicationResponse(applications.stream().map(application ->
@@ -139,6 +143,7 @@ public class ApplicationService {
                         .isAccepted(application.getIsAccepted())
                         .applicantNickname(application.getApplicant().getNickname())
                         .administrationDivision(application.getApplicant().getAdministrationDivision())
+                        .isWrittenReview(reviewRepository.findByWriterAndApplication(account, application).isPresent())
                         .build()
         ).collect(Collectors.toList()));
     }

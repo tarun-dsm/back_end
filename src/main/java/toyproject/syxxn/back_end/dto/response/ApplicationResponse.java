@@ -33,6 +33,8 @@ public class ApplicationResponse {
 
         private String administrationDivision;
 
+        private Boolean isWrittenReview;
+
     }
 
 }

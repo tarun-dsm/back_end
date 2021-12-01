@@ -11,7 +11,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import toyproject.syxxn.back_end.exception.handler.AuthenticationEntryPointImpl;
-import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 
 @RequiredArgsConstructor
 @EnableWebSecurity

@@ -26,9 +26,11 @@ public class MyApplicationResponse {
 
         private Integer postId;
 
-        private boolean isAccepted;
+        private Boolean isAccepted;
 
-        private boolean isEnd;
+        private Boolean isEnd;
+
+        private Boolean isWrittenReview;
 
         private String firstImagePath;
 
