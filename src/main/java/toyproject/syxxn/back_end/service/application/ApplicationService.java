@@ -15,6 +15,7 @@ import toyproject.syxxn.back_end.entity.post.PostRepository;
 import toyproject.syxxn.back_end.exception.*;
 import toyproject.syxxn.back_end.service.util.EmailUtil;
 import toyproject.syxxn.back_end.service.util.PostUtil;
+import toyproject.syxxn.back_end.service.util.S3Util;
 import toyproject.syxxn.back_end.service.util.UserUtil;
 
 import java.time.LocalDate;
@@ -31,6 +32,7 @@ public class ApplicationService {
 
     private final EmailUtil emailUtil;
     private final PostUtil postUtil;
+    private final S3Util s3Util;
     private final UserUtil baseService;
 
     private static final String NEW_APPLICATION = "회원님의 게시글에 새로운 신청이 있습니다.";
@@ -117,7 +119,7 @@ public class ApplicationService {
                             .postName(post.getTitle())
                             .startDate(post.getProtectionStartDate().toString())
                             .endDate(post.getProtectionEndDate().toString())
-                            .firstImagePath(post.getPetImages().get(0).getPath())
+                            .firstImagePath(s3Util.getS3ObjectUrl(post.getPetImages().get(0).getPath()))
                             .administrationDivision(post.getAccount().getAdministrationDivision())
                             .isEnd(post.getIsApplicationEnd())
                             .build();
