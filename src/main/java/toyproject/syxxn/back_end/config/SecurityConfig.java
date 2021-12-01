@@ -11,6 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import toyproject.syxxn.back_end.exception.handler.AuthenticationEntryPointImpl;
+import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -18,6 +19,7 @@ import toyproject.syxxn.back_end.exception.handler.AuthenticationEntryPointImpl;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationEntryPointImpl authenticationEntryPoint;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -37,7 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/email").permitAll()
                 .antMatchers("/auth").permitAll()
                 .anyRequest().authenticated()
-                .and().httpBasic().authenticationEntryPoint(authenticationEntryPoint);
+                .and().httpBasic().authenticationEntryPoint(authenticationEntryPoint)
+                .and().apply(new FilterConfig(jwtTokenProvider));
     }
 
 }
