@@ -18,7 +18,6 @@ public class FilterConfig extends SecurityConfigurerAdapter<DefaultSecurityFilte
     public void configure(HttpSecurity builder) {
         JwtTokenFilter jwtTokenFilter = new JwtTokenFilter(jwtTokenProvider);
         TarunExceptionFilter tarunExceptionFilter = new TarunExceptionFilter();
-        builder.Authen
         builder.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
         builder.addFilterBefore(tarunExceptionFilter, JwtTokenFilter.class);
     }
