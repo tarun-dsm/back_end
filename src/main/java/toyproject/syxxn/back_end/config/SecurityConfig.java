@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/email").permitAll()
                 .antMatchers("/auth").permitAll()
                 .anyRequest().authenticated()
-                .and().httpBasic().authenticationEntryPoint(authenticationEntryPoint)
+                //.and().httpBasic().authenticationEntryPoint(authenticationEntryPoint)
                 .and().apply(new FilterConfig(jwtTokenProvider));
     }
 
