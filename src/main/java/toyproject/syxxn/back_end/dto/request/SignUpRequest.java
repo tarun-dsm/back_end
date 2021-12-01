@@ -25,7 +25,7 @@ public class SignUpRequest {
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[0-9])(?=.*[~!@#*_])[a-zA-Z0-9~!@#*_]{8,15}$")
     private String password;
 
-    @Length(max = 10)
+    @Length(min = 2, max = 10)
     @NotBlank
     private String nickname;
 
