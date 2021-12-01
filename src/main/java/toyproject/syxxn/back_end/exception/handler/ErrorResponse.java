@@ -1,13 +1,16 @@
 package toyproject.syxxn.back_end.exception.handler;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class ErrorResponse {
 
     private final int status;
     private final String message;
+
+    protected ErrorResponse(int status, String message) {
+        this.status = status;
+        this.message = message;
+    }
 
 }

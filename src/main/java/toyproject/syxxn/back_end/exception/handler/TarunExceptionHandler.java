@@ -20,4 +20,9 @@ public class TarunExceptionHandler {
         return new ResponseEntity<>(new ErrorResponse(400, "Invalid value"), HttpStatus.valueOf(400));
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    protected ResponseEntity<ErrorResponse> handleNullPointerException() {
+        return new ResponseEntity<>(new ErrorResponse(400, "Null Pointer Exception"), HttpStatus.valueOf(400));
+    }
+
 }
