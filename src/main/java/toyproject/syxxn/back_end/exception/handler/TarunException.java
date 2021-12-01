@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 public class TarunException extends RuntimeException {
 
-    private Integer status;
-    private String message;
+    private final Integer status;
+    private final String message;
 
-    public TarunException(Integer status, String message) {
+    protected TarunException(Integer status, String message) {
         super(message);
         this.status = status;
         this.message = message;
