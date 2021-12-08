@@ -60,7 +60,7 @@ public class AccountService {
                 .orElseThrow(UserNotUnauthenticatedException::new);
 
         if (!request.getIsExperienceRaisingPet() && request.getExperience() != null) {
-            throw new ExperienceRequiredNullException();
+            throw ExperienceRequiredNullException.EXCEPTION;
         }
 
         Integer accountId = accountRepository.save(

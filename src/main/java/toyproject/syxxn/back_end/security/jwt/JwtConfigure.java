@@ -18,7 +18,7 @@ public class JwtConfigure extends SecurityConfigurerAdapter<DefaultSecurityFilte
         try{
             httpSecurity.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
         } catch(Exception e) {
-            throw new InvalidTokenException();
+            throw InvalidTokenException.EXCEPTION;
         }
     }
 

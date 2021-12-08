@@ -59,7 +59,7 @@ public class JwtTokenProvider {
         try {
             return getHeader(token).get("typ").equals("refresh_token");
         } catch (Exception e) {
-            throw new InvalidTokenException();
+            throw InvalidTokenException.EXCEPTION;
         }
     }
 
@@ -76,7 +76,7 @@ public class JwtTokenProvider {
         try {
             return getBody(token).getExpiration().after(new Date());
         } catch (Exception e) {
-            throw new InvalidTokenException();
+            throw InvalidTokenException.EXCEPTION;
         }
     }
 
@@ -89,7 +89,7 @@ public class JwtTokenProvider {
         try {
             return getBody(token).getSubject();
         } catch (Exception e) {
-            throw new InvalidTokenException();
+            throw InvalidTokenException.EXCEPTION;
         }
     }
 

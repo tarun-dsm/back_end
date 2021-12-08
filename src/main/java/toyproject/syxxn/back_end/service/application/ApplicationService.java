@@ -49,7 +49,7 @@ public class ApplicationService {
         if (account.getEmail().equals(post.getAccount().getEmail())) {
             throw new UserIsWriterException();
         } if (isApplicationClosed(post)) {
-            throw new AfterApplicationClosedException();
+            throw AfterApplicationClosedException.EXCEPTION;
         } if (applicationCustomRepository.existsNotEndApplication(account)) {
             throw new UserAlreadyApplicationException();
         }
@@ -66,7 +66,7 @@ public class ApplicationService {
             String text = "\'" + post.getTitle() + "\' 게시글에 " + account.getNickname() + "님이 신청하셨습니다.";
             emailUtil.sendEmail(post.getAccount().getEmail(), NEW_APPLICATION, text);
         } catch (Exception e) {
-            throw new EmailSendException();
+            throw EmailSendException.EXCEPTION;
         }
 
     }
@@ -75,7 +75,7 @@ public class ApplicationService {
         String email = userUtil.getLocalConfirmAccount().getEmail();
 
         Application application = applicationRepository.findByPostIdAndApplicantEmail(postId, email)
-                .orElseThrow(ApplicationNotFoundException::new);
+                .orElseThrow(() -> ApplicationNotFoundException.EXCEPTION);
 
         if (!isApplicationClosed(application.getPost())) {
             applicationRepository.delete(application);
@@ -87,7 +87,7 @@ public class ApplicationService {
     public void acceptApplication(Integer applicationId) {
         Account account = userUtil.getLocalConfirmAccount();
         Application application = applicationRepository.findById(applicationId)
-                .orElseThrow(ApplicationNotFoundException::new);
+                .orElseThrow(() -> ApplicationNotFoundException.EXCEPTION);
         Post post = application.getPost();
 
         if (!post.getAccount().equals(account)) {
@@ -105,7 +105,7 @@ public class ApplicationService {
             String text = "\'" + post.getTitle() + "\' 게시글의 신청이 수락되었습니다.";
             emailUtil.sendEmail(application.getApplicant().getEmail(), ACCEPT_APPLICATION, text);
         } catch (Exception e) {
-            throw new EmailSendException();
+            throw EmailSendException.EXCEPTION;
         }
     }
 
@@ -150,7 +150,7 @@ public class ApplicationService {
 
     private boolean isApplicationClosed(Post post) {
         if (LocalDate.now().isAfter(post.getApplicationEndDate()) || post.getIsApplicationEnd()) {
-            throw new AfterApplicationClosedException();
+            throw AfterApplicationClosedException.EXCEPTION;
         } else return false;
     }
 

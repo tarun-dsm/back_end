@@ -39,7 +39,7 @@ public class S3Util {
         try{
             filePath = saveImage(file, extension);
         } catch (IOException e) {
-            throw new FileSaveFailedException();
+            throw FileSaveFailedException.EXCEPTION;
         }
         return filePath;
     }
@@ -64,11 +64,11 @@ public class S3Util {
 
     private String verificationFile(MultipartFile file) {
         if(file == null || file.isEmpty() || file.getOriginalFilename() == null)
-            throw new FileIsEmptyException();
+            throw FileIsEmptyException.EXCEPTION;
 
         String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         if (!(extension.contains(".JPG") || extension.contains(".jpg") || extension.contains(".jpeg") || extension.contains(".JPEG") || extension.contains(".png") || extension.contains(".PNG"))) {
-            throw new InvalidFileExtensionException();
+            throw InvalidFileExtensionException.EXCEPTION;
         }
 
         return extension;

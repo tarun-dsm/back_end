@@ -40,7 +40,7 @@ public class CommentService {
 
     public void deleteComment(Integer commentId) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(CommentNotFoundException::new);
+                .orElseThrow(() -> CommentNotFoundException.EXCEPTION);
 
         if(equalsEmail(comment.getWriter().getEmail())) {
             commentRepository.delete(comment);
@@ -52,7 +52,7 @@ public class CommentService {
     public void updateComment(Integer commentId, String comment) {
         Comment c = commentRepository.findById(commentId)
                 .filter(com -> com.getWriter().getEmail().equals(authenticationFacade.getUserEmail()))
-                .orElseThrow(CommentNotFoundException::new);
+                .orElseThrow(() -> CommentNotFoundException.EXCEPTION);
 
         if(equalsEmail(c.getWriter().getEmail())) {
             commentRepository.save(c.updateComment(comment));

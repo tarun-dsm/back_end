@@ -116,7 +116,7 @@ public class ProfileService {
 
     private Account isBlocked(Account account) {
         if (account.getIsBlocked()) {
-            throw new BlockedUserException();
+            throw BlockedUserException.EXCEPTION;
         }
         return account;
     }

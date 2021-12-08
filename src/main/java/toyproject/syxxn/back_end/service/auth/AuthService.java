@@ -41,7 +41,7 @@ public class AuthService {
                 .orElseThrow(UserNotFoundException::new);
 
         if (account.getIsBlocked()) {
-            throw new BlockedUserException();
+            throw BlockedUserException.EXCEPTION;
         }
 
         return TokenResponse.builder()
@@ -53,7 +53,7 @@ public class AuthService {
     @Transactional
     public TokenResponse tokenRefresh(String receivedToken) {
         if(!jwtTokenProvider.isRefreshToken(receivedToken)) {
-            throw new InvalidTokenException();
+            throw InvalidTokenException.EXCEPTION;
         }
         RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(receivedToken)
                 .map(token -> {

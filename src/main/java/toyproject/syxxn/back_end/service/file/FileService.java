@@ -32,7 +32,7 @@ public class FileService {
         Post post = postUtil.getPost(postId, userUtil.getLocalConfirmAccount());
 
         if (files.size() > 5) {
-            throw new FileNumberExceedException();
+            throw FileNumberExceedException.EXCEPTION;
         }
         deleteImage(post.getPetImages());
 
@@ -45,7 +45,7 @@ public class FileService {
             petInfoRepository.delete(post.getPetInfo());
             postRepository.delete(post);
             deleteImage(post.getPetImages());
-            throw new FileSaveFailedException();
+            throw FileSaveFailedException.EXCEPTION;
         }
     }
 

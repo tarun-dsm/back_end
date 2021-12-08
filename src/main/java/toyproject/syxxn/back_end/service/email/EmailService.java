@@ -47,7 +47,7 @@ public class EmailService {
                     new VerifyNumber(email, authNumber, false)
             );
         } catch (Exception e) {
-            throw new EmailSendException();
+            throw EmailSendException.EXCEPTION;
         }
     }
 

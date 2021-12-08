@@ -27,7 +27,7 @@ public class ReviewService {
         Account writer = userUtil.getLocalConfirmAccount();
         Application application = applicationRepository.findById(applicationId)
                 .filter(Application::getIsAccepted)
-                .orElseThrow(ApplicationNotFoundException::new);
+                .orElseThrow(() -> ApplicationNotFoundException.EXCEPTION);
 
         reviewRepository.findByWriterAndApplication(writer, application)
                 .ifPresent(review -> {

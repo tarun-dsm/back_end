@@ -138,7 +138,7 @@ public class PostService {
 
     private void startDateAfterEndDate(String startDate, String endDate) {
         if (LocalDate.parse(startDate).isAfter(LocalDate.parse(endDate))) {
-            throw new InvalidScheduleSettingException();
+            throw InvalidScheduleSettingException.EXCEPTION;
         }
     }
 

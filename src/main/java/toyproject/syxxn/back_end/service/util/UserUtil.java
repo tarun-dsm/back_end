@@ -23,7 +23,7 @@ public class UserUtil {
 
     public Boolean isNotBlocked(Account account) {
         if (account.getIsBlocked()) {
-            throw new BlockedUserException();
+            throw BlockedUserException.EXCEPTION;
         }
         return true;
     }
