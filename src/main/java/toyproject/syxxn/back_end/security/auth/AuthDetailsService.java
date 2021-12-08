@@ -17,7 +17,7 @@ public class AuthDetailsService implements UserDetailsService {
     public AuthDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         return accountRepository.findById(Integer.valueOf(id))
                 .map(AuthDetails::new)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 
 }
