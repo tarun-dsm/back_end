@@ -73,7 +73,6 @@ public class SecurityTest extends BaseTest {
         assertTrue(authDetails.isAccountNonLocked());
         assertTrue(authDetails.isCredentialsNonExpired());
         assertNotNull(authDetails.getUsername());
-        assertNotNull(authDetails.getPassword());
         assertNotNull(authDetails.getAuthorities());
     }
 
