@@ -38,7 +38,7 @@ public class AuthService {
         Account account = accountRepository.findByEmail(request.getEmail())
                 .filter(user -> encoder.matches(request.getPassword(), user.getPassword()))
                 .filter(userUtil::isNotBlocked)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
         if (account.getIsBlocked()) {
             throw BlockedUserException.EXCEPTION;
@@ -61,7 +61,7 @@ public class AuthService {
                     token.update(refresh, token.getRefreshExp());
                     return token;
                 })
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
         return TokenResponse.builder()
                 .refreshToken(refreshToken.getRefreshToken())
@@ -71,12 +71,12 @@ public class AuthService {
 
     public void logout() {
         Account user = accountRepository.findByEmail(authenticationFacade.getUserEmail())
-                .orElseThrow(UserNotAccessibleException::new);
+                .orElseThrow(() -> UserNotAccessibleException.EXCEPTION);
         try {
             refreshTokenRepository.findById(user.getId())
                     .ifPresent(refreshTokenRepository::delete);
         } catch (Exception e) {
-            throw new UserNotFoundException();
+            throw UserNotFoundException.EXCEPTION;
         }
     }
 

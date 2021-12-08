@@ -31,7 +31,7 @@ public class EmailService {
     public void sendVerifyNumberEmail(String email) {
         accountRepository.findByEmail(email)
                 .ifPresent(account -> {
-                    throw new UserAlreadyRegisteredException();
+                    throw UserAlreadyRegisteredException.EXCEPTION;
                 });
 
         verifyNumberRepository.findById(email)
@@ -56,7 +56,7 @@ public class EmailService {
                 .filter(verifyNumber -> verifyNumber.getVerifyNumber().equals(request.getNumber()))
                 .map(VerifyNumber::isVerifiedTrue)
                 .map(verifyNumberRepository::save)
-                .orElseThrow(VerifyNumberNotMatchException::new);
+                .orElseThrow(() -> VerifyNumberNotMatchException.EXCEPTION);
     }
 
     private String generateVerifyNumber() {

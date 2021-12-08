@@ -16,15 +16,15 @@ public class PostUtil {
 
     public Post getPost(Integer id) {
         return postRepository.findById(id)
-                .orElseThrow(PostNotFoundException::new);
+                .orElseThrow(() -> PostNotFoundException.EXCEPTION);
     }
 
     public Post getPost(Integer id, Account account) {
         Post post =  postRepository.findById(id)
-                .orElseThrow(PostNotFoundException::new);
+                .orElseThrow(() -> PostNotFoundException.EXCEPTION);
 
         if (!postIsMine(account, post))
-            throw new UserNotAccessibleException();
+            throw UserNotAccessibleException.EXCEPTION;
 
         return post;
     }

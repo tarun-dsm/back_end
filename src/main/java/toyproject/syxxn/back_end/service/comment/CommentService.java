@@ -45,7 +45,7 @@ public class CommentService {
         if(equalsEmail(comment.getWriter().getEmail())) {
             commentRepository.delete(comment);
         } else {
-            throw new UserNotAccessibleException();
+            throw UserNotAccessibleException.EXCEPTION;
         }
     }
 
@@ -57,7 +57,7 @@ public class CommentService {
         if(equalsEmail(c.getWriter().getEmail())) {
             commentRepository.save(c.updateComment(comment));
         } else {
-            throw new UserNotAccessibleException();
+            throw UserNotAccessibleException.EXCEPTION;
         }
     }
 

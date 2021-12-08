@@ -44,20 +44,6 @@ public class S3Util {
         return filePath;
     }
 
-    /*public String generateObjectUrl(String filePath){ 를 쓰려고 했는데 값이 요상하게 와서 일단 지워둠.
-            Date expiration = new Date();
-            expiration.setTime(expiration.getTime() + EXP_TIME);
-
-            GeneratePresignedUrlRequest generatePresignedUrlRequest =
-                    new GeneratePresignedUrlRequest(bucketName, filePath)
-                            .withMethod(HttpMethod.GET)
-                            .withExpiration(expiration);
-
-            URL url = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
-
-            return url.toExternalForm();
-    }*/
-
     public String getS3ObjectUrl(String path) {
         return s3BaseUrl + path;
     }

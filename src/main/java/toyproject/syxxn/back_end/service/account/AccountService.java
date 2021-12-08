@@ -8,7 +8,6 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -57,7 +56,7 @@ public class AccountService {
     public TokenResponse signUp(SignUpRequest request) {
         verifyNumberRepository.findById(request.getEmail())
                 .filter(VerifyNumber::isVerified)
-                .orElseThrow(UserNotUnauthenticatedException::new);
+                .orElseThrow(() -> UserNotAuthenticatedException.EXCEPTION);
 
         if (!request.getIsExperienceRaisingPet() && request.getExperience() != null) {
             throw ExperienceRequiredNullException.EXCEPTION;
@@ -85,19 +84,19 @@ public class AccountService {
 
     public void confirmEmail(String email) {
         accountRepository.findByEmail(email)
-                .ifPresent(account -> {throw new UserEmailAlreadyExistsException(); });
+                .ifPresent(account -> {throw UserEmailAlreadyExistsException.EXCEPTION; });
     }
 
     public void confirmNickname(String nickname) {
         accountRepository.findByNickname(nickname)
-                .ifPresent(account -> {throw new UserNicknameAlreadyExistsException(); });
+                .ifPresent(account -> {throw UserNicknameAlreadyExistsException.EXCEPTION; });
     }
 
     @Transactional
     public void saveCoordinate(CoordinatesRequest request) throws JsonProcessingException, UnirestException {
         Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .filter(userUtil::isNotBlocked)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
         Double x = request.getLongitude();
         Double y = request.getLatitude();
         String division = getAdministrationDivision(x, y);
@@ -109,7 +108,7 @@ public class AccountService {
     public HaveEverBeenEntrustedResponse haveEverBeenEntrusted(int id) {
         Account me = userUtil.getLocalConfirmAccount();
         Account target = accountRepository.findById(id)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
         if (applicationRepository.findAllByVisitAccountAndMe(target, me).size() > 0) {
             return new HaveEverBeenEntrustedResponse(true);
@@ -120,7 +119,7 @@ public class AccountService {
     public void makeReport(String comment, Integer id) {
         Account reporter = userUtil.getLocalConfirmAccount();
         Account target = accountRepository.findById(id)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
         reportRepository.save(
                 Report.builder()
@@ -142,7 +141,7 @@ public class AccountService {
                     .header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8")
                     .asJson();
         } catch(Exception e) {
-            throw new WrongLocationInformationException();
+            throw WrongLocationInformationException.EXCEPTION;
         }
 
         String json = response.getBody().toString();

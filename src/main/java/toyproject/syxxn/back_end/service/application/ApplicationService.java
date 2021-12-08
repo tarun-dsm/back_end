@@ -47,11 +47,11 @@ public class ApplicationService {
         Post post = postUtil.getPost(postId);
 
         if (account.getEmail().equals(post.getAccount().getEmail())) {
-            throw new UserIsWriterException();
+            throw UserIsWriterException.EXCEPTION;
         } if (isApplicationClosed(post)) {
             throw AfterApplicationClosedException.EXCEPTION;
         } if (applicationCustomRepository.existsNotEndApplication(account)) {
-            throw new UserAlreadyApplicationException();
+            throw UserAlreadyApplicationException.EXCEPTION;
         }
 
         applicationRepository.save(
@@ -91,7 +91,7 @@ public class ApplicationService {
         Post post = application.getPost();
 
         if (!post.getAccount().equals(account)) {
-            throw new UserNotAccessibleException();
+            throw UserNotAccessibleException.EXCEPTION;
         }
 
         if (!isApplicationClosed(post)) {

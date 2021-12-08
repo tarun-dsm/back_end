@@ -124,7 +124,7 @@ public class PostService {
 
     public PostResponse getPosts() {
         Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
         if (!account.getIsLocationConfirm()) {
             return new PostResponse(Optional.of(postRepository.findAllByPetImagesNotNullOrderByCreatedAtDesc()).orElse(new ArrayList<>()).stream()
                     .map(this::getPost).collect(Collectors.toList()));

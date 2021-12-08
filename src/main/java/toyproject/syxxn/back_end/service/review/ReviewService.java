@@ -31,11 +31,11 @@ public class ReviewService {
 
         reviewRepository.findByWriterAndApplication(writer, application)
                 .ifPresent(review -> {
-                    throw new UserAlreadyWrittenReviewException();
+                    throw UserAlreadyWrittenReviewException.EXCEPTION;
                 });
 
         if (!isReviewablePeriod(application.getPost())) {
-            throw new NotReviewablePeriodException();
+            throw NotReviewablePeriodException.EXCEPTION;
         }
 
         Account target;
@@ -44,7 +44,7 @@ public class ReviewService {
         } else if (writer.getEmail().equals(application.getPost().getAccount().getEmail())) {
             target = application.getApplicant();
         } else {
-            throw new UserNotAccessibleException();
+            throw UserNotAccessibleException.EXCEPTION;
         }
 
         reviewRepository.save(
@@ -77,7 +77,7 @@ public class ReviewService {
     private Review getReview(Integer reviewId) {
         return reviewRepository.findById(reviewId)
                 .filter(r -> r.getWriter().equals(userUtil.getLocalConfirmAccount()))
-                .orElseThrow(ReviewNotFoundException::new);
+                .orElseThrow(() -> ReviewNotFoundException.EXCEPTION);
     }
 
 }

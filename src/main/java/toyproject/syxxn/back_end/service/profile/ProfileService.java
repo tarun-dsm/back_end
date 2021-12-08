@@ -7,20 +7,16 @@ import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.application.Application;
 import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
-import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
-import toyproject.syxxn.back_end.entity.review.Review;
 import toyproject.syxxn.back_end.entity.review.ReviewRepository;
 import toyproject.syxxn.back_end.exception.BlockedUserException;
 import toyproject.syxxn.back_end.exception.UserNotAccessibleException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
-import toyproject.syxxn.back_end.exception.UserNotUnauthenticatedException;
+import toyproject.syxxn.back_end.exception.UserNotAuthenticatedException;
 import toyproject.syxxn.back_end.service.util.AuthenticationUtil;
 import toyproject.syxxn.back_end.service.util.S3Util;
-import toyproject.syxxn.back_end.service.util.UserUtil;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -99,19 +95,19 @@ public class ProfileService {
             return getMe();
         } else {
             if (!getMe().getIsLocationConfirm()) {
-                throw new UserNotAccessibleException();
+                throw UserNotAccessibleException.EXCEPTION;
             }
 
             return accountRepository.findById(accountId)
                     .map(this::isBlocked)
-                    .orElseThrow(UserNotFoundException::new);
+                    .orElseThrow(() -> UserNotFoundException.EXCEPTION);
         }
     }
 
     private Account getMe() {
         return accountRepository.findByEmail(authenticationUtil.getUserEmail())
                 .map(this::isBlocked)
-                .orElseThrow(UserNotUnauthenticatedException::new);
+                .orElseThrow(() -> UserNotAuthenticatedException.EXCEPTION);
     }
 
     private Account isBlocked(Account account) {
