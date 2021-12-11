@@ -142,7 +142,7 @@ public class ReviewControllerTest extends BaseTest{
     @Test
     public void deleteReview_404_() throws Exception {
         mvc.perform(delete("/review/"+review.getId())
-        ).andExpect(status().isNotFound());
+        ).andExpect(status().isUnauthorized());
     }
 
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
@@ -164,7 +164,7 @@ public class ReviewControllerTest extends BaseTest{
         mvc.perform(patch("/review/"+review.getId())
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-        ).andExpect(status().isNotFound());
+        ).andExpect(status().isUnauthorized());
     }
 
     @WithMockUser(value = "test2@naver.com", password = "asdf123@")
