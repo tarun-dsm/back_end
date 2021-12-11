@@ -75,13 +75,12 @@ public class ReviewService {
     }
 
     private Review getReview(Integer reviewId) {
-        return reviewRepository.findById(reviewId)
-                .filter(r -> {
-                    if(!r.getWriter().equals(userUtil.getLocalConfirmAccount()))
-                        throw UserNotAccessibleException.EXCEPTION;
-                    return true;
-                })
+        Review review =  reviewRepository.findById(reviewId)
                 .orElseThrow(() -> ReviewNotFoundException.EXCEPTION);
+        if(!review.getWriter().equals(userUtil.getLocalConfirmAccount()))
+            throw UserNotAccessibleException.EXCEPTION;
+
+        return review;
     }
 
 }
