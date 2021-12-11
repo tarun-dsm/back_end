@@ -28,8 +28,8 @@ public class ProfileController {
     }
 
     @GetMapping(value = {"/posts/{id}", "/posts"})
-    public ProfilePostResponse getPosts(@PathVariable(value = "id", required = false) Integer accountId) {
-        return profileService.getPosts(accountId);
+    public ProfilePostResponse getMyPosts(@PathVariable(value = "id", required = false) Integer accountId) {
+        return profileService.getMyPosts(accountId);
     }
 
 }

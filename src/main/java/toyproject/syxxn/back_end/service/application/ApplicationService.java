@@ -110,8 +110,8 @@ public class ApplicationService {
     }
 
     public MyApplicationResponse getMyApplications() {
-        Account account = userUtil.getLocalConfirmAccount();
-        return new MyApplicationResponse(applicationRepository.findAllByApplicant(account).stream().map(
+        Account me = userUtil.getLocalConfirmAccount();
+        return new MyApplicationResponse(applicationRepository.findAllByApplicant(me).stream().map(
                 application -> {
                     Post post = application.getPost();
                     return MyApplicationResponse.MyApplicationDto.builder()
@@ -124,13 +124,13 @@ public class ApplicationService {
                             .firstImagePath(s3Util.getS3ObjectUrl(post.getPetImages().get(0).getPath()))
                             .administrationDivision(post.getAccount().getAdministrationDivision())
                             .isEnd(post.getIsApplicationEnd())
-                            .isWrittenReview(reviewRepository.findByWriterAndApplication(account, application).isPresent())
+                            .isWrittenReview(reviewRepository.findByWriterAndApplication(me, application).isPresent())
                             .build();
                 }
         ).collect(Collectors.toList()));
     }
 
-    public ApplicationResponse getApplications(Integer postId) {
+    public ApplicationResponse getApplicationsForPost(Integer postId) {
         Account account = userUtil.getLocalConfirmAccount();
         Post post = postUtil.getPost(postId, account);
         List<Application> applications = applicationRepository.findAllByPost(post);

@@ -35,8 +35,8 @@ public class ApplicationController {
     }
 
     @GetMapping("/applications/post/{id}")
-    public ApplicationResponse getApplications(@PathVariable("id") Integer postId) {
-        return applicationService.getApplications(postId);
+    public ApplicationResponse getApplicationsForPost(@PathVariable("id") Integer postId) {
+        return applicationService.getApplicationsForPost(postId);
     }
 
 }

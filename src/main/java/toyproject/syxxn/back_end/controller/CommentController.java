@@ -35,8 +35,8 @@ public class CommentController {
     }
 
     @GetMapping("/comments/post/{id}")
-    public CommentsResponse getComments(@PathVariable("id") Integer postId) {
-        return commentService.getComments(postId);
+    public CommentsResponse getCommentsForPost(@PathVariable("id") Integer postId) {
+        return commentService.getCommentsForPost(postId);
     }
 
 }

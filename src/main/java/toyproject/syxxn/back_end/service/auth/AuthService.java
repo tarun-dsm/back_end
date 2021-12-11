@@ -10,7 +10,6 @@ import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshToken;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshTokenRepository;
-import toyproject.syxxn.back_end.exception.BlockedUserException;
 import toyproject.syxxn.back_end.exception.InvalidTokenException;
 import toyproject.syxxn.back_end.exception.UserNotAccessibleException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
@@ -40,10 +39,6 @@ public class AuthService {
                 .filter(userUtil::isNotBlocked)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        if (account.getIsBlocked()) {
-            throw BlockedUserException.EXCEPTION;
-        }
-
         return TokenResponse.builder()
                 .refreshToken(tokenUtil.getRefreshToken(account.getId()))
                 .accessToken(tokenUtil.getAccessToken(account.getId()))
@@ -70,14 +65,10 @@ public class AuthService {
     }
 
     public void logout() {
-        Account user = accountRepository.findByEmail(authenticationFacade.getUserEmail())
+        Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .orElseThrow(() -> UserNotAccessibleException.EXCEPTION);
-        try {
-            refreshTokenRepository.findById(user.getId())
-                    .ifPresent(refreshTokenRepository::delete);
-        } catch (Exception e) {
-            throw UserNotFoundException.EXCEPTION;
-        }
+        refreshTokenRepository.findById(account.getId())
+                .ifPresent(refreshTokenRepository::delete);
     }
 
 }

@@ -94,7 +94,7 @@ public class AccountService {
 
     @Transactional
     public void saveCoordinate(CoordinatesRequest request) throws JsonProcessingException, UnirestException {
-        Account account = accountRepository.findByEmail(authenticationFacade.getUserEmail())
+        Account me = accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .filter(userUtil::isNotBlocked)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
         Double x = request.getLongitude();
@@ -102,7 +102,7 @@ public class AccountService {
         String division = getAdministrationDivision(x, y);
         String administrationDivision = division.substring(1, division.length() - 1);
 
-        account.updateLocation(BigDecimal.valueOf(x), BigDecimal.valueOf(y), administrationDivision);
+        me.updateLocation(BigDecimal.valueOf(x), BigDecimal.valueOf(y), administrationDivision);
     }
 
     public HaveEverBeenEntrustedResponse haveEverBeenEntrusted(int id) {

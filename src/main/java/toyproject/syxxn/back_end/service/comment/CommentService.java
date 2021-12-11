@@ -49,19 +49,19 @@ public class CommentService {
         }
     }
 
-    public void updateComment(Integer commentId, String comment) {
-        Comment c = commentRepository.findById(commentId)
+    public void updateComment(Integer commentId, String commentRequest) {
+        Comment comment = commentRepository.findById(commentId)
                 .filter(com -> com.getWriter().getEmail().equals(authenticationFacade.getUserEmail()))
                 .orElseThrow(() -> CommentNotFoundException.EXCEPTION);
 
-        if(equalsEmail(c.getWriter().getEmail())) {
-            commentRepository.save(c.updateComment(comment));
+        if(equalsEmail(comment.getWriter().getEmail())) {
+            commentRepository.save(comment.updateComment(commentRequest));
         } else {
             throw UserNotAccessibleException.EXCEPTION;
         }
     }
 
-    public CommentsResponse getComments(Integer postId) {
+    public CommentsResponse getCommentsForPost(Integer postId) {
         String email = userUtil.getLocalConfirmAccount().getEmail();
         Post post = postUtil.getPost(postId);
 

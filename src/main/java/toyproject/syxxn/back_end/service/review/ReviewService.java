@@ -24,12 +24,12 @@ public class ReviewService {
     private final UserUtil userUtil;
 
     public void writeReview(Integer applicationId, ReviewRequest request) {
-        Account writer = userUtil.getLocalConfirmAccount();
+        Account me = userUtil.getLocalConfirmAccount();
         Application application = applicationRepository.findById(applicationId)
                 .filter(Application::getIsAccepted)
                 .orElseThrow(() -> ApplicationNotFoundException.EXCEPTION);
 
-        reviewRepository.findByWriterAndApplication(writer, application)
+        reviewRepository.findByWriterAndApplication(me, application)
                 .ifPresent(review -> {
                     throw UserAlreadyWrittenReviewException.EXCEPTION;
                 });
@@ -39,9 +39,9 @@ public class ReviewService {
         }
 
         Account target;
-        if (writer.getId().equals(application.getApplicant().getId())) {
+        if (me.equals(application.getApplicant())) {
             target = application.getPost().getAccount();
-        } else if (writer.getEmail().equals(application.getPost().getAccount().getEmail())) {
+        } else if (me.equals(application.getPost().getAccount())) {
             target = application.getApplicant();
         } else {
             throw UserNotAccessibleException.EXCEPTION;
@@ -51,7 +51,7 @@ public class ReviewService {
                 Review.builder()
                         .application(application)
                         .target(target)
-                        .writer(writer)
+                        .writer(me)
                         .grade(request.getGrade())
                         .comment(request.getComment())
                         .build()
@@ -76,7 +76,11 @@ public class ReviewService {
 
     private Review getReview(Integer reviewId) {
         return reviewRepository.findById(reviewId)
-                .filter(r -> r.getWriter().equals(userUtil.getLocalConfirmAccount()))
+                .filter(r -> {
+                    if(!r.getWriter().equals(userUtil.getLocalConfirmAccount()))
+                        throw UserNotAccessibleException.EXCEPTION;
+                    return true;
+                })
                 .orElseThrow(() -> ReviewNotFoundException.EXCEPTION);
     }
 

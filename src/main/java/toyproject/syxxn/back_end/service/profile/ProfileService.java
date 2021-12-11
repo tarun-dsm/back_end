@@ -67,7 +67,7 @@ public class ProfileService {
         ).collect(Collectors.toList()));
     }
 
-    public ProfilePostResponse getPosts(Integer accountId) {
+    public ProfilePostResponse getMyPosts(Integer accountId) {
         Account account = getMe();
         Account accessedAccount = getAccount(accountId);
         if (!account.getIsLocationConfirm()) {
@@ -91,17 +91,17 @@ public class ProfileService {
     }
 
     private Account getAccount(Integer accountId) {
+        Account account = getMe();
         if (accountId == null) {
-            return getMe();
-        } else {
-            if (!getMe().getIsLocationConfirm()) {
-                throw UserNotAccessibleException.EXCEPTION;
-            }
-
-            return accountRepository.findById(accountId)
-                    .map(this::isBlocked)
-                    .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+            return account;
         }
+        if (!account.getIsLocationConfirm()) {
+            throw UserNotAccessibleException.EXCEPTION;
+        }
+
+        return accountRepository.findById(accountId)
+                .map(this::isBlocked)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 
     private Account getMe() {
