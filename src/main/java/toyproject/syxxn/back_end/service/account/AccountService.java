@@ -70,7 +70,7 @@ public class AccountService {
                         .age(request.getAge())
                         .sex(Sex.valueOf(request.getSex()))
                         .isExperienceRaisingPet(request.getIsExperienceRaisingPet())
-                        .experience(request.getExperience())
+                        .experienceDescription(request.getExperience())
                         .build()
         ).getId();
 
