@@ -41,7 +41,7 @@ public class Account extends BaseIdEntity {
     private Boolean isExperienceRaisingPet;
 
     @Column(length = 100)
-    private String experience;
+    private String experienceDescription;
 
     @Column(columnDefinition = "decimal(15,10)", nullable = false)
     private BigDecimal longitude;
@@ -80,14 +80,14 @@ public class Account extends BaseIdEntity {
     private List<Comment> comments;
 
     @Builder
-    public Account(String email, String password, String nickname, Integer age, Sex sex, Boolean isExperienceRaisingPet, String experience) {
+    public Account(String email, String password, String nickname, Integer age, Sex sex, Boolean isExperienceRaisingPet, String experienceDescription) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.age = age;
         this.sex = sex;
         this.isExperienceRaisingPet = isExperienceRaisingPet;
-        this.experience = experience;
+        this.experienceDescription = experienceDescription;
         this.longitude = BigDecimal.ZERO;
         this.latitude = BigDecimal.ZERO;
         this.isLocationConfirm = false;
@@ -101,7 +101,7 @@ public class Account extends BaseIdEntity {
         this.age = 18;
         this.sex = Sex.MALE;
         this.isExperienceRaisingPet = false;
-        this.experience = null;
+        this.experienceDescription = null;
         this.longitude = BigDecimal.ZERO;
         this.latitude = BigDecimal.ZERO;
         this.isLocationConfirm = isLocationConfirm;
@@ -145,6 +145,10 @@ public class Account extends BaseIdEntity {
             sumData = sumData.add(reviews.get(i).getGrade());
         }
         return sumData.divide(BigDecimal.valueOf(this.reviews.size()), MathContext.DECIMAL64);
+    }
+
+    public String getExperienceDescription() {
+        return this.experienceDescription == null ? "" : this.getExperienceDescription();
     }
 
 }

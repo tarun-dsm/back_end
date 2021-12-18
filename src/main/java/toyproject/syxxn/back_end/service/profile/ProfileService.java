@@ -43,7 +43,7 @@ public class ProfileService {
                 .rating(account.getRating())
                 .administrationDivision(account.getAdministrationDivision())
                 .isExperienceRaisingPet(account.getIsExperienceRaisingPet())
-                .experience(account.getExperience() == null ? "" : account.getExperience())
+                .experience(account.getExperienceDescription())
                 .isLocationConfirm(account.getIsLocationConfirm())
                 .build();
     }

@@ -13,7 +13,7 @@ CREATE TABLE `account` (
   `password` CHAR(60) NOT NULL,
   `age` INT NOT NULL,
   `is_experience_raising_pet` TINYINT(1) NOT NULL,
-  `experience` VARCHAR(100),
+  `experience_description` VARCHAR(100),
   `is_location_confirm` TINYINT(1) NOT NULL,
   `latitude` DECIMAL(15,10) NOT NULL,
   `longitude` DECIMAL(15,10) NOT NULL,
