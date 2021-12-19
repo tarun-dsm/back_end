@@ -80,7 +80,7 @@ public class ProfileService {
                     return ProfilePostResponse.ProfilePostDto.builder()
                             .id(post.getId())
                             .title(post.getTitle())
-                            .firstImagePath(s3Util.getS3ObjectUrl(post.getPetImages().get(0).getPath()))
+                            .firstImagePath(s3Util.getS3ObjectUrl(post.getPetImages().get(0).getSavedPath()))
                             .createdAt(post.getCreatedAtToString())
                             .isApplicationEnd(post.getIsApplicationEnd())
                             .protectorId(application.isEmpty() ? null : application.get().getApplicant().getId().toString())

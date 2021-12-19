@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class PetImage extends BaseIdEntity {
 
     @Column(nullable = false)
-    private String path;
+    private String savedPath;
 
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
@@ -22,7 +22,7 @@ public class PetImage extends BaseIdEntity {
 
     public PetImage(Post post, String path) {
         this.post = post;
-        this.path = path;
+        this.savedPath = path;
     }
 
 }

@@ -43,7 +43,7 @@ public class PostService {
         Post post = postUtil.getPost(postId, userUtil.getLocalConfirmAccount());
 
         for (PetImage petImage : post.getPetImages()) {
-            s3Util.delete(petImage.getPath());
+            s3Util.delete(petImage.getSavedPath());
         }
 
         postRepository.delete(post);
@@ -105,7 +105,7 @@ public class PostService {
                         .petSex(petInfo.getPetSex().toString())
                         .animalType(petInfo.getAnimalType().toString())
                         .filePaths(petImages.stream()
-                                .map(img -> s3Util.getS3ObjectUrl(img.getPath()))
+                                .map(img -> s3Util.getS3ObjectUrl(img.getSavedPath()))
                                 .collect(Collectors.toList()))
                         .build())
                 .post(PostDetailsResponse.PostDetailsDto.builder()
@@ -172,7 +172,7 @@ public class PostService {
                 .title(post.getTitle())
                 .animalType(post.getPetInfo().getAnimalType().toString())
                 .administrationDivision(post.getAccount().getAdministrationDivision())
-                .firstImagePath(s3Util.getS3ObjectUrl(post.getPetImages().get(0).getPath()))
+                .firstImagePath(s3Util.getS3ObjectUrl(post.getPetImages().get(0).getSavedPath()))
                 .protectionStartDate(post.getProtectionStartDate())
                 .protectionEndDate(post.getProtectionEndDate())
                 .build();

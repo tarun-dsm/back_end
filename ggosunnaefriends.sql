@@ -53,7 +53,7 @@ CREATE TABLE `application` (
 
 CREATE TABLE `pet_image` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `path` VARCHAR(255) NOT NULL,
+  `saved_path` VARCHAR(255) NOT NULL,
   `post_id` INT NOT NULL,
   PRIMARY KEY(`id`),
   FOREIGN KEY(`post_id`) REFERENCES `post`(`id`)

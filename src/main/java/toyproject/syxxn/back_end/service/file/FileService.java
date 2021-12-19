@@ -51,7 +51,7 @@ public class FileService {
 
     public void deleteImage(List<PetImage> petImages) {
         for (PetImage petImage : petImages) {
-            s3Util.delete(petImage.getPath());
+            s3Util.delete(petImage.getSavedPath());
             petImageRepository.delete(petImage);
         }
     }
