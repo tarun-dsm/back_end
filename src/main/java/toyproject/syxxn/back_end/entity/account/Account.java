@@ -58,6 +58,9 @@ public class Account extends BaseIdEntity {
     @Column(nullable = false)
     private Boolean isBlocked;
 
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Post> posts;
+
     @OneToMany(mappedBy = "applicant", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Application> applications;
 
@@ -91,19 +94,12 @@ public class Account extends BaseIdEntity {
     public String getRating() {
         Double avgGrade = getAvg().doubleValue();
 
-        if (avgGrade.compareTo(5.0) >= 0) {
-            return "굉장히 엄청난";
-        } else if (avgGrade.compareTo(4.0) >= 0) {
-            return "능숙한";
-        } else if (avgGrade.compareTo(3.0) >= 0) {
-            return "평범한";
-        } else if (avgGrade.compareTo(2.0) >= 0) {
-            return "우왕좌왕";
-        } else if(avgGrade.compareTo(1.0) >= 0) {
-            return "우당탕탕";
-        } else {
-            return "처음처럼";
-        }
+        if (avgGrade.compareTo(5.0) >= 0) return "굉장히 엄청난";
+        else if (avgGrade.compareTo(4.0) >= 0) return "능숙한";
+        else if (avgGrade.compareTo(3.0) >= 0) return "평범한";
+        else if (avgGrade.compareTo(2.0) >= 0) return "우왕좌왕";
+        else if(avgGrade.compareTo(1.0) >= 0) return "우당탕탕";
+        else return "처음처럼";
     }
 
     public BigDecimal getAvg() {

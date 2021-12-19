@@ -75,19 +75,21 @@ public class ProfileService {
         }
 
         return new ProfilePostResponse(
-                postRepository.findAllByAccountAndPetImagesNotNullOrderByCreatedAtDesc(accessedAccount).stream().map(
-                        post -> {
-                        Optional<Application> application = applicationRepository.findByPostAndIsAcceptedTrue(post);
-                        return ProfilePostResponse.ProfilePostDto.builder()
-                            .id(post.getId())
-                            .title(post.getTitle())
-                            .firstImagePath(s3Util.getS3ObjectUrl(post.getPetImages().get(0).getSavedPath()))
-                            .createdAt(post.getCreatedAtToString())
-                            .isApplicationEnd(post.getIsApplicationEnd())
-                            .protectorId(application.isEmpty() ? null : application.get().getApplicant().getId().toString())
-                            .protectorNickname(application.isEmpty() ? null : application.get().getApplicant().getNickname())
-                            .build();
-                    }).collect(Collectors.toList()));
+                accessedAccount.getPosts().stream()
+                        .filter(post -> post.getFirstImagePath() != null)
+                        .map(
+                            post -> {
+                            Optional<Application> application = applicationRepository.findByPostAndIsAcceptedTrue(post);
+                            return ProfilePostResponse.ProfilePostDto.builder()
+                                .id(post.getId())
+                                .title(post.getTitle())
+                                .firstImagePath(s3Util.getS3ObjectUrl(post.getFirstImagePath()))
+                                .createdAt(post.getCreatedAtToString())
+                                .isApplicationEnd(post.getIsApplicationEnd())
+                                .protectorId(application.isEmpty() ? null : application.get().getApplicant().getId().toString())
+                                .protectorNickname(application.isEmpty() ? null : application.get().getApplicant().getNickname())
+                                .build();
+                        }).collect(Collectors.toList()));
     }
 
     private Account getAccount(Integer accountId) {
