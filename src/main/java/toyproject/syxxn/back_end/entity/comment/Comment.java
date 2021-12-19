@@ -11,8 +11,6 @@ import toyproject.syxxn.back_end.entity.post.Post;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter

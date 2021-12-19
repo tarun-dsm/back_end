@@ -8,10 +8,8 @@ import lombok.NoArgsConstructor;
 import toyproject.syxxn.back_end.entity.BaseCreatedAtEntity;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.post.Post;
-import toyproject.syxxn.back_end.entity.review.Review;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

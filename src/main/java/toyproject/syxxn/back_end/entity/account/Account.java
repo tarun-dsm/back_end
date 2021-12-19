@@ -5,9 +5,7 @@ import lombok.*;
 import toyproject.syxxn.back_end.entity.BaseIdEntity;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.application.Application;
-import toyproject.syxxn.back_end.entity.comment.Comment;
 import toyproject.syxxn.back_end.entity.post.Post;
-import toyproject.syxxn.back_end.entity.report.Report;
 import toyproject.syxxn.back_end.entity.review.Review;
 
 import javax.persistence.*;
