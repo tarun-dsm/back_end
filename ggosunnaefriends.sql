@@ -85,7 +85,7 @@ CREATE TABLE `review` (
 
 CREATE TABLE `report` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `comment` VARCHAR(255) NOT NULL,
+  `reason` VARCHAR(255) NOT NULL,
   `created_at` DATETIME NOT NULL,
   `target_id` INT NOT NULL,
   `reporter_id` INT NOT NULL,

@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Report extends BaseCreatedAtEntity {
 
-    private String comment;
+    private String reason;
 
     @ManyToOne
     @JoinColumn(name = "target_id", nullable = false)
@@ -27,8 +27,8 @@ public class Report extends BaseCreatedAtEntity {
     private Account reporter;
 
     @Builder
-    public Report(String comment, Account target, Account reporter) {
-        this.comment = comment;
+    public Report(String reason, Account target, Account reporter) {
+        this.reason = reason;
         this.target = target;
         this.reporter = reporter;
     }

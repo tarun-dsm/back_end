@@ -123,7 +123,7 @@ public class AccountService {
 
         reportRepository.save(
                 Report.builder()
-                        .comment(comment)
+                        .reason(comment)
                         .reporter(reporter)
                         .target(target)
                         .build()
