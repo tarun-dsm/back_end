@@ -91,7 +91,6 @@ public class AccountService {
                 .ifPresent(account -> {throw UserNicknameAlreadyExistsException.EXCEPTION; });
     }
 
-    @Transactional
     public void saveCoordinate(CoordinatesRequest request) {
         Account me = accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .filter(userUtil::isNotBlocked)
@@ -101,7 +100,7 @@ public class AccountService {
         String division = getAdministrationDivision(x, y);
         String administrationDivision = division.substring(1, division.length() - 1);
 
-        me.updateLocation(BigDecimal.valueOf(x), BigDecimal.valueOf(y), administrationDivision);
+        accountRepository.save(me.updateLocation(BigDecimal.valueOf(x), BigDecimal.valueOf(y), administrationDivision));
     }
 
     public HaveEverBeenEntrustedResponse haveEverBeenEntrusted(int id) {
