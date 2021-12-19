@@ -55,7 +55,7 @@ public class ProfileService {
             return new ProfileReviewResponse(new ArrayList<>());
         }
 
-        return new ProfileReviewResponse(reviewRepository.findAllByTarget(accessedAccount).stream().map(
+        return new ProfileReviewResponse(accessedAccount.getReviews().stream().map(
                 review -> ProfileReviewResponse.ProfileReviewDto.builder()
                         .id(review.getId())
                         .nickname(review.getWriter().getNickname())
@@ -74,10 +74,11 @@ public class ProfileService {
             return new ProfilePostResponse(new ArrayList<>());
         }
 
-        return new ProfilePostResponse(postRepository.findAllByAccountAndPetImagesNotNullOrderByCreatedAtDesc(accessedAccount).stream().map(
-                post -> {
-                    Optional<Application> application = applicationRepository.findByPostAndIsAcceptedTrue(post);
-                    return ProfilePostResponse.ProfilePostDto.builder()
+        return new ProfilePostResponse(
+                postRepository.findAllByAccountAndPetImagesNotNullOrderByCreatedAtDesc(accessedAccount).stream().map(
+                        post -> {
+                        Optional<Application> application = applicationRepository.findByPostAndIsAcceptedTrue(post);
+                        return ProfilePostResponse.ProfilePostDto.builder()
                             .id(post.getId())
                             .title(post.getTitle())
                             .firstImagePath(s3Util.getS3ObjectUrl(post.getPetImages().get(0).getSavedPath()))
@@ -86,8 +87,7 @@ public class ProfileService {
                             .protectorId(application.isEmpty() ? null : application.get().getApplicant().getId().toString())
                             .protectorNickname(application.isEmpty() ? null : application.get().getApplicant().getNickname())
                             .build();
-                }
-        ).collect(Collectors.toList()));
+                    }).collect(Collectors.toList()));
     }
 
     private Account getAccount(Integer accountId) {

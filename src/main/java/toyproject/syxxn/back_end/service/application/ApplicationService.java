@@ -111,7 +111,7 @@ public class ApplicationService {
 
     public MyApplicationResponse getMyApplications() {
         Account me = userUtil.getLocalConfirmAccount();
-        return new MyApplicationResponse(applicationRepository.findAllByApplicant(me).stream().map(
+        return new MyApplicationResponse(me.getApplications().stream().map(
                 application -> {
                     Post post = application.getPost();
                     return MyApplicationResponse.MyApplicationDto.builder()
