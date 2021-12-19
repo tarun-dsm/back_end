@@ -58,26 +58,11 @@ public class Account extends BaseIdEntity {
     @Column(nullable = false)
     private Boolean isBlocked;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
-    private List<Post> posts;
-
     @OneToMany(mappedBy = "applicant", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Application> applications;
 
-    @OneToMany(mappedBy = "writer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Review> writtenReview;
-
     @OneToMany(mappedBy = "target", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Review> reviews;
-
-    @OneToMany(mappedBy = "reporter", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Report> writtenReports;
-
-    @OneToMany(mappedBy = "target", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Report> reports;
-
-    @OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
-    private List<Comment> comments;
 
     @Builder
     public Account(String email, String password, String nickname, Integer age, Sex sex, Boolean isExperienceRaisingPet, String experienceDescription) {
