@@ -121,7 +121,7 @@ public class ApplicationService {
                             .postName(post.getTitle())
                             .startDate(post.getProtectionStartDate().toString())
                             .endDate(post.getProtectionEndDate().toString())
-                            .firstImagePath(s3Util.getS3ObjectUrl(post.getPetImages().get(0).getSavedPath()))
+                            .firstImagePath(s3Util.getS3ObjectUrl(post.getFirstImagePath()))
                             .administrationDivision(post.getAccount().getAdministrationDivision())
                             .isEnd(post.getIsApplicationEnd())
                             .isWrittenReview(reviewRepository.findByWriterAndApplication(me, application).isPresent())

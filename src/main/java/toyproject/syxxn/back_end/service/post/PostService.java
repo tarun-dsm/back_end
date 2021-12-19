@@ -172,7 +172,7 @@ public class PostService {
                 .title(post.getTitle())
                 .animalType(post.getPetInfo().getAnimalType().toString())
                 .administrationDivision(post.getAccount().getAdministrationDivision())
-                .firstImagePath(s3Util.getS3ObjectUrl(post.getPetImages().get(0).getSavedPath()))
+                .firstImagePath(s3Util.getS3ObjectUrl(post.getFirstImagePath()))
                 .protectionStartDate(post.getProtectionStartDate())
                 .protectionEndDate(post.getProtectionEndDate())
                 .build();
