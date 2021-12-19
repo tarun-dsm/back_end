@@ -35,6 +35,7 @@ CREATE TABLE `post` (
   `is_updated` TINYINT(1) NOT NULL DEFAULT 0,
   `contact_info` VARCHAR(100) NOT NULL,
   `is_application_end` TINYINT(1) NOT NULL DEFAULT 0,
+  `first_image_path` VARCHAR(255),
   `account_id` INT NOT NULL,
   PRIMARY KEY(`id`),
   FOREIGN KEY(`account_id`) REFERENCES `account`(`id`)

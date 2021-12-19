@@ -47,6 +47,8 @@ public class Post extends BaseCreatedAtEntity {
     @Column(nullable = false)
     private Boolean isUpdated;
 
+    private String firstImagePath;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
@@ -89,6 +91,10 @@ public class Post extends BaseCreatedAtEntity {
         this.description = post.getDescription();
         this.contactInfo = post.getContactInfo();
         this.isUpdated = true;
+    }
+
+    public void setFirstImagePath(String path) {
+        this.firstImagePath = path;
     }
 
 }
