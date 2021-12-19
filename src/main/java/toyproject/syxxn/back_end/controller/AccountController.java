@@ -1,7 +1,5 @@
 package toyproject.syxxn.back_end.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.http.HttpStatus;
@@ -43,7 +41,7 @@ public class AccountController {
 
     @PatchMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void saveCoordinate(@RequestBody @Valid CoordinatesRequest request) throws JsonProcessingException, UnirestException {
+    public void saveCoordinate(@RequestBody @Valid CoordinatesRequest request) {
         accountService.saveCoordinate(request);
     }
 

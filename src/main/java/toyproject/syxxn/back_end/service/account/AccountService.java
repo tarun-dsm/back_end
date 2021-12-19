@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -47,7 +46,7 @@ public class AccountService {
     @Value("${kakao.api-key}")
     private String restApiKey;
 
-    private static final String KAKAO_API_URL = "https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=";
+    private static final String KAKAO_API_URL = "https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?";
 
     private final UserUtil userUtil;
     private final TokenUtil tokenUtil;
@@ -93,7 +92,7 @@ public class AccountService {
     }
 
     @Transactional
-    public void saveCoordinate(CoordinatesRequest request) throws JsonProcessingException, UnirestException {
+    public void saveCoordinate(CoordinatesRequest request) {
         Account me = accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .filter(userUtil::isNotBlocked)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
@@ -130,12 +129,12 @@ public class AccountService {
         );
     }
 
-    private String getAdministrationDivision(Double x, Double y) throws JsonProcessingException, UnirestException {
+    private String getAdministrationDivision(Double x, Double y) {
         ObjectMapper mapper = new ObjectMapper();
-        String administrationDivision = "";
+        String administrationDivision;
         HttpResponse<com.mashape.unirest.http.JsonNode> response;
         try {
-             response = Unirest.get(KAKAO_API_URL + x + "&y=" + y)
+             response = Unirest.get(KAKAO_API_URL + "x=" + x + "&y=" + y)
                     .header("Authorization", "KakaoAK " + restApiKey)
                     .header("Accept", MediaType.APPLICATION_JSON_VALUE)
                     .header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8")
@@ -146,15 +145,17 @@ public class AccountService {
 
         String json = response.getBody().toString();
 
-        for (int i = 0; i < 1; i++) {
-            JsonNode document = mapper.readTree(json).path("documents").get(i);
+        JsonNode document;
+        try {
+            document = mapper.readTree(json).path("documents").get(0);
+        } catch (JsonProcessingException e) {
+            throw FailedGetDesiredValueException.EXCEPTION;
+        }
 
-            if (!document.path("region_4depth_name").toString().equals("\"\"")) {
-                administrationDivision = document.path("region_4depth_name").toString();
-                break;
-            } else {
-                administrationDivision = document.path("region_3depth_name").toString();
-            }
+        if (!document.path("region_4depth_name").toString().equals("\"\"")) {
+            administrationDivision = document.path("region_4depth_name").toString();
+        } else {
+            administrationDivision = document.path("region_3depth_name").toString();
         }
 
         return administrationDivision;
