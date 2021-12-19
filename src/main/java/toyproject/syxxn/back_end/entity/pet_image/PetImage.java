@@ -1,4 +1,4 @@
-package toyproject.syxxn.back_end.entity.pet;
+package toyproject.syxxn.back_end.entity.pet_image;
 
 import lombok.AccessLevel;
 import lombok.Getter;

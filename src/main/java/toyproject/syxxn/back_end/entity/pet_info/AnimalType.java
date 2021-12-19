@@ -1,4 +1,4 @@
-package toyproject.syxxn.back_end.entity.pet;
+package toyproject.syxxn.back_end.entity.pet_info;
 
 public enum AnimalType {
     MAMMEL, BIRD, REPTILES, AMPHIBIANS, FISH, ARTHROPODS

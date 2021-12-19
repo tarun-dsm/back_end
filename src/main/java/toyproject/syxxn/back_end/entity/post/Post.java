@@ -1,7 +1,6 @@
 package toyproject.syxxn.back_end.entity.post;
 
 import com.querydsl.core.annotations.QueryEntity;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +9,8 @@ import toyproject.syxxn.back_end.entity.BaseCreatedAtEntity;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.application.Application;
 import toyproject.syxxn.back_end.entity.comment.Comment;
-import toyproject.syxxn.back_end.entity.pet.PetImage;
-import toyproject.syxxn.back_end.entity.pet.PetInfo;
+import toyproject.syxxn.back_end.entity.pet_image.PetImage;
+import toyproject.syxxn.back_end.entity.pet_info.PetInfo;
 
 import javax.persistence.*;
 import java.time.LocalDate;

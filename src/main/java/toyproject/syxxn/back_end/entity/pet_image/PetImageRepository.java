@@ -1,4 +1,4 @@
-package toyproject.syxxn.back_end.entity.pet;
+package toyproject.syxxn.back_end.entity.pet_image;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
