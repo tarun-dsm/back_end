@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class BaseIdEntity {
+public abstract class BaseIdEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

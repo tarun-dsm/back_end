@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class BaseCreatedAtEntity extends BaseIdEntity{
+public abstract class BaseCreatedAtEntity extends BaseIdEntity{
 
     @CreatedDate
     @DateTimeFormat(pattern = "yyyy-MM-dd`T`hh:mm:ss")
