@@ -95,9 +95,8 @@ public class ApplicationService {
         }
 
         if (!isApplicationClosed(post)) {
-            application.acceptApplication();
             post.isEnd();
-            applicationRepository.save(application);
+            applicationRepository.save(application.acceptApplication());
             postRepository.save(post);
         }
 

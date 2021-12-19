@@ -31,9 +31,6 @@ public class Application extends BaseCreatedAtEntity {
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Review> reviews;
-
     @Builder
     public Application(Boolean isAccepted, Account applicant, Post post) {
         this.isAccepted = isAccepted;
@@ -41,8 +38,9 @@ public class Application extends BaseCreatedAtEntity {
         this.post = post;
     }
 
-    public void acceptApplication() {
+    public Application acceptApplication() {
         isAccepted = true;
+        return this;
     }
 
 }
