@@ -1,7 +1,6 @@
 package toyproject.syxxn.back_end.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,9 +8,7 @@ import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewRequest {
 
     @DecimalMin(value = "0.0")

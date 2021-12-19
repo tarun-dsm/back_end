@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class PostIdResponse {
 
-    private Integer postId;
+    private final Integer postId;
 
 }

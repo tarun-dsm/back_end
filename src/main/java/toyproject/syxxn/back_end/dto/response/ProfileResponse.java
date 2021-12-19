@@ -9,26 +9,25 @@ import java.math.BigDecimal;
 
 @Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class ProfileResponse {
 
-    private String nickname;
+    private final String nickname;
 
-    private Integer age;
+    private final Integer age;
 
-    private String sex;
+    private final String sex;
 
-    private boolean isExperienceRaisingPet;
+    private final boolean isExperienceRaisingPet;
 
-    private String administrationDivision;
+    private final String administrationDivision;
 
-    private String experience;
+    private final String experience;
 
-    private boolean isLocationConfirm;
+    private final boolean isLocationConfirm;
 
-    private BigDecimal avgGrade;
+    private final BigDecimal avgGrade;
 
-    private String rating;
+    private final String rating;
 
 }

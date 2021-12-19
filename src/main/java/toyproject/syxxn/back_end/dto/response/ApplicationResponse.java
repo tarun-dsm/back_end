@@ -3,37 +3,32 @@ package toyproject.syxxn.back_end.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 public class ApplicationResponse {
 
-    private List<ApplicationDto> applications;
+    private final List<ApplicationDto> applications;
 
     @Getter
     @Builder
-    @NoArgsConstructor
     @AllArgsConstructor
     public static class ApplicationDto {
 
-        private Integer applicationId;
+        private final Integer applicationId;
 
-        private Integer applicantId;
+        private final Integer applicantId;
 
-        private String applicantNickname;
+        private final String applicantNickname;
 
-        private Boolean isAccepted;
+        private final Boolean isAccepted;
 
-        private String applicationDate;
+        private final String applicationDate;
 
-        private String administrationDivision;
+        private final String administrationDivision;
 
-        private Boolean isWrittenReview;
+        private final Boolean isWrittenReview;
 
     }
 

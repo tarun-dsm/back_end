@@ -3,7 +3,6 @@ package toyproject.syxxn.back_end.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,25 +11,24 @@ import java.util.List;
 @AllArgsConstructor
 public class ProfileReviewResponse {
 
-    List<ProfileReviewDto> reviews;
+    private final List<ProfileReviewDto> reviews;
 
     @Getter
     @Builder
-    @NoArgsConstructor
     @AllArgsConstructor
     public static class ProfileReviewDto {
 
-        private Integer id;
+        private final Integer id;
 
-        private String nickname;
+        private final String nickname;
 
-        private BigDecimal grade;
+        private final BigDecimal grade;
 
-        private String comment;
+        private final String comment;
 
-        private String createdAt;
+        private final String createdAt;
 
-        private Boolean isMyReview;
+        private final Boolean isMyReview;
 
     }
 

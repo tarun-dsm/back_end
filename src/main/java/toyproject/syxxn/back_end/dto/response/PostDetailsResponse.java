@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,67 +11,64 @@ import java.util.List;
 
 @Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class PostDetailsResponse {
 
-    private Integer writerId;
+    private final Integer writerId;
 
-    private String rating;
+    private final String rating;
 
-    private String nickname;
+    private final String nickname;
 
     @JsonProperty("is_mine")
-    private boolean isMine;
+    private final boolean isMine;
 
     @JsonProperty("is_applied")
-    private boolean isApplied;
+    private final boolean isApplied;
 
-    private PostDetailsDto post;
+    private final PostDetailsDto post;
 
-    private PetDetailsDto pet;
+    private final PetDetailsDto pet;
 
     @Getter
     @Builder
-    @NoArgsConstructor
     @AllArgsConstructor
     public static class PostDetailsDto {
 
-        private String title;
+        private final String title;
 
-        private String description;
+        private final String description;
 
-        private String contactInfo;
+        private final String contactInfo;
 
-        private LocalDate protectionStartDate;
+        private final LocalDate protectionStartDate;
 
-        private LocalDate protectionEndDate;
+        private final LocalDate protectionEndDate;
 
-        private LocalDate applicationEndDate;
+        private final LocalDate applicationEndDate;
 
-        private String createdAt;
+        private final String createdAt;
 
-        private Boolean isUpdated;
+        private final Boolean isUpdated;
 
-        private Boolean isApplicationEnd;
+        private final Boolean isApplicationEnd;
 
     }
 
     @Getter
     @Builder
-    @NoArgsConstructor
     @AllArgsConstructor
     public static class PetDetailsDto {
 
-        private String petName;
+        private final String petName;
 
-        private String petSpecies;
+        private final String petSpecies;
 
-        private String petSex;
+        private final String petSex;
 
-        private String animalType;
+        private final String animalType;
 
-        private List<String> filePaths;
+        private final List<String> filePaths;
 
     }
 

@@ -3,7 +3,6 @@ package toyproject.syxxn.back_end.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,27 +11,26 @@ import java.util.List;
 @AllArgsConstructor
 public class PostResponse {
 
-    List<PostResponseDto> posts;
+    private final List<PostResponseDto> posts;
 
     @Getter
     @Builder
-    @NoArgsConstructor
     @AllArgsConstructor
     public static class PostResponseDto {
 
-        private Integer id;
+        private final Integer id;
 
-        private String title;
+        private final String title;
 
-        private String animalType;
+        private final String animalType;
 
-        private String administrationDivision;
+        private final String administrationDivision;
 
-        private String firstImagePath;
+        private final String firstImagePath;
 
-        private LocalDate protectionStartDate;
+        private final LocalDate protectionStartDate;
 
-        private LocalDate protectionEndDate;
+        private final LocalDate protectionEndDate;
 
     }
 
