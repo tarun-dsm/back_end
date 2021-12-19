@@ -19,6 +19,6 @@ public class ReviewRequest {
     @Digits(integer = 1, fraction = 1)
     private BigDecimal grade;
 
-    private String comment;
+    private String review;
 
 }
