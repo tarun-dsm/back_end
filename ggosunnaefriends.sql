@@ -72,7 +72,7 @@ CREATE TABLE `pet_info` (
 CREATE TABLE `review` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `created_at` DATETIME NOT NULL,
-  `comment` VARCHAR(255) NOT NULL,
+  `review` VARCHAR(255) NOT NULL,
   `grade` DECIMAL(2,1),
   `application_id` INT NOT NULL,
   `target_id` INT NOT NULL,

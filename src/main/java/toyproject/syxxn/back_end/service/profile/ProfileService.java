@@ -60,7 +60,7 @@ public class ProfileService {
                         .id(review.getId())
                         .nickname(review.getWriter().getNickname())
                         .grade(review.getGrade())
-                        .comment(review.getComment())
+                        .comment(review.getReview())
                         .createdAt(review.getCreatedAtToLocalDate())
                         .isMyReview(review.getWriter().equals(account))
                         .build()

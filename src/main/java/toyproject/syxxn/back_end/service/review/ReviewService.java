@@ -53,7 +53,7 @@ public class ReviewService {
                         .target(target)
                         .writer(me)
                         .grade(request.getGrade())
-                        .comment(request.getComment())
+                        .review(request.getReview())
                         .build()
         );
     }
@@ -65,7 +65,7 @@ public class ReviewService {
 
     public void updateReview(Integer reviewId, ReviewRequest request) {
         Review review = getReview(reviewId);
-        review.update(request.getGrade(), request.getComment());
+        review.update(request.getGrade(), request.getReview());
 
         reviewRepository.save(review);
     }

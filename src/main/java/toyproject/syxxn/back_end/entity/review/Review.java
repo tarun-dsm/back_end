@@ -20,7 +20,7 @@ public class Review extends BaseCreatedAtEntity {
     private BigDecimal grade;
 
     @Column(nullable = false)
-    private String comment;
+    private String review;
 
     @ManyToOne
     @JoinColumn(name = "writer_id", nullable = false)
@@ -35,17 +35,17 @@ public class Review extends BaseCreatedAtEntity {
     private Application application;
 
     @Builder
-    public Review(Application application, Account target, Account writer, BigDecimal grade, String comment) {
+    public Review(Application application, Account target, Account writer, BigDecimal grade, String review) {
         this.application = application;
         this.target = target;
         this.writer = writer;
         this.grade = grade;
-        this.comment = comment;
+        this.review = review;
     }
 
-    public void update(BigDecimal grade, String comment) {
+    public void update(BigDecimal grade, String review) {
         this.grade = grade;
-        this.comment = comment;
+        this.review = review;
     }
 
 }
