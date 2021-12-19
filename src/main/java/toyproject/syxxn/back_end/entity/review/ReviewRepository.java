@@ -11,5 +11,4 @@ import java.util.Optional;
 @Repository
 public interface ReviewRepository extends CrudRepository<Review, Integer> {
     Optional<Review> findByWriterAndApplication(Account writer, Application application);
-    List<Review> findAllByTarget(Account target);
 }
