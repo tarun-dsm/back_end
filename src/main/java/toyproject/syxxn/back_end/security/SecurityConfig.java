@@ -1,4 +1,4 @@
-package toyproject.syxxn.back_end.config;
+package toyproject.syxxn.back_end.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
