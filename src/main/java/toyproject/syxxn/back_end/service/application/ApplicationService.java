@@ -8,7 +8,6 @@ import toyproject.syxxn.back_end.dto.response.ApplicationResponse;
 import toyproject.syxxn.back_end.dto.response.MyApplicationResponse;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.application.Application;
-import toyproject.syxxn.back_end.entity.application.ApplicationCustomRepository;
 import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.post.PostRepository;
@@ -20,6 +19,7 @@ import toyproject.syxxn.back_end.service.util.S3Util;
 import toyproject.syxxn.back_end.service.util.UserUtil;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
-    private final ApplicationCustomRepository applicationCustomRepository;
     private final PostRepository postRepository;
     private final ReviewRepository reviewRepository;
 
@@ -50,7 +49,7 @@ public class ApplicationService {
             throw UserIsWriterException.EXCEPTION;
         } if (isApplicationClosed(post)) {
             throw AfterApplicationClosedException.EXCEPTION;
-        } if (applicationCustomRepository.existsNotEndApplication(account)) {
+        } if (applicationRepository.existsNotEndApplication(account, LocalDateTime.now())) {
             throw UserAlreadyApplicationException.EXCEPTION;
         }
 
