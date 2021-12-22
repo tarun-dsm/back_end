@@ -1,6 +1,5 @@
 package toyproject.syxxn.back_end.entity.application;
 
-import com.querydsl.core.annotations.QueryEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +14,6 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"applicant_id", "post_id"}))
-@QueryEntity
 public class Application extends BaseCreatedAtEntity {
 
     @Column(nullable = false)

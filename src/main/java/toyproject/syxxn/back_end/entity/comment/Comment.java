@@ -1,6 +1,5 @@
 package toyproject.syxxn.back_end.entity.comment;
 
-import com.querydsl.core.annotations.QueryEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +15,6 @@ import java.time.format.DateTimeFormatter;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@QueryEntity
 public class Comment extends BaseCreatedAtEntity {
 
     @Column(length = 100, nullable = false)

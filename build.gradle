@@ -53,12 +53,6 @@ dependencies {
 	//kakao
 	implementation group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
 
-	//querydsl
-	implementation 'com.querydsl:querydsl-apt:5.0.0'
-	implementation 'com.querydsl:querydsl-jpa:5.0.0'
-	implementation 'com.querydsl:querydsl-core:5.0.0'
-	annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:general'
-
 	//s3
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.5.RELEASE'
 

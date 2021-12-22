@@ -1,6 +1,5 @@
 package toyproject.syxxn.back_end.entity.account;
 
-import com.querydsl.core.annotations.QueryEntity;
 import lombok.*;
 import toyproject.syxxn.back_end.entity.BaseIdEntity;
 import toyproject.syxxn.back_end.entity.Sex;
@@ -16,7 +15,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@QueryEntity
 public class Account extends BaseIdEntity {
 
     @Column(length = 45, nullable = false, unique = true)
