@@ -7,8 +7,6 @@ import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.application.Application;
 import toyproject.syxxn.back_end.entity.application.ApplicationRepository;
-import toyproject.syxxn.back_end.entity.post.PostRepository;
-import toyproject.syxxn.back_end.entity.review.ReviewRepository;
 import toyproject.syxxn.back_end.exception.BlockedUserException;
 import toyproject.syxxn.back_end.exception.UserNotAccessibleException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
@@ -26,8 +24,6 @@ public class ProfileService {
 
     private final AccountRepository accountRepository;
     private final ApplicationRepository applicationRepository;
-    private final ReviewRepository reviewRepository;
-    private final PostRepository postRepository;
 
     private final S3Util s3Util;
     private final AuthenticationUtil authenticationUtil;
