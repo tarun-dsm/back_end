@@ -42,7 +42,8 @@ public class PostService {
 
     @Transactional
     public void deletePost(Integer postId) {
-        Post post = postUtil.getPost(postId, userUtil.getLocalConfirmAccount());
+        Post post = postUtil.getPost(postId);
+        postIsMine(userUtil.getLocalConfirmAccount(), post);
 
         for (PetImage petImage : post.getPetImages()) {
             s3Util.delete(petImage.getSavedPath());
@@ -71,7 +72,8 @@ public class PostService {
 
     public Integer updatePost(Integer postId, PostRequest request) {
         Account account = userUtil.getLocalConfirmAccount();
-        Post post = postUtil.getPost(postId, account);
+        Post post = postUtil.getPost(postId);
+        postIsMine(account, post);
 
         String startDate = request.getProtectionStartDate();
         String endDate = request.getProtectionEndDate();
@@ -98,7 +100,7 @@ public class PostService {
         return PostDetailsResponse.builder()
                 .writerId(writer.getId())
                 .rating(writer.getRating())
-                .isMine(postUtil.postIsMine(me, post))
+                .isMine(postIsMine(me, post))
                 .isApplied(isApplied(me, post))
                 .nickname(post.getAccount().getNickname())
                 .pet(PostDetailsResponse.PetDetailsDto.builder()
@@ -181,8 +183,15 @@ public class PostService {
     }
 
     private boolean isApplied(Account account, Post post) {
-        if (postUtil.postIsMine(account, post)) return false;
+        if (postIsMine(account, post)) return false;
         return applicationRepository.findByPostAndApplicant(post, account).isPresent();
+    }
+
+    private boolean postIsMine(Account account, Post post) {
+        if(!post.getAccount().getEmail().equals(account.getEmail())) {
+            throw UserNotAccessibleException.EXCEPTION;
+        }
+        return true;
     }
 
 }
