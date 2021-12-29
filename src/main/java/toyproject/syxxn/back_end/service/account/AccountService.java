@@ -39,7 +39,7 @@ public class AccountService {
     private final ReportRepository reportRepository;
     private final VerifyNumberRepository verifyNumberRepository;
 
-    private final AuthenticationUtil authenticationFacade;
+    private final AuthenticationUtil authenticationUtil;
     private final JwtTokenProvider jwtTokenProvider;
 
     private final PasswordEncoder encoder;
@@ -157,7 +157,7 @@ public class AccountService {
     }
 
     private Account getAccountNotBlocked() {
-        return accountRepository.findByEmail(authenticationFacade.getUserEmail())
+        return accountRepository.findByEmail(authenticationUtil.getUserEmail())
                 .filter(Account::isNotBlocked)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
