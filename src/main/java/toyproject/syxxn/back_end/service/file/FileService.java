@@ -31,7 +31,8 @@ public class FileService {
 
     @Transactional
     public void saveFiles(Integer postId, List<MultipartFile> files) {
-        Post post = postUtil.getPost(postId, userUtil.getLocalConfirmAccount());
+        Post post = postUtil.getPost(postId);
+        postUtil.postIsMine(userUtil.getLocalConfirmAccount(), post);
 
         if (files.size() > 5) {
             throw FileNumberExceedException.EXCEPTION;

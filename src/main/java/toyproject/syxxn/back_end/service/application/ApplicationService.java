@@ -130,7 +130,8 @@ public class ApplicationService {
 
     public ApplicationResponse getApplicationsForPost(Integer postId) {
         Account account = userUtil.getLocalConfirmAccount();
-        Post post = postUtil.getPost(postId, account);
+        Post post = postUtil.getPost(postId);
+        postUtil.postIsMine(account, post);
         List<Application> applications = applicationRepository.findAllByPost(post);
 
         return new ApplicationResponse(applications.stream().map(application ->
