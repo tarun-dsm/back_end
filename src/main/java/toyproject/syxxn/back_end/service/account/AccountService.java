@@ -92,9 +92,7 @@ public class AccountService {
     }
 
     public void saveCoordinate(CoordinatesRequest request) {
-        Account me = accountRepository.findByEmail(authenticationFacade.getUserEmail())
-                .filter(userUtil::isNotBlocked)
-                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+        Account me = getAccountNotBlocked();
         Double x = request.getLongitude();
         Double y = request.getLatitude();
         String division = getAdministrationDivision(x, y);
@@ -158,6 +156,12 @@ public class AccountService {
         }
 
         return administrationDivision;
+    }
+
+    private Account getAccountNotBlocked() {
+        return accountRepository.findByEmail(authenticationFacade.getUserEmail())
+                .filter(Account::isNotBlocked)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 
 }

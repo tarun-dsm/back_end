@@ -11,12 +11,12 @@ import toyproject.syxxn.back_end.entity.account.AccountRepository;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshToken;
 import toyproject.syxxn.back_end.entity.refreshtoken.RefreshTokenRepository;
 import toyproject.syxxn.back_end.exception.InvalidTokenException;
+import toyproject.syxxn.back_end.exception.PasswordNotMatchedException;
 import toyproject.syxxn.back_end.exception.UserNotAccessibleException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 import toyproject.syxxn.back_end.service.util.AuthenticationUtil;
 import toyproject.syxxn.back_end.service.util.TokenUtil;
-import toyproject.syxxn.back_end.service.util.UserUtil;
 
 @RequiredArgsConstructor
 @Service
@@ -29,15 +29,15 @@ public class AuthService {
 
     private final PasswordEncoder encoder;
 
-    private final UserUtil userUtil;
     private final TokenUtil tokenUtil;
     private final AuthenticationUtil authenticationFacade;
 
     public TokenResponse login(SignInRequest request) {
-        Account account = accountRepository.findByEmail(request.getEmail())
-                .filter(user -> encoder.matches(request.getPassword(), user.getPassword()))
-                .filter(userUtil::isNotBlocked)
-                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+        Account account = getAccountNotBlocked(request.getEmail());
+
+        if (!encoder.matches(request.getPassword(), account.getPassword())) {
+            throw PasswordNotMatchedException.EXCEPTION;
+        }
 
         return TokenResponse.builder()
                 .refreshToken(tokenUtil.getRefreshToken(account.getId()))
@@ -69,6 +69,12 @@ public class AuthService {
                 .orElseThrow(() -> UserNotAccessibleException.EXCEPTION);
         refreshTokenRepository.findById(account.getId())
                 .ifPresent(refreshTokenRepository::delete);
+    }
+
+    private Account getAccountNotBlocked(String email) {
+        return accountRepository.findByEmail(email)
+                .filter(Account::isNotBlocked)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 
 }
