@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.account.AccountRepository;
-import toyproject.syxxn.back_end.exception.BlockedUserException;
 import toyproject.syxxn.back_end.exception.UserNotAuthenticatedException;
 
 @RequiredArgsConstructor
@@ -17,15 +16,8 @@ public class UserUtil {
     public Account getLocalConfirmAccount() {
         return accountRepository.findByEmail(authenticationFacade.getUserEmail())
                 .filter(Account::getIsLocationConfirm)
-                .filter(this::isNotBlocked)
+                .filter(Account::isNotBlocked)
                 .orElseThrow(() -> UserNotAuthenticatedException.EXCEPTION);
-    }
-
-    public Boolean isNotBlocked(Account account) {
-        if (account.getIsBlocked()) {
-            throw BlockedUserException.EXCEPTION;
-        }
-        return true;
     }
 
 }
