@@ -6,6 +6,7 @@ import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.application.Application;
 import toyproject.syxxn.back_end.entity.post.Post;
 import toyproject.syxxn.back_end.entity.review.Review;
+import toyproject.syxxn.back_end.exception.BlockedUserException;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -111,6 +112,13 @@ public class Account extends BaseIdEntity {
 
     public String getExperienceDescription() {
         return this.experienceDescription == null ? "" : this.getExperienceDescription();
+    }
+
+    public Boolean isNotBlocked() {
+        if (this.isBlocked) {
+            throw BlockedUserException.EXCEPTION;
+        }
+        return true;
     }
 
 }
