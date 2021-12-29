@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import toyproject.syxxn.back_end.entity.refreshtoken.RefreshToken;
+import toyproject.syxxn.back_end.entity.refreshtoken.RefreshTokenRepository;
 import toyproject.syxxn.back_end.exception.InvalidTokenException;
 import toyproject.syxxn.back_end.security.auth.AuthDetails;
 import toyproject.syxxn.back_end.security.auth.AuthDetailsService;
@@ -19,6 +21,9 @@ import java.util.Date;
 @RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
+
+    @Value("${auth.jwt.exp.refresh}")
+    private Long refreshExp;
 
     @Value("${auth.jwt.secret}")
     private String secretKey;
@@ -35,7 +40,23 @@ public class JwtTokenProvider {
 
     private final AuthDetailsService authDetailsService;
 
-    public String generateAccessToken(Integer id) {
+    private final RefreshTokenRepository refreshTokenRepository;
+
+    public String getAccessToken(Integer accountId) {
+        return generateAccessToken(accountId);
+    }
+
+    public String getRefreshToken(Integer accountId) {
+        return refreshTokenRepository.save(
+                RefreshToken.builder()
+                        .accountId(accountId)
+                        .refreshExp(refreshExp)
+                        .refreshToken(generateRefreshToken(accountId))
+                        .build()
+        ).getRefreshToken();
+    }
+
+    private String generateAccessToken(Integer id) {
         return Jwts.builder()
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiration * 1000))
                 .setIssuedAt(new Date())
