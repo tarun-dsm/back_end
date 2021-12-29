@@ -16,7 +16,6 @@ import toyproject.syxxn.back_end.exception.UserNotAccessibleException;
 import toyproject.syxxn.back_end.exception.UserNotFoundException;
 import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 import toyproject.syxxn.back_end.service.util.AuthenticationUtil;
-import toyproject.syxxn.back_end.service.util.TokenUtil;
 
 @RequiredArgsConstructor
 @Service
@@ -29,7 +28,6 @@ public class AuthService {
 
     private final PasswordEncoder encoder;
 
-    private final TokenUtil tokenUtil;
     private final AuthenticationUtil authenticationFacade;
 
     public TokenResponse login(SignInRequest request) {
@@ -40,8 +38,8 @@ public class AuthService {
         }
 
         return TokenResponse.builder()
-                .refreshToken(tokenUtil.getRefreshToken(account.getId()))
-                .accessToken(tokenUtil.getAccessToken(account.getId()))
+                .refreshToken(jwtTokenProvider.getRefreshToken(account.getId()))
+                .accessToken(jwtTokenProvider.getAccessToken(account.getId()))
                 .build();
     }
 
@@ -60,7 +58,7 @@ public class AuthService {
 
         return TokenResponse.builder()
                 .refreshToken(refreshToken.getRefreshToken())
-                .accessToken(tokenUtil.getAccessToken(refreshToken.getAccountId()))
+                .accessToken(jwtTokenProvider.getAccessToken(refreshToken.getAccountId()))
                 .build();
     }
 

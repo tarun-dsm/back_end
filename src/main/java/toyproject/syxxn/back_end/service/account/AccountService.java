@@ -24,8 +24,8 @@ import toyproject.syxxn.back_end.entity.report.ReportRepository;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumber;
 import toyproject.syxxn.back_end.entity.verify.VerifyNumberRepository;
 import toyproject.syxxn.back_end.exception.*;
+import toyproject.syxxn.back_end.security.jwt.JwtTokenProvider;
 import toyproject.syxxn.back_end.service.util.AuthenticationUtil;
-import toyproject.syxxn.back_end.service.util.TokenUtil;
 import toyproject.syxxn.back_end.service.util.UserUtil;
 
 import java.math.BigDecimal;
@@ -40,6 +40,7 @@ public class AccountService {
     private final VerifyNumberRepository verifyNumberRepository;
 
     private final AuthenticationUtil authenticationFacade;
+    private final JwtTokenProvider jwtTokenProvider;
 
     private final PasswordEncoder encoder;
 
@@ -49,7 +50,6 @@ public class AccountService {
     private static final String KAKAO_API_URL = "https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?";
 
     private final UserUtil userUtil;
-    private final TokenUtil tokenUtil;
 
     @Transactional
     public TokenResponse signUp(SignUpRequest request) {
@@ -73,11 +73,9 @@ public class AccountService {
                         .build()
         ).getId();
 
-        String refreshToken = tokenUtil.getRefreshToken(accountId);
-
         return TokenResponse.builder()
-                .accessToken(tokenUtil.getAccessToken(accountId))
-                .refreshToken(refreshToken)
+                .accessToken(jwtTokenProvider.getAccessToken(accountId))
+                .refreshToken(jwtTokenProvider.getRefreshToken(accountId))
                 .build();
     }
 
