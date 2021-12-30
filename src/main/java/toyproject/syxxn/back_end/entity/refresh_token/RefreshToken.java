@@ -1,4 +1,4 @@
-package toyproject.syxxn.back_end.entity.refreshtoken;
+package toyproject.syxxn.back_end.entity.refresh_token;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
