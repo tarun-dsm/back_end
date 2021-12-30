@@ -4,7 +4,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import toyproject.syxxn.back_end.entity.Sex;
+import toyproject.syxxn.back_end.entity.GetAccount;
 
 import java.math.BigDecimal;
 
@@ -16,15 +16,7 @@ public class AccountTest {
     private static final String email = "test@naver.com";
     private static final String password = "password";
 
-    private static final Account account = Account.builder()
-            .email(email)
-            .password(password)
-            .nickname("꼬순내친구들")
-            .age(20)
-            .sex(Sex.FEMALE)
-            .isExperienceRaisingPet(false)
-            .experienceDescription(null)
-            .build();
+    private static final Account account = GetAccount.account;
 
     @Test
     void 유저_이메일_비밀번호_일치() {
