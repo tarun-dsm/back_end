@@ -30,13 +30,14 @@ public class ProfileService {
 
     public ProfileResponse getProfile(Integer accountId) {
         Account account = getAccount(accountId);
+        AccountRatingResponse rating = account.getRating();
 
         return ProfileResponse.builder()
                 .nickname(account.getNickname())
                 .age(account.getAge())
                 .sex(account.getSex().getKorean())
-                .avgGrade(account.getAvg())
-                .rating(account.getRating())
+                .avgGrade(rating.getAverageScore())
+                .rating(rating.getRating())
                 .administrationDivision(account.getAdministrationDivision())
                 .isExperienceRaisingPet(account.getIsExperienceRaisingPet())
                 .experience(account.getExperienceDescription())

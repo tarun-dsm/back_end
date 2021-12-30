@@ -99,7 +99,7 @@ public class PostService {
 
         return PostDetailsResponse.builder()
                 .writerId(writer.getId())
-                .rating(writer.getRating())
+                .rating(writer.getRating().getRating())
                 .isMine(postUtil.postIsMine(me, post))
                 .isApplied(isApplied(me, post))
                 .nickname(post.getAccount().getNickname())
