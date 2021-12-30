@@ -1,6 +1,7 @@
 package toyproject.syxxn.back_end.entity.account;
 
 import lombok.*;
+import toyproject.syxxn.back_end.dto.response.AccountRatingResponse;
 import toyproject.syxxn.back_end.entity.BaseIdEntity;
 import toyproject.syxxn.back_end.entity.Sex;
 import toyproject.syxxn.back_end.entity.application.Application;
@@ -88,19 +89,30 @@ public class Account extends BaseIdEntity {
         return this;
     }
 
-    public String getRating() {
-        Double avgGrade = getAvg().doubleValue();
-
-        if (avgGrade.compareTo(5.0) >= 0) return "굉장히 엄청난";
-        else if (avgGrade.compareTo(4.0) >= 0) return "능숙한";
-        else if (avgGrade.compareTo(3.0) >= 0) return "평범한";
-        else if (avgGrade.compareTo(2.0) >= 0) return "우왕좌왕";
-        else if(avgGrade.compareTo(1.0) >= 0) return "우당탕탕";
-        else return "처음처럼";
+    public Boolean isNotBlocked() {
+        if (this.isBlocked) {
+            throw BlockedUserException.EXCEPTION;
+        }
+        return true;
     }
 
-    public BigDecimal getAvg() {
-        if (this.reviews.size() == 0) {
+    public AccountRatingResponse getRating() {
+        Double avgGrade = getAvg().doubleValue();
+        String rating;
+
+        // compareTo : 같으면 0, 작으면 -1, 크면 1 반환
+        if (avgGrade.compareTo(5.0) == 0) rating = "굉장히 엄청난";
+        else if (avgGrade.compareTo(4.0) >= 0) rating = "능숙한";
+        else if (avgGrade.compareTo(3.0) >= 0) rating = "평범한";
+        else if (avgGrade.compareTo(2.0) >= 0) rating = "우왕좌왕";
+        else if(avgGrade.compareTo(1.0) >= 0) rating = "우당탕탕";
+        else rating = "처음처럼";
+
+        return new AccountRatingResponse(rating, BigDecimal.valueOf(avgGrade));
+    }
+
+    private BigDecimal getAvg() {
+        if (this.reviews == null || this.reviews.size() == 0) {
             return BigDecimal.ZERO;
         }
         BigDecimal sumData = BigDecimal.ZERO;
@@ -108,17 +120,6 @@ public class Account extends BaseIdEntity {
             sumData = sumData.add(reviews.get(i).getGrade());
         }
         return sumData.divide(BigDecimal.valueOf(this.reviews.size()), MathContext.DECIMAL64);
-    }
-
-    public String getExperienceDescription() {
-        return this.experienceDescription == null ? "" : this.getExperienceDescription();
-    }
-
-    public Boolean isNotBlocked() {
-        if (this.isBlocked) {
-            throw BlockedUserException.EXCEPTION;
-        }
-        return true;
     }
 
 }
