@@ -1,4 +1,4 @@
-package toyproject.syxxn.back_end.entity.verify;
+package toyproject.syxxn.back_end.entity.verify_number;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
