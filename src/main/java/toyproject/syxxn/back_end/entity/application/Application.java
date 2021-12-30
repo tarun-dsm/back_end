@@ -28,8 +28,8 @@ public class Application extends BaseCreatedAtEntity {
     private Post post;
 
     @Builder
-    public Application(Boolean isAccepted, Account applicant, Post post) {
-        this.isAccepted = isAccepted;
+    public Application(Account applicant, Post post) {
+        this.isAccepted = false;
         this.applicant = applicant;
         this.post = post;
     }

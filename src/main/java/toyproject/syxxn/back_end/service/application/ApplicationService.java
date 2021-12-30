@@ -55,7 +55,6 @@ public class ApplicationService {
 
         applicationRepository.save(
                 Application.builder()
-                        .isAccepted(false)
                         .applicant(account)
                         .post(post)
                         .build()
