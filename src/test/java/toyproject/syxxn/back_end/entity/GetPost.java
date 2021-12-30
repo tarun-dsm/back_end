@@ -18,11 +18,18 @@ public class GetPost {
     private static final String petSex = String.valueOf(Sex.MALE);
     private static final String animalType = String.valueOf(AnimalType.FISH);
 
-
-    private static final PostRequest postRequest = new PostRequest(
-            title, description, protectionStartDate, protectionEndDate, applicationEndDate,
-            contactInfo, petName, petSpecies, petSex, animalType
-    );
+    private static final PostRequest postRequest = PostRequest.builder()
+            .title(title)
+            .description(description)
+            .protectionStartDate(protectionStartDate)
+            .protectionEndDate(protectionEndDate)
+            .applicationEndDate(applicationEndDate)
+            .contactInfo(contactInfo)
+            .petName(petName)
+            .petSpecies(petSpecies)
+            .petSex(petSex)
+            .animalType(animalType)
+            .build();
 
     private static final Account account = GetAccount.account;
 
