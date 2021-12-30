@@ -64,7 +64,7 @@ public class Post extends BaseCreatedAtEntity {
     private List<Comment> comments;
 
     @Builder
-    public Post(PostRequest request, Account account, boolean isApplicationEnd) {
+    public Post(PostRequest request, Account account) {
         this.title = request.getTitle();
         this.description = request.getDescription();
         this.account = account;
@@ -72,7 +72,7 @@ public class Post extends BaseCreatedAtEntity {
         this.protectionEndDate = LocalDate.parse(request.getProtectionEndDate());
         this.applicationEndDate = LocalDate.parse(request.getApplicationEndDate());
         this.contactInfo = request.getContactInfo();
-        this.isApplicationEnd = isApplicationEnd;
+        this.isApplicationEnd = false;
         this.isUpdated = false;
         this.petInfo = new PetInfo(this, request.getPetName(), request.getPetSpecies(), request.getPetSex(), request.getAnimalType());
     }

@@ -61,7 +61,7 @@ public class PostService {
         startDateAfterEndDate(startDate, endDate);
         Integer postId = 0;
         try {
-             Post post = postRepository.save(new Post(request, account, false));
+             Post post = postRepository.save(new Post(request, account));
              petInfoRepository.save(post.getPetInfo());
              postId = post.getId();
         } catch(Exception e) {
