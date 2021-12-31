@@ -44,7 +44,7 @@ public class EmailService {
             emailUtil.sendEmail(email, subject, text);
 
             verifyNumberRepository.save(
-                    new VerifyNumber(email, authNumber, false)
+                    new VerifyNumber(email, authNumber)
             );
         } catch (Exception e) {
             throw EmailSendException.EXCEPTION;
