@@ -54,7 +54,7 @@ public class EmailService {
     public void verify(VerifyRequest request) {
         verifyNumberRepository.findById(request.getEmail())
                 .filter(verifyNumber -> verifyNumber.getVerifyNumber().equals(request.getNumber()))
-                .map(VerifyNumber::isVerifiedTrue)
+                .map(VerifyNumber::updateVerifyStatus)
                 .map(verifyNumberRepository::save)
                 .orElseThrow(() -> VerifyNumberNotMatchException.EXCEPTION);
     }

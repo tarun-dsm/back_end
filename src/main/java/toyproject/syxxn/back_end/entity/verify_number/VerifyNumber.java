@@ -21,9 +21,10 @@ public class VerifyNumber {
     public VerifyNumber(String email, String verifyNumber) {
         this.email = email;
         this.verifyNumber = verifyNumber;
+        this.isVerified = false;
     }
 
-    public VerifyNumber isVerifiedTrue() {
+    public VerifyNumber updateVerifyStatus() {
         this.isVerified = true;
         return this;
     }
