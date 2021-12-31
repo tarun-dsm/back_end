@@ -18,7 +18,7 @@ public class GetPost {
     private static final String petSex = String.valueOf(Sex.MALE);
     private static final String animalType = String.valueOf(AnimalType.FISH);
 
-    private static final PostRequest postRequest = PostRequest.builder()
+    public static final PostRequest postRequest = PostRequest.builder()
             .post(
                     PostRequest.PostRequestDto.builder()
                             .title(title)
