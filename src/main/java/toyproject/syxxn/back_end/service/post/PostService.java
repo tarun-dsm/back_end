@@ -55,14 +55,14 @@ public class PostService {
     @Transactional
     public Integer writePost(PostRequest request) {
         Account account = userUtil.getLocalConfirmAccount();
-        String startDate = request.getProtectionStartDate();
-        String endDate = request.getProtectionEndDate();
+        PostRequest.PostRequestDto postRequest = request.getPost();
+        PostRequest.PetRequestDto petRequest = request.getPet();
 
-        startDateAfterEndDate(startDate, endDate);
+        startDateAfterEndDate(postRequest);
         Integer postId = 0;
         try {
-             Post post = postRepository.save(new Post(request, account));
-             petInfoRepository.save(post.getPetInfo());
+             Post post = postRepository.save(new Post(postRequest, account));
+             petInfoRepository.save(new PetInfo(post, petRequest));
              postId = post.getId();
         } catch(Exception e) {
             e.printStackTrace();
@@ -75,13 +75,10 @@ public class PostService {
         Post post = postUtil.getPost(postId);
         postUtil.postIsMine(account, post);
 
-        String startDate = request.getProtectionStartDate();
-        String endDate = request.getProtectionEndDate();
+        startDateAfterEndDate(request.getPost());
 
-        startDateAfterEndDate(startDate, endDate);
-
-        post.update(request);
-        post.getPetInfo().update(request);
+        post.update(request.getPost());
+        post.getPetInfo().update(request.getPet());
         postRepository.save(post);
         petInfoRepository.save(post.getPetInfo());
 
@@ -140,7 +137,10 @@ public class PostService {
         );
     }
 
-    private void startDateAfterEndDate(String startDate, String endDate) {
+    private void startDateAfterEndDate(PostRequest.PostRequestDto request) {
+        String startDate = request.getProtectionStartDate();
+        String endDate = request.getProtectionEndDate();
+
         if (LocalDate.parse(startDate).isAfter(LocalDate.parse(endDate))) {
             throw InvalidScheduleSettingException.EXCEPTION;
         }

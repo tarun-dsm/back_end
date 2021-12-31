@@ -38,7 +38,7 @@ public class PostTest {
     @Test
     void 게시글_업데이트() {
         post.update(
-                PostRequest.builder()
+                PostRequest.PostRequestDto.builder()
                         .title("새해복많이받으세요")
                         .protectionStartDate("2021-12-31")
                         .protectionEndDate("2021-01-03")

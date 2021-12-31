@@ -19,22 +19,30 @@ public class GetPost {
     private static final String animalType = String.valueOf(AnimalType.FISH);
 
     private static final PostRequest postRequest = PostRequest.builder()
-            .title(title)
-            .description(description)
-            .protectionStartDate(protectionStartDate)
-            .protectionEndDate(protectionEndDate)
-            .applicationEndDate(applicationEndDate)
-            .contactInfo(contactInfo)
-            .petName(petName)
-            .petSpecies(petSpecies)
-            .petSex(petSex)
-            .animalType(animalType)
+            .post(
+                    PostRequest.PostRequestDto.builder()
+                            .title(title)
+                            .description(description)
+                            .protectionStartDate(protectionStartDate)
+                            .protectionEndDate(protectionEndDate)
+                            .applicationEndDate(applicationEndDate)
+                            .contactInfo(contactInfo)
+                            .build()
+            )
+            .pet(
+                    PostRequest.PetRequestDto.builder()
+                            .petName(petName)
+                            .petSpecies(petSpecies)
+                            .petSex(petSex)
+                            .animalType(animalType)
+                            .build()
+            )
             .build();
 
     private static final Account account = GetAccount.account;
 
     public static final Post post = Post.builder()
-            .request(postRequest)
+            .request(postRequest.getPost())
             .account(account)
             .build();
 

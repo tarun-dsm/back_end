@@ -33,16 +33,15 @@ public class PetInfo {
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    @Builder
-    public PetInfo(Post post, String petName, String petSpecies, String petSex, String animalType) {
+    public PetInfo(Post post, PostRequest.PetRequestDto pet) {
         this.post = post;
-        this.petName = petName;
-        this.petSpecies = petSpecies;
-        this.petSex = Sex.valueOf(petSex);
-        this.animalType = AnimalType.valueOf(animalType);
+        this.petName = pet.getPetName();
+        this.petSpecies = pet.getPetSpecies();
+        this.petSex = Sex.valueOf(pet.getPetSex());
+        this.animalType = AnimalType.valueOf(pet.getAnimalType());
     }
 
-    public void update(PostRequest pet) {
+    public void update(PostRequest.PetRequestDto pet) {
         this.petName = pet.getPetName();
         this.petSpecies = pet.getPetSpecies();
         this.petSex = Sex.valueOf(pet.getPetSex());
