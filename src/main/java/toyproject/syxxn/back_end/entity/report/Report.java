@@ -4,19 +4,22 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import toyproject.syxxn.back_end.entity.BaseCreatedAtEntity;
+import toyproject.syxxn.back_end.entity.BaseIdEntity;
 import toyproject.syxxn.back_end.entity.account.Account;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Report extends BaseCreatedAtEntity {
+public class Report extends BaseIdEntity {
 
     private String reason;
+
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "target_id", nullable = false)
@@ -31,6 +34,7 @@ public class Report extends BaseCreatedAtEntity {
         this.reason = reason;
         this.target = target;
         this.reporter = reporter;
+        this.createdAt = LocalDateTime.now();
     }
 
 }
