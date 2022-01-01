@@ -27,7 +27,7 @@ public class ReportTest {
 
     @Test
     void 생성일_확인하기() {
-        assertNull(report.getLastModifiedAt()); // @LastModifiedDate는 JPA와 관련된 어노테이션이기 때문에 데이터베이스에 저장할 때 생성된다.
+        assertNotNull(report.getCreatedAt());
     }
 
     @Test
