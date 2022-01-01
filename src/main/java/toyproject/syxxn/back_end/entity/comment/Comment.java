@@ -33,10 +33,10 @@ public class Comment extends BaseCreatedAtEntity {
     private Account writer;
 
     @Builder
-    public Comment(String comment, Post post, Account account) {
+    public Comment(String comment, Post post, Account writer) {
         this.comment = comment;
         this.post = post;
-        this.writer = account;
+        this.writer = writer;
         this.isUpdated = false;
     }
 

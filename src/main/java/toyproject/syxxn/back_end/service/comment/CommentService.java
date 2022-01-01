@@ -33,7 +33,7 @@ public class CommentService {
                 Comment.builder()
                         .comment(comment)
                         .post(post)
-                        .account(account)
+                        .writer(account)
                         .build()
         );
     }
