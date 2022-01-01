@@ -24,6 +24,6 @@ public interface ApplicationRepository extends CrudRepository<Application, Integ
             "join post p on a.post_id = p.id" +
             "join account ac on a.applicant_id = ac.email" +
             "and ((p.is_application_end = false) or (a.is_accepted = true))" +
-            "and ?2 between a.created_at and p.application_end_date limit 1", nativeQuery = true)
+            "and ?2 between a.last_modified_at and p.application_end_date limit 1", nativeQuery = true)
     boolean existsNotEndApplication(Account account, LocalDateTime now);
 }

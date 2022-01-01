@@ -10,12 +10,9 @@ import java.util.List;
 @Repository
 public interface PostRepository extends CrudRepository<Post, Integer> {
 
-    @Query("select p from Post as p where p.petImages.size > 0 group by p.id order by p.createdAt desc")
+    @Query("select p from Post as p where p.petImages.size > 0 group by p.id order by p.lastModifiedAt desc")
     List<Post> findAllByPetImagesNotNullOrderByCreatedAtDesc();
 
-    @Query("select p from Post as p where p.account = ?1 and p.petImages.size > 0 group by p.id order by p.createdAt desc")
-    List<Post> findAllByAccountAndPetImagesNotNullOrderByCreatedAtDesc(Account account);
-
-    @Query("select p from Post as p where p.isApplicationEnd = false and p.petImages.size > 0 group by p.id order by p.createdAt desc")
+    @Query("select p from Post as p where p.isApplicationEnd = false and p.petImages.size > 0 group by p.id order by p.lastModifiedAt desc")
     List<Post> findAllByIsApplicationEndFalseAndPetImagesNotNullOrderByCreatedAtDesc();
 }
