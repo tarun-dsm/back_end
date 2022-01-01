@@ -22,6 +22,8 @@ public class Review extends BaseLastModifiedAtEntity {
     @Column(nullable = false)
     private String review;
 
+    private Boolean isUpdated;
+
     @ManyToOne
     @JoinColumn(name = "writer_id", nullable = false)
     private Account writer;
@@ -41,11 +43,13 @@ public class Review extends BaseLastModifiedAtEntity {
         this.writer = writer;
         this.grade = grade;
         this.review = review;
+        this.isUpdated = false;
     }
 
     public void update(BigDecimal grade, String review) {
         this.grade = grade;
         this.review = review;
+        this.isUpdated = true;
     }
 
 }
