@@ -22,7 +22,7 @@ public class ProfilePostResponse {
 
         private final String firstImagePath;
 
-        private final String createdAt;
+        private final String lastModifiedAt;
 
         private final Boolean isApplicationEnd;
 

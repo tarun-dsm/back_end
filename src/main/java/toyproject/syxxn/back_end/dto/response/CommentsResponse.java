@@ -24,11 +24,9 @@ public class CommentsResponse {
 
         private final String comment;
 
-        private final String createdAt;
+        private final String lastModifiedAt;
 
         private final Boolean isUpdated;
-
-        private final String updatedAt;
 
         @JsonProperty("is_mine")
         private final boolean isMine;

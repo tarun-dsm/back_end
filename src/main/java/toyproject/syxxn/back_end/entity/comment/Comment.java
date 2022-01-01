@@ -4,25 +4,21 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import toyproject.syxxn.back_end.entity.BaseCreatedAtEntity;
+import toyproject.syxxn.back_end.entity.BaseLastModifiedAtEntity;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.post.Post;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Comment extends BaseCreatedAtEntity {
+public class Comment extends BaseLastModifiedAtEntity {
 
     @Column(length = 100, nullable = false)
     private String comment;
 
     private Boolean isUpdated;
-
-    private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
@@ -43,12 +39,7 @@ public class Comment extends BaseCreatedAtEntity {
     public Comment updateComment(String comment) {
         this.comment = comment;
         this.isUpdated = true;
-        this.updatedAt = LocalDateTime.now();
         return this;
-    }
-
-    public String getUpdatedAtToString() {
-        return this.updatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
     }
 
 }

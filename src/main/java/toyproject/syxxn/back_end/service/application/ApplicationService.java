@@ -136,7 +136,7 @@ public class ApplicationService {
         return new ApplicationResponse(applications.stream().map(application ->
                 ApplicationResponse.ApplicationDto.builder()
                         .applicationId(application.getId())
-                        .applicationDate(application.getCreatedAtToString())
+                        .applicationDate(application.getLastModifiedAtToString())
                         .applicantId(application.getApplicant().getId())
                         .isAccepted(application.getIsAccepted())
                         .applicantNickname(application.getApplicant().getNickname())

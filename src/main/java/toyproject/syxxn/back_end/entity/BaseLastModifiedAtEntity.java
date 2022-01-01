@@ -2,6 +2,7 @@ package toyproject.syxxn.back_end.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -14,19 +15,18 @@ import java.time.format.DateTimeFormatter;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseCreatedAtEntity extends BaseIdEntity{
+public abstract class BaseLastModifiedAtEntity extends BaseIdEntity{
 
-    @CreatedDate
+    @LastModifiedDate
     @DateTimeFormat(pattern = "yyyy-MM-dd`T`hh:mm:ss")
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime lastModifiedAt;
 
-    public String getCreatedAtToString() {
-        return this.createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
-    }
-
-    public String getCreatedAtToLocalDate() {
-        return this.createdAt.toLocalDate().toString();
+    public String getLastModifiedAtToString() {
+        if (this.lastModifiedAt != null)
+            return this.lastModifiedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+        else
+            return null;
     }
 
 }

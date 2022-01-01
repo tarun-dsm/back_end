@@ -14,6 +14,8 @@ import toyproject.syxxn.back_end.exception.UserNotAuthenticatedException;
 import toyproject.syxxn.back_end.service.util.AuthenticationUtil;
 import toyproject.syxxn.back_end.service.util.S3Util;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,7 +60,7 @@ public class ProfileService {
                         .nickname(review.getWriter().getNickname())
                         .grade(review.getGrade())
                         .comment(review.getReview())
-                        .createdAt(review.getCreatedAtToLocalDate())
+                        .createdAt(getLastModifiedAtToLocalDate(review.getLastModifiedAt()))
                         .isMyReview(review.getWriter().equals(account))
                         .build()
         ).collect(Collectors.toList()));
@@ -81,7 +83,7 @@ public class ProfileService {
                                 .id(post.getId())
                                 .title(post.getTitle())
                                 .firstImagePath(s3Util.getS3ObjectUrl(post.getFirstImagePath()))
-                                .createdAt(post.getCreatedAtToString())
+                                .lastModifiedAt(post.getLastModifiedAtToString())
                                 .isApplicationEnd(post.getIsApplicationEnd())
                                 .protectorId(application.isEmpty() ? null : application.get().getApplicant().getId().toString())
                                 .protectorNickname(application.isEmpty() ? null : application.get().getApplicant().getNickname())
@@ -114,6 +116,10 @@ public class ProfileService {
             throw BlockedUserException.EXCEPTION;
         }
         return account;
+    }
+
+    private String getLastModifiedAtToLocalDate(LocalDateTime lastModifiedAt) {
+        return lastModifiedAt.toLocalDate().toString();
     }
 
 }

@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import toyproject.syxxn.back_end.entity.BaseCreatedAtEntity;
+import toyproject.syxxn.back_end.entity.BaseLastModifiedAtEntity;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.post.Post;
 
@@ -14,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"applicant_id", "post_id"}))
-public class Application extends BaseCreatedAtEntity {
+public class Application extends BaseLastModifiedAtEntity {
 
     @Column(nullable = false)
     private Boolean isAccepted;

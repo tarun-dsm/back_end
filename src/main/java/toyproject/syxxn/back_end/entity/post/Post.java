@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.syxxn.back_end.dto.request.PostRequest;
-import toyproject.syxxn.back_end.entity.BaseCreatedAtEntity;
+import toyproject.syxxn.back_end.entity.BaseLastModifiedAtEntity;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.application.Application;
 import toyproject.syxxn.back_end.entity.comment.Comment;
@@ -19,7 +19,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Post extends BaseCreatedAtEntity {
+public class Post extends BaseLastModifiedAtEntity {
 
     @Column(length = 30, nullable = false)
     private String title;

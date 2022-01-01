@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import toyproject.syxxn.back_end.entity.BaseCreatedAtEntity;
+import toyproject.syxxn.back_end.entity.BaseLastModifiedAtEntity;
 import toyproject.syxxn.back_end.entity.account.Account;
 import toyproject.syxxn.back_end.entity.application.Application;
 
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Review extends BaseCreatedAtEntity {
+public class Review extends BaseLastModifiedAtEntity {
 
     @Column(columnDefinition = "decimal(2,1)", nullable = false)
     private BigDecimal grade;

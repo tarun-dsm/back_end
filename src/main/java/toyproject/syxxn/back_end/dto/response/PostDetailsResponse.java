@@ -47,7 +47,7 @@ public class PostDetailsResponse {
 
         private final LocalDate applicationEndDate;
 
-        private final String createdAt;
+        private final String lastModifiedAt;
 
         private final Boolean isUpdated;
 
