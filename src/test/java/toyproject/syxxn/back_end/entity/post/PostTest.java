@@ -50,4 +50,9 @@ public class PostTest {
         assertEquals("새해복많이받으세요", post.getTitle());
     }
 
+    @Test
+    void 게시글_수정일() {
+        assertNull(post.getLastModifiedAt()); // @LastModifiedDate는 JPA와 관련된 어노테이션이기 때문에 데이터베이스에 저장할 때 생성된다.
+    }
+
 }
