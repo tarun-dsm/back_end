@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import toyproject.syxxn.back_end.entity.BaseIdEntity;
 import toyproject.syxxn.back_end.entity.account.Account;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,6 +20,7 @@ public class Report extends BaseIdEntity {
 
     private String reason;
 
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @ManyToOne
