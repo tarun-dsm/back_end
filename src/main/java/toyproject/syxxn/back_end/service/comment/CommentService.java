@@ -66,7 +66,7 @@ public class CommentService {
         Post post = postUtil.getPost(postId);
 
         return new CommentsResponse(
-                commentRepository.findAllByPostOrderByCreatedAtDesc(post).stream().map(
+                commentRepository.findAllByPostOrderByLastModifiedAtDesc(post).stream().map(
                         c -> CommentsResponse.CommentDto.builder()
                                 .id(c.getId())
                                 .nickname(c.getWriter().getNickname())
