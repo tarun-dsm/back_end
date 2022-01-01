@@ -36,7 +36,7 @@ public class Comment extends BaseLastModifiedAtEntity {
         this.isUpdated = false;
     }
 
-    public Comment updateComment(String comment) {
+    public Comment update(String comment) {
         this.comment = comment;
         this.isUpdated = true;
         return this;

@@ -55,7 +55,7 @@ public class CommentService {
                 .orElseThrow(() -> CommentNotFoundException.EXCEPTION);
 
         if(equalsEmail(comment.getWriter().getEmail())) {
-            commentRepository.save(comment.updateComment(commentRequest));
+            commentRepository.save(comment.update(commentRequest));
         } else {
             throw UserNotAccessibleException.EXCEPTION;
         }
