@@ -11,8 +11,6 @@
 
 + Database : MySQL, Redis
 
-  > [ggosunnaefriends.sql](https://github.com/tarun-dsm/back_end/blob/main/ggosunnaefriends.sql)
-
 + API : JavaMail, Kakao map
 
 
